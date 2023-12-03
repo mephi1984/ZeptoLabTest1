@@ -186,6 +186,8 @@ namespace ZL
 	}
 
 	void setup() {
+		static const int BIRD_WIDTH = 512;
+		static const int BIRD_HEIGHT = 512;
 
 		static const int BACKGROUND_WIDTH = 900;
 		static const int BACKGROUND_HEIGHT = 504;
@@ -213,7 +215,7 @@ namespace ZL
 
 		CheckGlError();
 		//Create bird mesh
-		GameObjects::birdMesh = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * GameObjects::birdTexturePtr->getWidth(), GameConsts::birdScale * GameObjects::birdTexturePtr->getHeight() }, 0);
+		GameObjects::birdMesh = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * BIRD_WIDTH, GameConsts::birdScale * BIRD_HEIGHT }, 0);
 
 		float backgroundTextureScale = Env::height / static_cast<float>(BACKGROUND_HEIGHT);
 
