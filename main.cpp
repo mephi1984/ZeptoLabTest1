@@ -9,6 +9,7 @@
 #include <cstdlib> 
 #include <ctime> 
 #include <iostream>
+#include <fstream>
 
 #include "Game.h"
 
@@ -124,7 +125,7 @@ namespace ZL
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+		
 		glViewport(0, 0, Env::width, Env::height);
 
 		renderer.shaderManager.PushShader(defaultShaderName);
@@ -151,7 +152,7 @@ namespace ZL
 		renderer.DisableVertexAttribArray(vPositionName);
 
 		renderer.shaderManager.PopShader();
-
+		
 		CheckGlError();
 
 	}
@@ -186,14 +187,23 @@ namespace ZL
 
 	void setup() {
 
+		static const int BACKGROUND_WIDTH = 900;
+		static const int BACKGROUND_HEIGHT = 504;
+
+		static const int PIPE_WIDTH = 244;
+		static const int PIPE_HEIGHT = 1500;
+
+		static const int GAMEOVER_WIDTH = 1400;
+		static const int GAMEOVER_HEIGHT = 720;
 
 		ZL::BindOpenGlFunctions();
 
 		CheckGlError();
 
+
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
-
+		
 		//Load textures
 		GameObjects::birdTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./bird.bmp32"));
 		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
@@ -205,26 +215,26 @@ namespace ZL
 		//Create bird mesh
 		GameObjects::birdMesh = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * GameObjects::birdTexturePtr->getWidth(), GameConsts::birdScale * GameObjects::birdTexturePtr->getHeight() }, 0);
 
-		float backgroundTextureScale = Env::height / static_cast<float>(GameObjects::backgroundTexturePtr->getHeight());
+		float backgroundTextureScale = Env::height / static_cast<float>(BACKGROUND_HEIGHT);
 
 
 		//Create pipe mesh
-		GameObjects::pipeMesh = CreateRect2D({ GameObjects::pipeTexturePtr->getWidth() * GameConsts::pipeScale * (-0.5f), Env::getActualClientHeight() * 0.5f + GameObjects::pipeTexturePtr->getHeight() * GameConsts::pipeScale * (-0.5f) }, { GameObjects::pipeTexturePtr->getWidth() * GameConsts::pipeScale * 0.5f, GameObjects::pipeTexturePtr->getHeight() * GameConsts::pipeScale * 0.5f }, 0);
+		GameObjects::pipeMesh = CreateRect2D({ PIPE_WIDTH * GameConsts::pipeScale * (-0.5f), Env::getActualClientHeight() * 0.5f + PIPE_HEIGHT * GameConsts::pipeScale * (-0.5f) }, { PIPE_WIDTH * GameConsts::pipeScale * 0.5f, PIPE_HEIGHT * GameConsts::pipeScale * 0.5f }, 0);
 
 
 		//Create background mesh depending on screen size
 
-		Env::backgroundSectionWidth = GameObjects::backgroundTexturePtr->getWidth() * backgroundTextureScale;
+		Env::backgroundSectionWidth = BACKGROUND_HEIGHT * backgroundTextureScale;
 
-		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ GameObjects::backgroundTexturePtr->getWidth() * backgroundTextureScale * (0.5f), GameObjects::backgroundTexturePtr->getHeight() * backgroundTextureScale * (0.5f) }, { GameObjects::backgroundTexturePtr->getWidth() * backgroundTextureScale * 0.5f, GameObjects::backgroundTexturePtr->getHeight() * backgroundTextureScale * 0.5f }, 0, 2);
+		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, 0, 2);
 
 		CheckGlError();
 
 		//Create Game Over UI mesh depending on screen size
 
-		float gameOverTextureScale = Env::height / static_cast<float>(GameObjects::gameOverTexturePtr->getHeight());
+		float gameOverTextureScale = Env::height / static_cast<float>(GAMEOVER_HEIGHT);
 
-		GameObjects::gameOverMesh = CreateRect2D({ GameObjects::gameOverTexturePtr->getWidth() * gameOverTextureScale * 0.5f, GameObjects::gameOverTexturePtr->getHeight() * gameOverTextureScale * 0.5f }, { GameObjects::gameOverTexturePtr->getWidth() * gameOverTextureScale * 0.5f, GameObjects::gameOverTexturePtr->getHeight() * gameOverTextureScale * 0.5f }, 0.1f);
+		GameObjects::gameOverMesh = CreateRect2D({ GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, { GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, 0.1f);
 
 
 
@@ -248,7 +258,7 @@ namespace ZL
 
 		CheckGlError();
 
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		DrawScene();
@@ -285,14 +295,6 @@ namespace ZL
 
 int main(int argc, char* argv[])
 {
-#ifdef EMSCRIPTEN
-	SDL_Renderer* renderer = NULL;
-	SDL_CreateWindowAndRenderer(512, 512, SDL_WINDOW_OPENGL, &ZL::window, &renderer);
-#else
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
-		return 1;
-	}
 
 	constexpr int CONST_WIDTH = 1280;
 	constexpr int CONST_HEIGHT = 720;
@@ -300,14 +302,25 @@ int main(int argc, char* argv[])
 	ZL::Env::width = CONST_WIDTH;
 	ZL::Env::height = CONST_HEIGHT;
 
-	
+#ifdef EMSCRIPTEN
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_Renderer* renderer = NULL;
+	SDL_CreateWindowAndRenderer(CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL, &ZL::window, &renderer);
+#else
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+		return 1;
+	}
+
 
 	// Use a core profile setup.
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	ZL::window = SDL_CreateWindow("Jumping Bird", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL);
-
+#endif
 	//todo
 	ZL::Env::windowHeaderHeight = 0;
 
@@ -315,8 +328,6 @@ int main(int argc, char* argv[])
 
 	ZL::CheckGlError();
 
-	
-#endif
 	ZL::setup();
 #ifdef EMSCRIPTEN
 	// register update as callback

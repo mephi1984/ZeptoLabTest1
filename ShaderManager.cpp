@@ -38,11 +38,12 @@ namespace ZL {
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragmentShaderCompiled);
 		glGetShaderInfoLog(fragmentShader, CONST_INFOLOG_LENGTH, &infoLogLength, infoLog);
 
+		
 		if (!vertexShaderCompiled)
 		{
 			throw std::runtime_error("Failed to compile vertex shader code!");
 		}
-
+		
 		if (!fragmentShaderCompiled)
 		{
 			throw std::runtime_error("Failed to compile fragment shader code!");
@@ -60,7 +61,7 @@ namespace ZL {
 
 		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &programLinked);
 		glGetProgramInfoLog(shaderProgram, CONST_INFOLOG_LENGTH, &infoLogLength, infoLog);
-
+		
 		if (!programLinked)
 		{
 			shaderProgram = 0;
