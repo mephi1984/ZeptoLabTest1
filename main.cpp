@@ -226,7 +226,7 @@ namespace ZL
 
 		//Create background mesh depending on screen size
 
-		Env::backgroundSectionWidth = BACKGROUND_HEIGHT * backgroundTextureScale;
+		Env::backgroundSectionWidth = BACKGROUND_WIDTH * backgroundTextureScale;
 
 		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, 0, 2);
 
