@@ -2,6 +2,9 @@
 
 #include <string>
 #include <vector>
+#include <exception>
+#include <map>
+#include <stack>
 
 namespace ZL
 {

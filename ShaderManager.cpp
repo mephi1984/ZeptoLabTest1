@@ -40,12 +40,12 @@ namespace ZL {
 
 		if (!vertexShaderCompiled)
 		{
-			throw std::exception("Failed to compile vertex shader code!");
+			throw std::runtime_error("Failed to compile vertex shader code!");
 		}
 
 		if (!fragmentShaderCompiled)
 		{
-			throw std::exception("Failed to compile fragment shader code!");
+			throw std::runtime_error("Failed to compile fragment shader code!");
 		}
 
 		shaderProgram = glCreateProgram();
@@ -64,7 +64,7 @@ namespace ZL {
 		if (!programLinked)
 		{
 			shaderProgram = 0;
-			throw std::exception("Failed to link shader program!");
+			throw std::runtime_error("Failed to link shader program!");
 		}
 
 
@@ -133,12 +133,12 @@ namespace ZL {
 	{
 		if (shaderStack.size() >= CONST_MAX_SHADER_STACK_SIZE)
 		{
-			throw std::exception("Shader stack overflow!");
+			throw std::runtime_error("Shader stack overflow!");
 		}
 
 		if (shaderResourceMap.find(shaderName) == shaderResourceMap.end())
 		{
-			throw std::exception("Shader does not exist!");
+			throw std::runtime_error("Shader does not exist!");
 		}
 
 		shaderStack.push(shaderName);
@@ -151,7 +151,7 @@ namespace ZL {
 	{
 		if (shaderStack.size() == 0)
 		{
-			throw std::exception("Shader stack underflow!");
+			throw std::runtime_error("Shader stack underflow!");
 		}
 
 		shaderStack.pop();
@@ -170,7 +170,7 @@ namespace ZL {
 	{
 		if (shaderStack.size() == 0)
 		{
-			throw std::exception("Shader stack underflow!");
+			throw std::runtime_error("Shader stack underflow!");
 		}
 
 

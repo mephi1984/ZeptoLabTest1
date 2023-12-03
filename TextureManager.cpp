@@ -13,7 +13,7 @@ namespace ZL
 
 		if (texID == 0)
 		{
-			throw std::exception("glGenTextures did not work");
+			throw std::runtime_error("glGenTextures did not work");
 		}
 
 		glBindTexture(GL_TEXTURE_2D, texID);
@@ -77,7 +77,7 @@ namespace ZL
 
 		if (fileSize < 22)
 		{
-			throw std::exception("File is too short or not correct!");
+			throw std::runtime_error("File is too short or not correct!");
 		}
 
 		//This refers to BITMAPV5HEADER
@@ -99,7 +99,7 @@ namespace ZL
 
 				if (pos + 3 > fileSize)
 				{
-					throw std::exception("File is too short!");
+					throw std::runtime_error("File is too short!");
 				}
 					
 
@@ -125,7 +125,7 @@ namespace ZL
 
 		if (fileSize < 22)
 		{
-			throw std::exception("File is too short or not correct!");
+			throw std::runtime_error("File is too short or not correct!");
 		}
 
 		//This refers to BITMAPV5HEADER
@@ -147,7 +147,7 @@ namespace ZL
 
 				if (pos + 4 > fileSize)
 				{
-					throw std::exception("File is too short!");
+					throw std::runtime_error("File is too short!");
 				}
 
 

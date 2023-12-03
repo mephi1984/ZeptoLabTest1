@@ -2,6 +2,8 @@
 
 #include "Utils.h"
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+
 //====================================================
 //===================== GLSL Shaders =================  
 //====================================================
@@ -112,10 +114,13 @@ PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = NULL;
 PFNGLBINDVERTEXARRAYPROC glBindVertexArray = NULL;
 PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArray = NULL;
 
+#endif 
+
 namespace ZL {
 
 	bool BindOpenGlFunctions()
 	{
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 		//char* extensionList = (char*)glGetString(GL_EXTENSIONS);
 		char* glVersion = (char*)glGetString(GL_VERSION);
 		bool ok = true;
@@ -231,8 +236,7 @@ namespace ZL {
 			ok = false;
 		}
 
-		//if (findString("GL_ARB_framebuffer_object", extensionList))
-		{
+
 			glIsRenderbuffer = (PFNGLISRENDERBUFFERPROC)wglGetProcAddress("glIsRenderbuffer");
 			glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)wglGetProcAddress("glBindRenderbuffer");
 			glDeleteRenderbuffers = (PFNGLDELETERENDERBUFFERSPROC)wglGetProcAddress("glDeleteRenderbuffers");
@@ -279,15 +283,6 @@ namespace ZL {
 			}
 
 
-		}
-		/*else
-		{
-			ok = false;
-		}*/
-
-		//if (findString("GL_ARB_uniform_buffer_object", extensionList))
-		{
-
 			glGetUniformIndices = (PFNGLGETUNIFORMINDICESPROC)wglGetProcAddress("glGetUniformIndices");
 			glGetActiveUniformsiv = (PFNGLGETACTIVEUNIFORMSIVPROC)wglGetProcAddress("glGetActiveUniformsiv");
 			glGetActiveUniformName = (PFNGLGETACTIVEUNIFORMNAMEPROC)wglGetProcAddress("glGetActiveUniformName");
@@ -308,11 +303,7 @@ namespace ZL {
 			{
 				ok = false;
 			}
-		}
-		/*else
-		{
-			ok = false;
-		}*/
+
 
 		glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
 		glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glBindVertexArray");
@@ -327,6 +318,9 @@ namespace ZL {
 
 
 		return ok;
+#else
+	return true;
+#endif
 	}
 
 	void CheckGlError()
@@ -335,7 +329,7 @@ namespace ZL {
 
 		if (error != GL_NO_ERROR)
 		{
-			throw std::exception("Gl error");
+			throw std::runtime_error("Gl error");
 		}
 	}
 }

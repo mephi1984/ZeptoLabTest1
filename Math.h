@@ -1,6 +1,9 @@
 #pragma once
 
 #include <array>
+#include <exception>
+#include <stdexcept>
+
 
 namespace ZL {
 

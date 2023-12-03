@@ -21,13 +21,16 @@ namespace ZL {
 
 	VAOHolder::VAOHolder()
 	{
+#ifndef EMSCRIPTEN
 		glGenVertexArrays(1, &vao);
+#endif
 	}
 
 	VAOHolder::~VAOHolder()
 	{
+#ifndef EMSCRIPTEN
 		glDeleteVertexArray(1, &vao);
-		//glDeleteBuffers(1, &Buffer);
+#endif
 	}
 
 	GLuint VAOHolder::getBuffer()
@@ -122,13 +125,14 @@ namespace ZL {
 	{
 		//Check if main thread, check if data is not empty...
 
+#ifndef EMSCRIPTEN
 		if (!vao)
 		{
 			vao = std::make_shared<VAOHolder>();
 		}
 
 		glBindVertexArray(vao->getBuffer());
-		
+#endif
 		if (!positionVBO)
 		{
 			positionVBO = std::make_shared<VBOHolder>();
@@ -159,8 +163,9 @@ namespace ZL {
 
 		glActiveTexture(GL_TEXTURE0);
 
+#ifndef EMSCRIPTEN
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
+#endif
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDepthFunc(GL_LEQUAL);
 
@@ -176,7 +181,7 @@ namespace ZL {
 
 		if (ProjectionMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
 		{
-			throw std::exception("Projection matrix stack overflow!!!!");
+			throw std::runtime_error("Projection matrix stack overflow!!!!");
 		}
 	}
 
@@ -185,7 +190,7 @@ namespace ZL {
 	{
 		if (ProjectionMatrixStack.size() == 0)
 		{
-			throw std::exception("Projection matrix stack underflow!!!!");
+			throw std::runtime_error("Projection matrix stack underflow!!!!");
 		}
 		ProjectionMatrixStack.pop();
 		SetMatrix();
@@ -196,12 +201,12 @@ namespace ZL {
 	{
 		if (ProjectionMatrixStack.size() <= 0)
 		{
-			throw std::exception("Projection matrix stack out!");
+			throw std::runtime_error("Projection matrix stack out!");
 		}
 
 		if (ModelviewMatrixStack.size() <= 0)
 		{
-			throw std::exception("Modelview matrix stack out!");
+			throw std::runtime_error("Modelview matrix stack out!");
 		}
 
 		ProjectionModelViewMatrix = ProjectionMatrixStack.top() * ModelviewMatrixStack.top();
@@ -220,14 +225,14 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.push(ModelviewMatrixStack.top());
 
 		if (ModelviewMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
 		{
-			throw std::exception("Modelview matrix stack overflow!!!!");
+			throw std::runtime_error("Modelview matrix stack overflow!!!!");
 		}
 	}
 
@@ -235,7 +240,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -256,7 +261,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -276,7 +281,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -296,7 +301,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -326,7 +331,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -340,7 +345,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() > 64)
 		{
-			throw std::exception("Modelview matrix stack overflow!!!!");
+			throw std::runtime_error("Modelview matrix stack overflow!!!!");
 		}
 		ModelviewMatrixStack.push(m);
 		SetMatrix();
@@ -351,7 +356,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 		ModelviewMatrixStack.pop();
 

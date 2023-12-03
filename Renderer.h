@@ -2,7 +2,8 @@
 
 #include "OpenGlExtensions.h"
 #include "Math.h"
-
+#include <exception>
+#include <stdexcept>
 #include "ShaderManager.h"
 
 namespace ZL {

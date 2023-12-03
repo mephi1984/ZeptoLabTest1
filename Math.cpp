@@ -86,7 +86,7 @@ namespace ZL {
 
 		if (depthRange <= 0)
 		{
-			throw std::exception("zFar must be greater than zNear");
+			throw std::runtime_error("zFar must be greater than zNear");
 		}
 
 		Matrix4f r;

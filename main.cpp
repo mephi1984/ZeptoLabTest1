@@ -5,9 +5,6 @@
 #include "Physics.h"
 #include <string>
 
-//#include <windows.h>
-#include "SDL.h"
-//#include "SDL_image.h"
 
 #include <cstdlib> 
 #include <ctime> 
@@ -290,7 +287,7 @@ int main(int argc, char* argv[])
 {
 #ifdef EMSCRIPTEN
 	SDL_Renderer* renderer = NULL;
-	SDL_CreateWindowAndRenderer(512, 512, SDL_WINDOW_OPENGL, &window, &renderer);
+	SDL_CreateWindowAndRenderer(512, 512, SDL_WINDOW_OPENGL, &ZL::window, &renderer);
 #else
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
 		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
@@ -309,7 +306,7 @@ int main(int argc, char* argv[])
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	ZL::window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL);
+	ZL::window = SDL_CreateWindow("Jumping Bird", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL);
 
 	//todo
 	ZL::Env::windowHeaderHeight = 0;
