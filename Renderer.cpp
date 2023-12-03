@@ -19,6 +19,22 @@ namespace ZL {
 		return Buffer;
 	}
 
+	VAOHolder::VAOHolder()
+	{
+		glGenVertexArrays(1, &vao);
+	}
+
+	VAOHolder::~VAOHolder()
+	{
+		glDeleteVertexArray(1, &vao);
+		//glDeleteBuffers(1, &Buffer);
+	}
+
+	GLuint VAOHolder::getBuffer()
+	{
+		return vao;
+	}
+
 
 	VertexDataStruct CreateRect2D(Vector2f center, Vector2f halfWidthHeight, float zLevel)
 	{
@@ -106,6 +122,13 @@ namespace ZL {
 	{
 		//Check if main thread, check if data is not empty...
 
+		if (!vao)
+		{
+			vao = std::make_shared<VAOHolder>();
+		}
+
+		glBindVertexArray(vao->getBuffer());
+		
 		if (!positionVBO)
 		{
 			positionVBO = std::make_shared<VBOHolder>();
@@ -135,13 +158,13 @@ namespace ZL {
 	    glEnable(GL_BLEND);
 
 		glActiveTexture(GL_TEXTURE0);
-		glEnable(GL_TEXTURE_2D);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDepthFunc(GL_LEQUAL);
+
+		CheckGlError();
 
 	}
 

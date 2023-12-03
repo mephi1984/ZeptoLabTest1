@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OpenGlExtensions.h"
-
 #include "Math.h"
 
 #include "ShaderManager.h"
@@ -25,11 +24,27 @@ namespace ZL {
 		GLuint getBuffer();
 	};
 
+	class VAOHolder {
+		GLuint vao;
+
+	public:
+		VAOHolder();
+
+		VAOHolder(const VAOHolder& v) = delete;
+
+		VAOHolder& operator=(const VAOHolder& v) = delete;
+
+		~VAOHolder();
+
+		GLuint getBuffer();
+	};
+
 	struct VertexDataStruct
 	{
 		std::vector<Vector3f> PositionData;
 		std::vector<Vector2f> TexCoordData;
 
+		std::shared_ptr<VAOHolder> vao;
 		std::shared_ptr<VBOHolder> positionVBO;
 		std::shared_ptr<VBOHolder> texCoordVBO;
 

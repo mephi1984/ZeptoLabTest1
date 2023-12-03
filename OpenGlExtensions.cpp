@@ -107,11 +107,16 @@ PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC glGetActiveUniformBlockName = NULL;
 PFNGLUNIFORMBLOCKBINDINGPROC glUniformBlockBinding = NULL;
 PFNGLBINDBUFFERBASEPROC glBindBufferBase = NULL;
 
+
+PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = NULL;
+PFNGLBINDVERTEXARRAYPROC glBindVertexArray = NULL;
+PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArray = NULL;
+
 namespace ZL {
 
 	bool BindOpenGlFunctions()
 	{
-		char* extensionList = (char*)glGetString(GL_EXTENSIONS);
+		//char* extensionList = (char*)glGetString(GL_EXTENSIONS);
 		char* glVersion = (char*)glGetString(GL_VERSION);
 		bool ok = true;
 
@@ -226,7 +231,7 @@ namespace ZL {
 			ok = false;
 		}
 
-		if (findString("GL_ARB_framebuffer_object", extensionList))
+		//if (findString("GL_ARB_framebuffer_object", extensionList))
 		{
 			glIsRenderbuffer = (PFNGLISRENDERBUFFERPROC)wglGetProcAddress("glIsRenderbuffer");
 			glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)wglGetProcAddress("glBindRenderbuffer");
@@ -275,12 +280,12 @@ namespace ZL {
 
 
 		}
-		else
+		/*else
 		{
 			ok = false;
-		}
+		}*/
 
-		if (findString("GL_ARB_uniform_buffer_object", extensionList))
+		//if (findString("GL_ARB_uniform_buffer_object", extensionList))
 		{
 
 			glGetUniformIndices = (PFNGLGETUNIFORMINDICESPROC)wglGetProcAddress("glGetUniformIndices");
@@ -304,10 +309,22 @@ namespace ZL {
 				ok = false;
 			}
 		}
-		else
+		/*else
+		{
+			ok = false;
+		}*/
+
+		glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC)wglGetProcAddress("glGenVertexArrays");
+		glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)wglGetProcAddress("glBindVertexArray");
+		glDeleteVertexArray = (PFNGLDELETEVERTEXARRAYSPROC)wglGetProcAddress("glBindVertexArray");
+
+		if (glGenVertexArrays == NULL ||
+			glBindVertexArray == NULL ||
+			glDeleteVertexArray == NULL)
 		{
 			ok = false;
 		}
+
 
 		return ok;
 	}

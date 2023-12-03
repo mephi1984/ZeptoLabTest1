@@ -8,6 +8,7 @@
 
 namespace ZL
 {
+
 	namespace GameConsts
 	{
 		constexpr float yAcceleration = -0.0003f;

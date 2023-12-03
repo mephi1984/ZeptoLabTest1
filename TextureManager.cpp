@@ -18,11 +18,17 @@ namespace ZL
 
 		glBindTexture(GL_TEXTURE_2D, texID);
 
+		CheckGlError();
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+		CheckGlError();
+
 		//This should be only for Windows
-		glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+
+		CheckGlError();
 
 		if (texData.bitSize == TextureDataStruct::BS_24BIT)
 		{
@@ -32,6 +38,8 @@ namespace ZL
 		{
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, static_cast<GLsizei>(texData.width), static_cast<GLsizei>(texData.height), 0, GL_RGBA, GL_UNSIGNED_BYTE, &texData.data[0]);
 		}
+
+		CheckGlError();
 
 	}
 

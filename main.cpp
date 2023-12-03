@@ -5,7 +5,9 @@
 #include "Physics.h"
 #include <string>
 
-#include <windows.h>
+//#include <windows.h>
+#include "SDL.h"
+//#include "SDL_image.h"
 
 #include <cstdlib> 
 #include <ctime> 
@@ -16,17 +18,13 @@
 namespace ZL
 {
 
-	HGLRC hRC;		//Render context
-	HWND Hwnd;		//Main window handle
-	HDC hDC;		//Device context
+	static SDL_Window* window = NULL;
+	static SDL_GLContext gl_context;
 
 	Renderer renderer;
 
 	GameState gs;
 
-
-	//There might be anything
-	const wchar_t CONST_WINDOW_CLASS_NAME[] = L"ZeptoLabClass";
 
 	const size_t CONST_TIMER_INTERVAL = 10;
 
@@ -129,7 +127,6 @@ namespace ZL
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-		CheckGlError();
 
 		glViewport(0, 0, Env::width, Env::height);
 
@@ -138,6 +135,7 @@ namespace ZL
 		renderer.RenderUniform1i(textureUniformName, 0);
 
 		renderer.EnableVertexAttribArray(vPositionName);
+
 		renderer.EnableVertexAttribArray(vTexCoordName);
 
 		renderer.PushProjectionMatrix(static_cast<float>(Env::width), static_cast<float>(Env::height));
@@ -157,7 +155,8 @@ namespace ZL
 
 		renderer.shaderManager.PopShader();
 
-		SwapBuffers(hDC);
+		CheckGlError();
+
 	}
 
 	
@@ -167,11 +166,11 @@ namespace ZL
 
 		if (LastTickCount == 0)
 		{
-			LastTickCount = GetTickCount64();
+			LastTickCount = SDL_GetTicks64();
 			return;
 		}
 
-		NewTickCount = GetTickCount64();
+		NewTickCount = SDL_GetTicks64();
 		if (NewTickCount - LastTickCount > CONST_TIMER_INTERVAL)
 		{
 			if (NewTickCount - LastTickCount > CONST_MAX_TIME_INTERVAL)
@@ -188,183 +187,12 @@ namespace ZL
 
 	}
 
-
-	LRESULT WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		static PAINTSTRUCT ps;
-
-		switch (uMsg)
-		{
-		case WM_CLOSE:
-			PostQuitMessage(0);
-			ExitGameLoop = true;
-			break;
-		case WM_PAINT:
-
-			DrawScene();
-			BeginPaint(hWnd, &ps);
-			EndPaint(hWnd, &ps);
-
-			ProcessTickCount();
-			break;
-		case WM_SIZE:
-
-			PostMessage(hWnd, WM_PAINT, 0, 0);
-			break;
-		case WM_LBUTTONDOWN:
-		case WM_RBUTTONDOWN:
-
-			if (gs.isGameOver)
-			{
-				gs.RestartGame();
-			}
-			else
-			{
-				gs.BirdJump();
-			}
-			break;
-		}
-
-		return DefWindowProc(hWnd, uMsg, wParam, lParam);
-	}
+	void setup() {
 
 
-	bool CreateOpenGLWindow(const wchar_t* title, int x, int y, int width, int height, HWND& hWnd, HDC& hDC, HGLRC& hRC)
-	{
-		int pf;
-		WNDCLASS wc;
-		PIXELFORMATDESCRIPTOR pfd;
-		static HINSTANCE hInstance = 0;
+		ZL::BindOpenGlFunctions();
 
-		if (!hInstance)
-		{
-			hInstance = GetModuleHandle(NULL);
-			wc.style = CS_OWNDC;
-			wc.lpfnWndProc = (WNDPROC)WindowProc;
-			wc.cbClsExtra = 0;
-			wc.cbWndExtra = 0;
-			wc.hInstance = hInstance;
-			wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-			wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-			wc.hbrBackground = NULL;
-			wc.lpszMenuName = NULL;
-			wc.lpszClassName = CONST_WINDOW_CLASS_NAME;
-
-			if (!RegisterClass(&wc))
-			{
-				return NULL;
-			}
-		}
-
-		RECT r;
-		r.left = x;
-		r.right = x + width;
-		r.top = y;
-		r.bottom = y + height;
-
-		DWORD windowStyle = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-
-		AdjustWindowRect(&r, windowStyle, false);
-
-		Env::windowHeaderHeight = abs(r.top);
-
-		hWnd = CreateWindow(CONST_WINDOW_CLASS_NAME, title, windowStyle, 0, 0, r.right - r.left, r.bottom - r.top, NULL, NULL, hInstance, NULL);
-
-		if (hWnd == NULL)
-		{
-			return false;
-		}
-
-		hDC = GetDC(hWnd);
-
-		memset(&pfd, 0, sizeof(pfd));
-		pfd.nSize = sizeof(pfd);
-		pfd.nVersion = 1;
-		pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-		pfd.iPixelType = PFD_TYPE_RGBA;
-		pfd.cColorBits = 32;
-
-		pf = ChoosePixelFormat(hDC, &pfd);
-		if (pf == 0)
-		{
-			return false;
-		}
-
-		if (SetPixelFormat(hDC, pf, &pfd) == FALSE)
-		{
-			return false;
-		}
-
-		hRC = wglCreateContext(hDC);
-		wglMakeCurrent(hDC, hRC);
-
-		return true;
-	}
-
-
-	void DestroyEngine()
-	{
-		
-		wglMakeCurrent(NULL, NULL);
-		ReleaseDC(Hwnd, hDC);
-		wglDeleteContext(hRC);
-		DestroyWindow(Hwnd);
-
-	}
-
-	void MainLoop()
-	{
-
-		MSG msg;
-
-		ShowWindow(Hwnd, SW_SHOW);
-		UpdateWindow(Hwnd);
-
-		NewTickCount = GetTickCount64();
-		LastTickCount = NewTickCount;
-
-		while (!ExitGameLoop)
-		{
-			while (PeekMessage(&msg, Hwnd, 0, 0, PM_NOREMOVE))
-			{
-				if (GetMessage(&msg, Hwnd, 0, 0))
-				{
-					TranslateMessage(&msg);
-					DispatchMessage(&msg);
-				}
-				else
-				{
-					ExitGameLoop = true;
-				}
-			}
-			DrawScene();
-
-			ProcessTickCount();
-		}
-	}
-
-};
-
-int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
-{
-	using namespace ZL;
-
-	try {
-
-		srand((unsigned)time(NULL));
-
-		constexpr int CONST_WIDTH = 1280;
-		constexpr int CONST_HEIGHT = 720;
-
-		Env::width = CONST_WIDTH;
-		Env::height = CONST_HEIGHT;
-
-		if (!CreateOpenGLWindow(L"ZeptoLabTest", 0, 0, Env::width, Env::height, Hwnd, hDC, hRC))
-		{
-			throw std::exception("Failed to create OpenGL Window!");
-		}
-
-		BindOpenGlFunctions();
+		CheckGlError();
 
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
@@ -376,7 +204,7 @@ int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
 
 
-
+		CheckGlError();
 		//Create bird mesh
 		GameObjects::birdMesh = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * GameObjects::birdTexturePtr->getWidth(), GameConsts::birdScale * GameObjects::birdTexturePtr->getHeight() }, 0);
 
@@ -393,7 +221,7 @@ int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ GameObjects::backgroundTexturePtr->getWidth() * backgroundTextureScale * (0.5f), GameObjects::backgroundTexturePtr->getHeight() * backgroundTextureScale * (0.5f) }, { GameObjects::backgroundTexturePtr->getWidth() * backgroundTextureScale * 0.5f, GameObjects::backgroundTexturePtr->getHeight() * backgroundTextureScale * 0.5f }, 0, 2);
 
-
+		CheckGlError();
 
 		//Create Game Over UI mesh depending on screen size
 
@@ -414,15 +242,100 @@ int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 		renderer.InitOpenGL();
 
-		MainLoop();
+		CheckGlError();
+	}
 
-		DestroyEngine();
+	void render() {
+
+		SDL_GL_MakeCurrent(window, gl_context);
+
+		CheckGlError();
+
+		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		DrawScene();
+		ProcessTickCount();
+
+		SDL_GL_SwapWindow(window);
+
 	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "Oops: " << e.what() << std::endl;
+
+	void update() {
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT) {
+				ExitGameLoop = true;
+			}
+			if (event.type == SDL_MOUSEBUTTONDOWN)
+			{
+				if (gs.isGameOver)
+				{
+					gs.RestartGame();
+				}
+				else
+				{
+					gs.BirdJump();
+				}
+			}
+		}
+
+		render();
+
+	};
+
+};
+
+int main(int argc, char* argv[])
+{
+#ifdef EMSCRIPTEN
+	SDL_Renderer* renderer = NULL;
+	SDL_CreateWindowAndRenderer(512, 512, SDL_WINDOW_OPENGL, &window, &renderer);
+#else
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+		return 1;
 	}
+
+	constexpr int CONST_WIDTH = 1280;
+	constexpr int CONST_HEIGHT = 720;
+
+	ZL::Env::width = CONST_WIDTH;
+	ZL::Env::height = CONST_HEIGHT;
+
 	
-	return 0;
+
+	// Use a core profile setup.
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	ZL::window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL);
+
+	//todo
+	ZL::Env::windowHeaderHeight = 0;
+
+	ZL::gl_context = SDL_GL_CreateContext(ZL::window);
+
+	ZL::CheckGlError();
+
+	
+#endif
+	ZL::setup();
+#ifdef EMSCRIPTEN
+	// register update as callback
+	emscripten_set_main_loop(ZL::update, 0, 1);
+#else
+	while (!ZL::ExitGameLoop) {
+
+		ZL::update();
+		SDL_Delay(2);
+
+	}
+	SDL_GL_DeleteContext(ZL::gl_context);
+	SDL_DestroyWindow(ZL::window);
+	SDL_Quit();
+
+	exit(0);
+#endif
 
 }

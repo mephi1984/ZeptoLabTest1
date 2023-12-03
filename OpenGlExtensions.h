@@ -122,6 +122,11 @@ extern PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC glGetActiveUniformBlockName;
 extern PFNGLUNIFORMBLOCKBINDINGPROC glUniformBlockBinding;
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
+
+extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
+extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArray;
+
 namespace ZL {
 
 	bool BindOpenGlFunctions();

@@ -1,7 +1,5 @@
 #pragma once
-
 #include "OpenGlExtensions.h"
-
 #include "Utils.h"
 
 namespace ZL {
