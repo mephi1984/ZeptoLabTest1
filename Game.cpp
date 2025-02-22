@@ -25,6 +25,7 @@ namespace ZL
 		std::shared_ptr<Texture> backgroundTexturePtr;
 		std::shared_ptr<Texture> pipeTexturePtr;
 		std::shared_ptr<Texture> gameOverTexturePtr;
+		std::shared_ptr<Texture> testObjTexturePtr;
 
 		VertexRenderStruct birdMesh;
 

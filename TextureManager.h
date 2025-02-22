@@ -41,4 +41,5 @@ namespace ZL
 
 	TextureDataStruct CreateTextureDataFromBmp24(const std::string& fullFileName);
 	TextureDataStruct CreateTextureDataFromBmp32(const std::string& fullFileName);
+	TextureDataStruct CreateTextureDataFromPng(const std::string& fullFileName);
 }

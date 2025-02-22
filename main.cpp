@@ -152,7 +152,7 @@ namespace ZL
 		GameObjects::testObjMeshMutable.data.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
 		GameObjects::testObjMeshMutable.RefreshVBO();
 
-		glBindTexture(GL_TEXTURE_2D, GameObjects::backgroundTexturePtr->getTexID());
+		glBindTexture(GL_TEXTURE_2D, GameObjects::testObjTexturePtr->getTexID());
 		renderer.DrawVertexRenderStruct(GameObjects::testObjMeshMutable);
 
 		renderer.PopMatrix();
@@ -257,6 +257,7 @@ namespace ZL
 		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
 		GameObjects::pipeTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./pipe.bmp32"));
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
+		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
 
 
 		CheckGlError();
