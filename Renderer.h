@@ -44,16 +44,25 @@ namespace ZL {
 	{
 		std::vector<Vector3f> PositionData;
 		std::vector<Vector2f> TexCoordData;
+		std::vector<Vector3f> NormalData;
+		std::vector<Vector3f> TangentData;
+		std::vector<Vector3f> BinormalData;
+		std::vector<Vector3f> ColorData;
+
 
 		std::shared_ptr<VAOHolder> vao;
 		std::shared_ptr<VBOHolder> positionVBO;
 		std::shared_ptr<VBOHolder> texCoordVBO;
-
+		std::shared_ptr<VBOHolder> normalVBO;
+		std::shared_ptr<VBOHolder> tangentVBO;
+		std::shared_ptr<VBOHolder> binormalVBO;
+		std::shared_ptr<VBOHolder> colorVBO;
 		void RefreshVBO();
 	};
 
 	VertexDataStruct CreateRect2D(Vector2f center, Vector2f halfWidthHeight, float zLevel);
 	VertexDataStruct CreateRectHorizontalSections2D(Vector2f center, Vector2f halfWidthHeight, float zLevel, size_t sectionCount);
+	//VertexDataStruct CreateRect2D(Vector2f center, Vector2f halfWidthHeight, float zLevel);
 
 
 	class Renderer

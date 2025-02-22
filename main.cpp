@@ -41,7 +41,7 @@ namespace ZL
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ -gs.backgroundShift, 0.0f, 0.f });
+		//renderer.TranslateMatrix({ -gs.backgroundShift, 0.0f, 0.f });
 
 		glBindTexture(GL_TEXTURE_2D, GameObjects::backgroundTexturePtr->getTexID());
 
@@ -123,7 +123,7 @@ namespace ZL
 		static const std::string vTexCoordName = "vTexCoord";
 		static const std::string textureUniformName = "Texture";
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 		
 		glViewport(0, 0, Env::width, Env::height);
@@ -229,8 +229,8 @@ namespace ZL
 
 		Env::backgroundSectionWidth = BACKGROUND_WIDTH * backgroundTextureScale;
 
-		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -9000, 2);
-
+		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -0.5, 2);
+	
 		CheckGlError();
 
 		//Create Game Over UI mesh depending on screen size

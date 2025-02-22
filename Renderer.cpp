@@ -142,15 +142,66 @@ namespace ZL {
 
 		glBufferData(GL_ARRAY_BUFFER, PositionData.size() * 12, &PositionData[0], GL_STATIC_DRAW);
 
-		if (!texCoordVBO)
+		if (TexCoordData.size() > 0)
 		{
-			texCoordVBO = std::make_shared<VBOHolder>();
+			if (!texCoordVBO)
+			{
+				texCoordVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, TexCoordData.size() * 8, &TexCoordData[0], GL_STATIC_DRAW);
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, texCoordVBO->getBuffer());
 
-		glBufferData(GL_ARRAY_BUFFER, TexCoordData.size() * 8, &TexCoordData[0], GL_STATIC_DRAW);
+		if (NormalData.size() > 0)
+		{
+			if (!normalVBO)
+			{
+				normalVBO = std::make_shared<VBOHolder>();
+			}
 
+			glBindBuffer(GL_ARRAY_BUFFER, normalVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, NormalData.size() * 12, &NormalData[0], GL_STATIC_DRAW);
+		}
+
+		if (TangentData.size() > 0)
+		{
+			if (!tangentVBO)
+			{
+				tangentVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, tangentVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, TangentData.size() * 12, &TangentData[0], GL_STATIC_DRAW);
+		}
+
+		if (BinormalData.size() > 0)
+		{
+			if (!binormalVBO)
+			{
+				binormalVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, binormalVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, BinormalData.size() * 12, &BinormalData[0], GL_STATIC_DRAW);
+		}
+
+		if (ColorData.size() > 0)
+		{
+			if (!colorVBO)
+			{
+				colorVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, colorVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, ColorData.size() * 12, &ColorData[0], GL_STATIC_DRAW);
+		}
 	}
 
 	void Renderer::InitOpenGL()
@@ -437,12 +488,39 @@ namespace ZL {
 
 	void Renderer::DrawVertexDataStruct(const VertexDataStruct& vertexDataStruct)
 	{
+		static const std::string vNormal("vNormal");
+		static const std::string vTangent("vTangent");
+		static const std::string vBinormal("vBinormal");
+		static const std::string vColor("vColor");
 		static const std::string vTexCoord("vTexCoord");
 		static const std::string vPosition("vPosition");
 
 		//Check if main thread, check if data is not empty...
-		glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.texCoordVBO->getBuffer());
-		VertexAttribPointer2fv(vTexCoord, 0, NULL);
+		if (vertexDataStruct.NormalData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.normalVBO->getBuffer());
+			VertexAttribPointer2fv(vNormal, 0, NULL);
+		}
+		if (vertexDataStruct.TangentData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.tangentVBO->getBuffer());
+			VertexAttribPointer2fv(vTangent, 0, NULL);
+		}
+		if (vertexDataStruct.BinormalData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.binormalVBO->getBuffer());
+			VertexAttribPointer2fv(vBinormal, 0, NULL);
+		}
+		if (vertexDataStruct.ColorData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.colorVBO->getBuffer());
+			VertexAttribPointer2fv(vColor, 0, NULL);
+		}
+		if (vertexDataStruct.TexCoordData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.texCoordVBO->getBuffer());
+			VertexAttribPointer2fv(vTexCoord, 0, NULL);
+		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.positionVBO->getBuffer());
 		VertexAttribPointer3fv(vPosition, 0, NULL);
