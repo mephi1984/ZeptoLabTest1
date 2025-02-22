@@ -24,6 +24,26 @@ namespace ZL {
 		return result;
 	}
 
+	Matrix3f Matrix3f::Identity()
+	{
+		Matrix3f r;
+
+		r.m[0] = 1.f;
+		r.m[1] = 0.f;
+		r.m[2] = 0.f;
+
+		r.m[3] = 0.f;
+		r.m[4] = 1.f;
+		r.m[5] = 0.f;
+
+		r.m[6] = 0.f;
+		r.m[7] = 0.f;
+		r.m[8] = 1.f;
+		
+		return r;
+
+	}
+
 	Matrix4f Matrix4f::Identity()
 	{
 		Matrix4f r;
@@ -114,6 +134,39 @@ namespace ZL {
 		return r;
 	}
 
+	Matrix4f MakePerspectiveMatrix(float fovY, float aspectRatio, float zNear, float zFar)
+	{
+		float tanHalfFovy = tan(fovY / 2.f);
+		Matrix4f r;
+
+		if (zNear >= zFar || aspectRatio == 0)
+		{
+			throw std::runtime_error("Invalid perspective parameters");
+		}
+
+		r.m[0] = 1.f / (aspectRatio * tanHalfFovy);
+		r.m[1] = 0;
+		r.m[2] = 0;
+		r.m[3] = 0;
+
+		r.m[4] = 0;
+		r.m[5] = 1.f / (tanHalfFovy);
+		r.m[6] = 0;
+		r.m[7] = 0;
+
+		r.m[8] = 0;
+		r.m[9] = 0;
+		r.m[10] = -(zFar + zNear) / (zFar - zNear);
+		r.m[11] = -1;
+
+		r.m[12] = 0;
+		r.m[13] = 0;
+		r.m[14] = -(2.f * zFar * zNear) / (zFar - zNear);
+		r.m[15] = 0;
+
+		return r;
+	}
+
 	Matrix3f QuatToMatrix(const Vector4f& q)
 	{
 		Matrix3f m;
@@ -158,6 +211,127 @@ namespace ZL {
 		result.v[3] = cosf(angle * 0.5f);
 
 		return result;
+	}
+
+	Matrix3f TransposeMatrix(const Matrix3f& m)
+	{
+		Matrix3f r;
+		r.m[0] = m.m[0];
+		r.m[1] = m.m[3];
+		r.m[2] = m.m[6];
+		r.m[3] = m.m[1];
+		r.m[4] = m.m[4];
+		r.m[5] = m.m[7];
+		r.m[6] = m.m[2];
+		r.m[7] = m.m[5];
+		r.m[8] = m.m[8];
+		return r;
+	}
+
+	Matrix3f InverseMatrix(const Matrix3f& m)
+	{
+		float d;
+		Matrix3f r;
+
+		d = m.m[0] * (m.m[4] * m.m[8] - m.m[5] * m.m[7]);
+		d -= m.m[1] * (m.m[3] * m.m[8] - m.m[6] * m.m[5]);
+		d += m.m[2] * (m.m[3] * m.m[7] - m.m[6] * m.m[4]);
+
+		if (fabs(d) < 0.01f)
+		{
+			throw std::runtime_error("Error: matrix cannot be inversed!");
+
+		}
+		else
+		{
+
+			r.m[0] = (m.m[4] * m.m[8] - m.m[5] * m.m[7]) / d;
+			r.m[1] = -(m.m[1] * m.m[8] - m.m[2] * m.m[7]) / d;
+			r.m[2] = (m.m[1] * m.m[5] - m.m[2] * m.m[4]) / d;
+
+			r.m[3] = -(m.m[3] * m.m[8] - m.m[5] * m.m[6]) / d;
+			r.m[4] = (m.m[0] * m.m[8] - m.m[2] * m.m[6]) / d;
+			r.m[5] = -(m.m[0] * m.m[5] - m.m[2] * m.m[3]) / d;
+
+			r.m[6] = (m.m[3] * m.m[7] - m.m[6] * m.m[4]) / d;
+			r.m[7] = -(m.m[0] * m.m[7] - m.m[6] * m.m[1]) / d;
+			r.m[8] = (m.m[0] * m.m[4] - m.m[1] * m.m[3]) / d;
+
+		};
+		return r;
+	}
+
+	Matrix3f CreateZRotationMatrix(float angle)
+	{
+		Matrix3f result = Matrix3f::Identity();
+
+		result.m[0] = cosf(angle);
+		result.m[1] = -sinf(angle);
+		result.m[3] = sinf(angle);
+		result.m[4] = cosf(angle);
+
+		return result;
+	}
+
+	Matrix4f MultMatrixMatrix(const Matrix4f& m1, const Matrix4f& m2)
+	{
+		Matrix4f r;
+
+		r.m[0] = m1.m[0] * m2.m[0] + m1.m[4] * m2.m[1] + m1.m[8] * m2.m[2] + m1.m[12] * m2.m[3];
+		r.m[1] = m1.m[1] * m2.m[0] + m1.m[5] * m2.m[1] + m1.m[9] * m2.m[2] + m1.m[13] * m2.m[3];
+		r.m[2] = m1.m[2] * m2.m[0] + m1.m[6] * m2.m[1] + m1.m[10] * m2.m[2] + m1.m[14] * m2.m[3];
+		r.m[3] = m1.m[3] * m2.m[0] + m1.m[7] * m2.m[1] + m1.m[11] * m2.m[2] + m1.m[15] * m2.m[3];
+
+		r.m[4] = m1.m[0] * m2.m[4] + m1.m[4] * m2.m[5] + m1.m[8] * m2.m[6] + m1.m[12] * m2.m[7];
+		r.m[5] = m1.m[1] * m2.m[4] + m1.m[5] * m2.m[5] + m1.m[9] * m2.m[6] + m1.m[13] * m2.m[7];
+		r.m[6] = m1.m[2] * m2.m[4] + m1.m[6] * m2.m[5] + m1.m[10] * m2.m[6] + m1.m[14] * m2.m[7];
+		r.m[7] = m1.m[3] * m2.m[4] + m1.m[7] * m2.m[5] + m1.m[11] * m2.m[6] + m1.m[15] * m2.m[7];
+
+
+		r.m[8] = m1.m[0] * m2.m[8] + m1.m[4] * m2.m[9] + m1.m[8] * m2.m[10] + m1.m[12] * m2.m[11];
+		r.m[9] = m1.m[1] * m2.m[8] + m1.m[5] * m2.m[9] + m1.m[9] * m2.m[10] + m1.m[13] * m2.m[11];
+		r.m[10] = m1.m[2] * m2.m[8] + m1.m[6] * m2.m[9] + m1.m[10] * m2.m[10] + m1.m[14] * m2.m[11];
+		r.m[11] = m1.m[3] * m2.m[8] + m1.m[7] * m2.m[9] + m1.m[11] * m2.m[10] + m1.m[15] * m2.m[11];
+
+		r.m[12] = m1.m[0] * m2.m[12] + m1.m[4] * m2.m[13] + m1.m[8] * m2.m[14] + m1.m[12] * m2.m[15];
+		r.m[13] = m1.m[1] * m2.m[12] + m1.m[5] * m2.m[13] + m1.m[9] * m2.m[14] + m1.m[13] * m2.m[15];
+		r.m[14] = m1.m[2] * m2.m[12] + m1.m[6] * m2.m[13] + m1.m[10] * m2.m[14] + m1.m[14] * m2.m[15];
+		r.m[15] = m1.m[3] * m2.m[12] + m1.m[7] * m2.m[13] + m1.m[11] * m2.m[14] + m1.m[15] * m2.m[15];
+
+		return r;
+	}
+
+	Matrix3f MakeTranslationMatrix(const Vector3f& p)
+	{
+		Matrix3f r = Matrix3f::Identity();
+
+		r.m[12] = p.v[0];
+		r.m[13] = p.v[1];
+		r.m[14] = p.v[2];
+
+		return r;
+	}
+
+	Matrix3f MakeScaleMatrix(float scale)
+	{
+		Matrix3f r = Matrix3f::Identity();
+
+		r.m[0] = scale;
+		r.m[5] = scale;
+		r.m[10] = scale;
+
+		return r;
+	}
+
+	Matrix3f MakeRotationMatrix(const Vector3f& p)
+	{
+		Matrix3f r = Matrix3f::Identity();
+
+		r.m[12] = p.v[0];
+		r.m[13] = p.v[1];
+		r.m[14] = p.v[2];
+
+		return r;
 	}
 
 

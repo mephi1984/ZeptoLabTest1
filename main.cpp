@@ -137,6 +137,7 @@ namespace ZL
 		renderer.EnableVertexAttribArray(vTexCoordName);
 
 		renderer.PushProjectionMatrix(static_cast<float>(Env::width), static_cast<float>(Env::height));
+		//renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width)/ static_cast<float>(Env::height), 10, 10000);
 
 		DrawBackground();
 	
@@ -228,7 +229,7 @@ namespace ZL
 
 		Env::backgroundSectionWidth = BACKGROUND_WIDTH * backgroundTextureScale;
 
-		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, 0, 2);
+		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -9000, 2);
 
 		CheckGlError();
 

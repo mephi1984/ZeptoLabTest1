@@ -71,6 +71,7 @@ namespace ZL {
 		void InitOpenGL();
 
 		void PushProjectionMatrix(float width, float height, float zNear = 0.f, float zFar = 1.f);
+		void PushPerspectiveProjectionMatrix(float fovY, float aspectRatio, float zNear, float zFar);
 		void PopProjectionMatrix();
 
 		void PushMatrix();

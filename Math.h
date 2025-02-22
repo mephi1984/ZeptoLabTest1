@@ -31,6 +31,8 @@ namespace ZL {
 		std::array<float, 9> m = {	0.f, 0.f, 0.f, 
 									0.f, 0.f, 0.f,
 									0.f, 0.f, 0.f, };
+
+		static Matrix3f Identity();
 	};
 
 	struct Matrix4f
@@ -46,6 +48,8 @@ namespace ZL {
 	Matrix4f operator*(const Matrix4f& m1, const Matrix4f& m2);
 
 	Matrix4f MakeOrthoMatrix(float width, float height, float zNear, float zFar);
+
+	Matrix4f MakePerspectiveMatrix(float fovY, float aspectRatio, float zNear, float zFar);
 
 	Matrix3f QuatToMatrix(const Vector4f& q);
 

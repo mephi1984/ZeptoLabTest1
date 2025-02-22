@@ -184,6 +184,18 @@ namespace ZL {
 			throw std::runtime_error("Projection matrix stack overflow!!!!");
 		}
 	}
+	
+	void Renderer::PushPerspectiveProjectionMatrix(float fovY, float aspectRatio, float zNear, float zFar)
+	{
+		Matrix4f m = MakePerspectiveMatrix(fovY, aspectRatio, zNear, zFar);
+		ProjectionMatrixStack.push(m);
+		SetMatrix();
+
+		if (ProjectionMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
+		{
+			throw std::runtime_error("Projection matrix stack overflow!!!!");
+		}
+	}
 
 
 	void Renderer::PopProjectionMatrix()
