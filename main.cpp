@@ -45,7 +45,7 @@ namespace ZL
 
 		glBindTexture(GL_TEXTURE_2D, GameObjects::backgroundTexturePtr->getTexID());
 
-		renderer.DrawVertexDataStruct(GameObjects::backgroundMesh);
+		renderer.DrawVertexRenderStruct(GameObjects::backgroundMesh);
 
 		renderer.PopMatrix();
 	}
@@ -64,7 +64,7 @@ namespace ZL
 
 		glBindTexture(GL_TEXTURE_2D, GameObjects::birdTexturePtr->getTexID());
 
-		renderer.DrawVertexDataStruct(GameObjects::birdMesh);
+		renderer.DrawVertexRenderStruct(GameObjects::birdMesh);
 
 		renderer.PopMatrix();
 	}
@@ -83,7 +83,7 @@ namespace ZL
 
 			renderer.TranslateMatrix({ (pipePair.xPos), pipePair.bottomPipeVShift, 0.f });
 
-			renderer.DrawVertexDataStruct(GameObjects::pipeMesh);
+			renderer.DrawVertexRenderStruct(GameObjects::pipeMesh);
 
 
 			//Draw top pipe:
@@ -94,7 +94,7 @@ namespace ZL
 
 			renderer.ScaleMatrix({ 1.f, -1.f, 1.f });
 
-			renderer.DrawVertexDataStruct(GameObjects::pipeMesh);
+			renderer.DrawVertexRenderStruct(GameObjects::pipeMesh);
 
 			renderer.PopMatrix();
 		}
@@ -110,7 +110,7 @@ namespace ZL
 
 			glBindTexture(GL_TEXTURE_2D, GameObjects::gameOverTexturePtr->getTexID());
 
-			renderer.DrawVertexDataStruct(GameObjects::gameOverMesh);
+			renderer.DrawVertexRenderStruct(GameObjects::gameOverMesh);
 
 			renderer.PopMatrix();
 		}
@@ -158,7 +158,7 @@ namespace ZL
 		GameObjects::colorCubeMeshMutable.AssignFrom(GameObjects::colorCubeMesh);
 		GameObjects::colorCubeMeshMutable.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
 
-		renderer.DrawVertexDataStruct(GameObjects::colorCubeMeshMutable);
+		renderer.DrawVertexRenderStruct(GameObjects::colorCubeMeshMutable);
 
 		renderer.PopMatrix();
 		
@@ -242,33 +242,34 @@ namespace ZL
 
 		CheckGlError();
 		//Create bird mesh
-		GameObjects::birdMesh = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * BIRD_WIDTH, GameConsts::birdScale * BIRD_HEIGHT }, 0);
+		GameObjects::birdMesh.data = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * BIRD_WIDTH, GameConsts::birdScale * BIRD_HEIGHT }, 0);
+		GameObjects::birdMesh.RefreshVBO();
 
 		float backgroundTextureScale = Env::height / static_cast<float>(BACKGROUND_HEIGHT);
 
 
 		//Create pipe mesh
-		GameObjects::pipeMesh = CreateRect2D({ PIPE_WIDTH * GameConsts::pipeScale * (-0.5f), Env::getActualClientHeight() * 0.5f + PIPE_HEIGHT * GameConsts::pipeScale * (-0.5f) }, { PIPE_WIDTH * GameConsts::pipeScale * 0.5f, PIPE_HEIGHT * GameConsts::pipeScale * 0.5f }, 0);
-
+		GameObjects::pipeMesh.data = CreateRect2D({ PIPE_WIDTH * GameConsts::pipeScale * (-0.5f), Env::getActualClientHeight() * 0.5f + PIPE_HEIGHT * GameConsts::pipeScale * (-0.5f) }, { PIPE_WIDTH * GameConsts::pipeScale * 0.5f, PIPE_HEIGHT * GameConsts::pipeScale * 0.5f }, 0);
+		GameObjects::pipeMesh.RefreshVBO();
 
 		//Create background mesh depending on screen size
 
 		Env::backgroundSectionWidth = BACKGROUND_WIDTH * backgroundTextureScale;
 
-		GameObjects::backgroundMesh = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -0.5, 2);
-	
+		GameObjects::backgroundMesh.data = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -0.5, 2);
+		GameObjects::backgroundMesh.RefreshVBO();
 		CheckGlError();
 
 		//Create Game Over UI mesh depending on screen size
 
 		float gameOverTextureScale = Env::height / static_cast<float>(GAMEOVER_HEIGHT);
 
-		GameObjects::gameOverMesh = CreateRect2D({ GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, { GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, 0.1f);
-
+		GameObjects::gameOverMesh.data = CreateRect2D({ GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, { GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, 0.1f);
+		GameObjects::gameOverMesh.RefreshVBO();
 
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
-		GameObjects::colorCubeMeshMutable = CreateCube3D(5.0);
-
+		GameObjects::colorCubeMeshMutable.data = CreateCube3D(5.0);
+		GameObjects::colorCubeMeshMutable.RefreshVBO();
 
 		//Set some game values
 		Env::birdStartPos = { Env::width * 0.2f, Env::getActualClientHeight() * 0.5f };

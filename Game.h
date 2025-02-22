@@ -98,15 +98,15 @@ namespace ZL
 		extern std::shared_ptr<Texture> pipeTexturePtr;
 		extern std::shared_ptr<Texture> gameOverTexturePtr;
 
-		extern VertexDataStruct birdMesh;
+		extern VertexRenderStruct birdMesh;
 
-		extern VertexDataStruct backgroundMesh;
+		extern VertexRenderStruct backgroundMesh;
 
-		extern VertexDataStruct pipeMesh;
+		extern VertexRenderStruct pipeMesh;
 
-		extern VertexDataStruct gameOverMesh;
+		extern VertexRenderStruct gameOverMesh;
 
 		extern VertexDataStruct colorCubeMesh;
-		extern VertexDataStruct colorCubeMeshMutable;
+		extern VertexRenderStruct colorCubeMeshMutable;
 	}
 }

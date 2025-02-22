@@ -72,8 +72,6 @@ namespace ZL {
 		result.TexCoordData.push_back(texCoordPos4);
 		result.TexCoordData.push_back(texCoordPos1);
 
-		result.RefreshVBO();
-
 		return result;
 	}
 
@@ -114,8 +112,6 @@ namespace ZL {
 			result.TexCoordData.push_back(texCoordPos1);
 		}
 
-
-		result.RefreshVBO();
 
 		return result;
 
@@ -192,12 +188,10 @@ namespace ZL {
 			result.ColorData.push_back(cubeColors[i]);
 		}
 
-		result.RefreshVBO();
-
 		return result;
 	}
 
-	void VertexDataStruct::RefreshVBO()
+	void VertexRenderStruct::RefreshVBO()
 	{
 		//Check if main thread, check if data is not empty...
 
@@ -216,9 +210,9 @@ namespace ZL {
 
 		glBindBuffer(GL_ARRAY_BUFFER, positionVBO->getBuffer());
 
-		glBufferData(GL_ARRAY_BUFFER, PositionData.size() * 12, &PositionData[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, data.PositionData.size() * 12, &data.PositionData[0], GL_STATIC_DRAW);
 
-		if (TexCoordData.size() > 0)
+		if (data.TexCoordData.size() > 0)
 		{
 			if (!texCoordVBO)
 			{
@@ -227,11 +221,11 @@ namespace ZL {
 
 			glBindBuffer(GL_ARRAY_BUFFER, texCoordVBO->getBuffer());
 
-			glBufferData(GL_ARRAY_BUFFER, TexCoordData.size() * 8, &TexCoordData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, data.TexCoordData.size() * 8, &data.TexCoordData[0], GL_STATIC_DRAW);
 		}
 
 
-		if (NormalData.size() > 0)
+		if (data.NormalData.size() > 0)
 		{
 			if (!normalVBO)
 			{
@@ -240,10 +234,10 @@ namespace ZL {
 
 			glBindBuffer(GL_ARRAY_BUFFER, normalVBO->getBuffer());
 
-			glBufferData(GL_ARRAY_BUFFER, NormalData.size() * 12, &NormalData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, data.NormalData.size() * 12, &data.NormalData[0], GL_STATIC_DRAW);
 		}
 
-		if (TangentData.size() > 0)
+		if (data.TangentData.size() > 0)
 		{
 			if (!tangentVBO)
 			{
@@ -252,10 +246,10 @@ namespace ZL {
 
 			glBindBuffer(GL_ARRAY_BUFFER, tangentVBO->getBuffer());
 
-			glBufferData(GL_ARRAY_BUFFER, TangentData.size() * 12, &TangentData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, data.TangentData.size() * 12, &data.TangentData[0], GL_STATIC_DRAW);
 		}
 
-		if (BinormalData.size() > 0)
+		if (data.BinormalData.size() > 0)
 		{
 			if (!binormalVBO)
 			{
@@ -264,10 +258,10 @@ namespace ZL {
 
 			glBindBuffer(GL_ARRAY_BUFFER, binormalVBO->getBuffer());
 
-			glBufferData(GL_ARRAY_BUFFER, BinormalData.size() * 12, &BinormalData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, data.BinormalData.size() * 12, &data.BinormalData[0], GL_STATIC_DRAW);
 		}
 
-		if (ColorData.size() > 0)
+		if (data.ColorData.size() > 0)
 		{
 			if (!colorVBO)
 			{
@@ -276,45 +270,40 @@ namespace ZL {
 
 			glBindBuffer(GL_ARRAY_BUFFER, colorVBO->getBuffer());
 
-			glBufferData(GL_ARRAY_BUFFER, ColorData.size() * 12, &ColorData[0], GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, data.ColorData.size() * 12, &data.ColorData[0], GL_STATIC_DRAW);
 		}
 	}
 
-	void VertexDataStruct::RotateByMatrix(Matrix3f m)
+	void VertexRenderStruct::RotateByMatrix(Matrix3f m)
 	{
 
-		for (int i = 0; i < PositionData.size(); i++)
+		for (int i = 0; i < data.PositionData.size(); i++)
 		{
-			PositionData[i] = MultVectorMatrix(PositionData[i], m);
+			data.PositionData[i] = MultVectorMatrix(data.PositionData[i], m);
 		}
 
-		for (int i = 0; i < NormalData.size(); i++)
+		for (int i = 0; i < data.NormalData.size(); i++)
 		{
-			NormalData[i] = MultVectorMatrix(NormalData[i], m);
+			data.NormalData[i] = MultVectorMatrix(data.NormalData[i], m);
 		}
 
-		for (int i = 0; i < TangentData.size(); i++)
+		for (int i = 0; i < data.TangentData.size(); i++)
 		{
-			TangentData[i] = MultVectorMatrix(TangentData[i], m);
+			data.TangentData[i] = MultVectorMatrix(data.TangentData[i], m);
 		}
 
-		for (int i = 0; i < BinormalData.size(); i++)
+		for (int i = 0; i < data.BinormalData.size(); i++)
 		{
-			BinormalData[i] = MultVectorMatrix(BinormalData[i], m);
+			data.BinormalData[i] = MultVectorMatrix(data.BinormalData[i], m);
 		}
 
 
 		RefreshVBO();
 	}
 
-	void VertexDataStruct::AssignFrom(const VertexDataStruct& v)
+	void VertexRenderStruct::AssignFrom(const VertexDataStruct& v)
 	{
-		PositionData = v.PositionData;
-		NormalData = v.NormalData;
-		TangentData = v.TangentData;
-		BinormalData = v.BinormalData;
-		TexCoordData = v.TexCoordData;
-		ColorData = v.ColorData;
+		data = v;
 		RefreshVBO();
 	}
 
@@ -600,7 +589,7 @@ namespace ZL {
 			glVertexAttribPointer(shader->attribList[attribName], 3, GL_FLOAT, GL_FALSE, stride, pointer);
 	}
 
-	void Renderer::DrawVertexDataStruct(const VertexDataStruct& vertexDataStruct)
+	void Renderer::DrawVertexRenderStruct(const VertexRenderStruct& VertexRenderStruct)
 	{
 		static const std::string vNormal("vNormal");
 		static const std::string vTangent("vTangent");
@@ -610,36 +599,36 @@ namespace ZL {
 		static const std::string vPosition("vPosition");
 
 		//Check if main thread, check if data is not empty...
-		if (vertexDataStruct.NormalData.size() > 0)
+		if (VertexRenderStruct.data.NormalData.size() > 0)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.normalVBO->getBuffer());
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.normalVBO->getBuffer());
 			VertexAttribPointer3fv(vNormal, 0, NULL);
 		}
-		if (vertexDataStruct.TangentData.size() > 0)
+		if (VertexRenderStruct.data.TangentData.size() > 0)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.tangentVBO->getBuffer());
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.tangentVBO->getBuffer());
 			VertexAttribPointer3fv(vTangent, 0, NULL);
 		}
-		if (vertexDataStruct.BinormalData.size() > 0)
+		if (VertexRenderStruct.data.BinormalData.size() > 0)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.binormalVBO->getBuffer());
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.binormalVBO->getBuffer());
 			VertexAttribPointer3fv(vBinormal, 0, NULL);
 		}
-		if (vertexDataStruct.ColorData.size() > 0)
+		if (VertexRenderStruct.data.ColorData.size() > 0)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.colorVBO->getBuffer());
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.colorVBO->getBuffer());
 			VertexAttribPointer3fv(vColor, 0, NULL);
 		}
-		if (vertexDataStruct.TexCoordData.size() > 0)
+		if (VertexRenderStruct.data.TexCoordData.size() > 0)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.texCoordVBO->getBuffer());
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.texCoordVBO->getBuffer());
 			VertexAttribPointer2fv(vTexCoord, 0, NULL);
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.positionVBO->getBuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.positionVBO->getBuffer());
 		VertexAttribPointer3fv(vPosition, 0, NULL);
 
-		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexDataStruct.PositionData.size()));
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VertexRenderStruct.data.PositionData.size()));
 
 	}
 

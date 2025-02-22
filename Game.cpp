@@ -26,16 +26,16 @@ namespace ZL
 		std::shared_ptr<Texture> pipeTexturePtr;
 		std::shared_ptr<Texture> gameOverTexturePtr;
 
-		VertexDataStruct birdMesh;
+		VertexRenderStruct birdMesh;
 
-		VertexDataStruct backgroundMesh;
+		VertexRenderStruct backgroundMesh;
 
-		VertexDataStruct pipeMesh;
+		VertexRenderStruct pipeMesh;
 
-		VertexDataStruct gameOverMesh;
+		VertexRenderStruct gameOverMesh;
 
 		VertexDataStruct colorCubeMesh;
-		VertexDataStruct colorCubeMeshMutable;
+		VertexRenderStruct colorCubeMeshMutable;
 	}
 
 

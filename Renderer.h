@@ -48,7 +48,11 @@ namespace ZL {
 		std::vector<Vector3f> TangentData;
 		std::vector<Vector3f> BinormalData;
 		std::vector<Vector3f> ColorData;
+	};
 
+	struct VertexRenderStruct
+	{
+		VertexDataStruct data;
 
 		std::shared_ptr<VAOHolder> vao;
 		std::shared_ptr<VBOHolder> positionVBO;
@@ -113,7 +117,7 @@ namespace ZL {
 
 		void VertexAttribPointer3fv(const std::string& attribName, int stride, const char* pointer);
 
-		void DrawVertexDataStruct(const VertexDataStruct& vertexDataStruct);
+		void DrawVertexRenderStruct(const VertexRenderStruct& VertexRenderStruct);
 	};
 
 	
