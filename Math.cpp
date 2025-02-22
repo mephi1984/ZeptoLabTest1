@@ -201,6 +201,30 @@ namespace ZL {
 
 	}
 
+	Vector4f QuatFromRotateAroundX(float angle)
+	{
+		Vector4f result;
+
+		result.v[0] = sinf(angle * 0.5f);
+		result.v[1] = 0.f;
+		result.v[2] = 0.f;
+		result.v[3] = cosf(angle * 0.5f);
+
+		return result;
+	}
+
+	Vector4f QuatFromRotateAroundY(float angle)
+	{
+		Vector4f result;
+
+		result.v[0] = 0.f;
+		result.v[1] = sinf(angle * 0.5f);
+		result.v[2] = 0.f;
+		result.v[3] = cosf(angle * 0.5f);
+
+		return result;
+	}
+
 	Vector4f QuatFromRotateAroundZ(float angle)
 	{
 		Vector4f result;
@@ -334,5 +358,26 @@ namespace ZL {
 		return r;
 	}
 
+	Vector3f operator*(Vector3f v, float scale)
+	{
+		Vector3f r = v;
+
+		r.v[0] = v.v[0] * scale;
+		r.v[1] = v.v[1] * scale;
+		r.v[2] = v.v[2] * scale;
+
+		return r;
+	}
+
+	Vector3f MultVectorMatrix(Vector3f v, Matrix3f mt)
+	{
+		Vector3f r;
+
+		r.v[0] = v.v[0] * mt.m[0] + v.v[1] * mt.m[1] + v.v[2] * mt.m[2];
+		r.v[1] = v.v[0] * mt.m[3] + v.v[1] * mt.m[4] + v.v[2] * mt.m[5];
+		r.v[2] = v.v[0] * mt.m[6] + v.v[1] * mt.m[7] + v.v[2] * mt.m[8];
+
+		return r;
+	}
 
 };

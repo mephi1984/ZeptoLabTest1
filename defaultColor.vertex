@@ -1,0 +1,11 @@
+attribute vec3 vPosition;
+attribute vec3 vColor;
+varying vec3 color;
+
+uniform mat4 ProjectionModelViewMatrix;
+
+void main() 
+{
+	gl_Position = ProjectionModelViewMatrix * vec4(vPosition.xyz, 1.0);
+	color = vColor;
+}

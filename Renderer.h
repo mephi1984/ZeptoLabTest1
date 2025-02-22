@@ -58,11 +58,15 @@ namespace ZL {
 		std::shared_ptr<VBOHolder> binormalVBO;
 		std::shared_ptr<VBOHolder> colorVBO;
 		void RefreshVBO();
+
+		void RotateByMatrix(Matrix3f m);
+
+		void AssignFrom(const VertexDataStruct& v);
 	};
 
 	VertexDataStruct CreateRect2D(Vector2f center, Vector2f halfWidthHeight, float zLevel);
 	VertexDataStruct CreateRectHorizontalSections2D(Vector2f center, Vector2f halfWidthHeight, float zLevel, size_t sectionCount);
-	//VertexDataStruct CreateRect2D(Vector2f center, Vector2f halfWidthHeight, float zLevel);
+	VertexDataStruct CreateCube3D(float scale);
 
 
 	class Renderer

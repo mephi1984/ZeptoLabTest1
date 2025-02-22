@@ -33,6 +33,9 @@ namespace ZL
 		VertexDataStruct pipeMesh;
 
 		VertexDataStruct gameOverMesh;
+
+		VertexDataStruct colorCubeMesh;
+		VertexDataStruct colorCubeMeshMutable;
 	}
 
 
@@ -225,6 +228,7 @@ namespace ZL
 
 	void GameState::UpdateScene(size_t tickCountDiff)
 	{
+		rotateTimer += tickCountDiff * 0.001f;
 
 		if (isGameOver)
 		{
@@ -238,6 +242,8 @@ namespace ZL
 		UpdateBackgroundPos(tickCountDiff);
 
 		UpdatePhysics(tickCountDiff);
+
+		
 	}
 
 	void GameState::BirdJump()

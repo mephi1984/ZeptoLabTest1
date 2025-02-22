@@ -76,6 +76,8 @@ namespace ZL
 
 		bool isGameOver = false;
 
+		float rotateTimer = 0.0;
+
 		std::vector<PipePairConfig> pipePairArr;
 
 		EllipsePhysicsObject birdEllipse;
@@ -103,5 +105,8 @@ namespace ZL
 		extern VertexDataStruct pipeMesh;
 
 		extern VertexDataStruct gameOverMesh;
+
+		extern VertexDataStruct colorCubeMesh;
+		extern VertexDataStruct colorCubeMeshMutable;
 	}
 }

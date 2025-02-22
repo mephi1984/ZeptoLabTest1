@@ -53,6 +53,12 @@ namespace ZL {
 
 	Matrix3f QuatToMatrix(const Vector4f& q);
 
+	Vector4f QuatFromRotateAroundX(float angle);
+	Vector4f QuatFromRotateAroundY(float angle);
 	Vector4f QuatFromRotateAroundZ(float angle);
+
+	Vector3f operator*(Vector3f v, float scale);
+
+	Vector3f MultVectorMatrix(Vector3f v, Matrix3f mt);
 
 };

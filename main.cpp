@@ -119,37 +119,62 @@ namespace ZL
 	void DrawScene()
 	{
 		static const std::string defaultShaderName = "default";
+		static const std::string colorShaderName = "defaultColor";
+
 		static const std::string vPositionName = "vPosition";
 		static const std::string vTexCoordName = "vTexCoord";
+		static const std::string vColorName = "vColor";
 		static const std::string textureUniformName = "Texture";
 
-		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.1f, 0.0f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 		
 		glViewport(0, 0, Env::width, Env::height);
 
-		renderer.shaderManager.PushShader(defaultShaderName);
+		renderer.shaderManager.PushShader(colorShaderName);
 
-		renderer.RenderUniform1i(textureUniformName, 0);
+		//renderer.RenderUniform1i(textureUniformName, 0);
 
 		renderer.EnableVertexAttribArray(vPositionName);
 
-		renderer.EnableVertexAttribArray(vTexCoordName);
+		renderer.EnableVertexAttribArray(vColorName);
 
-		renderer.PushProjectionMatrix(static_cast<float>(Env::width), static_cast<float>(Env::height));
-		//renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width)/ static_cast<float>(Env::height), 10, 10000);
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width)/ static_cast<float>(Env::height), 10, 10000);
 
+
+		renderer.PushMatrix();
+
+		renderer.LoadIdentity();
+
+		//renderer.RotateMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0));
+
+
+		renderer.TranslateMatrix({ 0,0, -1000 });
+
+		//
+		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
+
+
+		GameObjects::colorCubeMeshMutable.AssignFrom(GameObjects::colorCubeMesh);
+		GameObjects::colorCubeMeshMutable.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
+
+		renderer.DrawVertexDataStruct(GameObjects::colorCubeMeshMutable);
+
+		renderer.PopMatrix();
+		
+		
+		/*
 		DrawBackground();
 	
 		DrawPipes();
 
 		DrawBird();
 
-		DrawUi();
+		DrawUi();*/
 
 		renderer.PopProjectionMatrix();
 
-		renderer.DisableVertexAttribArray(vTexCoordName);
+		renderer.DisableVertexAttribArray(vColorName);
 		renderer.DisableVertexAttribArray(vPositionName);
 
 		renderer.shaderManager.PopShader();
@@ -206,7 +231,8 @@ namespace ZL
 
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
-		
+		renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
+
 		//Load textures
 		GameObjects::birdTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./bird.bmp32"));
 		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
@@ -239,6 +265,9 @@ namespace ZL
 
 		GameObjects::gameOverMesh = CreateRect2D({ GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, { GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, 0.1f);
 
+
+		GameObjects::colorCubeMesh = CreateCube3D(5.0);
+		GameObjects::colorCubeMeshMutable = CreateCube3D(5.0);
 
 
 		//Set some game values

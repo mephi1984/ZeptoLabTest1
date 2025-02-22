@@ -121,6 +121,82 @@ namespace ZL {
 
 	}
 
+	VertexDataStruct CreateCube3D(float scale)
+	{
+
+		std::array<std::array<Vector3f, 4>, 6> cubeSides;
+
+		std::array<Vector3f, 6> cubeColors;
+
+
+		cubeSides[0][0] = { -1, -1, -1 };
+		cubeSides[0][1] = { -1,  1, -1 };
+		cubeSides[0][2] = {  1,  1, -1 };
+		cubeSides[0][3] = {  1, -1, -1 };
+
+		cubeSides[1][0] = { -1, -1, 1 };
+		cubeSides[1][1] = { -1,  1, 1 };
+		cubeSides[1][2] = { 1,  1,  1 };
+		cubeSides[1][3] = { 1, -1,  1 };
+
+		//------------
+
+		cubeSides[2][0] = { -1, -1, -1 };
+		cubeSides[2][1] = { -1, -1,  1 };
+		cubeSides[2][2] = {  1, -1,  1 };
+		cubeSides[2][3] = {  1, -1, -1 };
+
+		cubeSides[3][0] = { -1,  1, -1 };
+		cubeSides[3][1] = { -1,  1,  1 };
+		cubeSides[3][2] = {  1,  1,  1 };
+		cubeSides[3][3] = {  1,  1, -1 };
+
+		//------------
+		cubeSides[4][0] = { -1, -1, -1 };
+		cubeSides[4][1] = { -1, -1,  1 };
+		cubeSides[4][2] = { -1,  1,  1 };
+		cubeSides[4][3] = { -1,  1, -1 };
+
+		cubeSides[5][0] = {  1, -1, -1 };
+		cubeSides[5][1] = {  1, -1,  1 };
+		cubeSides[5][2] = {  1,  1,  1 };
+		cubeSides[5][3] = {  1,  1, -1 };
+
+		//-----------
+
+		cubeColors[0] = Vector3f{ 1, 0, 0 };
+		cubeColors[1] = Vector3f{ 0, 1, 0 };
+		cubeColors[2] = Vector3f{ 0, 0, 1 };
+		cubeColors[3] = Vector3f{ 1, 1, 0 };
+		cubeColors[4] = Vector3f{ 0, 1, 1 };
+		cubeColors[5] = Vector3f{ 1, 0, 1 };
+
+		//-----------
+
+		VertexDataStruct result;
+
+		for (int i = 0; i < 6; i++)
+		{
+			result.PositionData.push_back(cubeSides[i][0] * scale);
+			result.PositionData.push_back(cubeSides[i][1] * scale);
+			result.PositionData.push_back(cubeSides[i][2] * scale);
+			result.PositionData.push_back(cubeSides[i][2] * scale);
+			result.PositionData.push_back(cubeSides[i][3] * scale);
+			result.PositionData.push_back(cubeSides[i][0] * scale);
+
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+		}
+
+		result.RefreshVBO();
+
+		return result;
+	}
+
 	void VertexDataStruct::RefreshVBO()
 	{
 		//Check if main thread, check if data is not empty...
@@ -202,6 +278,44 @@ namespace ZL {
 
 			glBufferData(GL_ARRAY_BUFFER, ColorData.size() * 12, &ColorData[0], GL_STATIC_DRAW);
 		}
+	}
+
+	void VertexDataStruct::RotateByMatrix(Matrix3f m)
+	{
+
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = MultVectorMatrix(PositionData[i], m);
+		}
+
+		for (int i = 0; i < NormalData.size(); i++)
+		{
+			NormalData[i] = MultVectorMatrix(NormalData[i], m);
+		}
+
+		for (int i = 0; i < TangentData.size(); i++)
+		{
+			TangentData[i] = MultVectorMatrix(TangentData[i], m);
+		}
+
+		for (int i = 0; i < BinormalData.size(); i++)
+		{
+			BinormalData[i] = MultVectorMatrix(BinormalData[i], m);
+		}
+
+
+		RefreshVBO();
+	}
+
+	void VertexDataStruct::AssignFrom(const VertexDataStruct& v)
+	{
+		PositionData = v.PositionData;
+		NormalData = v.NormalData;
+		TangentData = v.TangentData;
+		BinormalData = v.BinormalData;
+		TexCoordData = v.TexCoordData;
+		ColorData = v.ColorData;
+		RefreshVBO();
 	}
 
 	void Renderer::InitOpenGL()
@@ -499,22 +613,22 @@ namespace ZL {
 		if (vertexDataStruct.NormalData.size() > 0)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.normalVBO->getBuffer());
-			VertexAttribPointer2fv(vNormal, 0, NULL);
+			VertexAttribPointer3fv(vNormal, 0, NULL);
 		}
 		if (vertexDataStruct.TangentData.size() > 0)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.tangentVBO->getBuffer());
-			VertexAttribPointer2fv(vTangent, 0, NULL);
+			VertexAttribPointer3fv(vTangent, 0, NULL);
 		}
 		if (vertexDataStruct.BinormalData.size() > 0)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.binormalVBO->getBuffer());
-			VertexAttribPointer2fv(vBinormal, 0, NULL);
+			VertexAttribPointer3fv(vBinormal, 0, NULL);
 		}
 		if (vertexDataStruct.ColorData.size() > 0)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.colorVBO->getBuffer());
-			VertexAttribPointer2fv(vColor, 0, NULL);
+			VertexAttribPointer3fv(vColor, 0, NULL);
 		}
 		if (vertexDataStruct.TexCoordData.size() > 0)
 		{
