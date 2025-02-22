@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 #include "ShaderManager.h"
 #include "Renderer.h"
+#include "ObjLoader.h"
 
 #include "Physics.h"
 #include <string>
@@ -131,6 +132,40 @@ namespace ZL
 		
 		glViewport(0, 0, Env::width, Env::height);
 
+		renderer.shaderManager.PushShader(defaultShaderName);
+		renderer.RenderUniform1i(textureUniformName, 0);
+
+		renderer.EnableVertexAttribArray(vPositionName);
+		renderer.EnableVertexAttribArray(vTexCoordName);
+
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 1, 1000);
+		renderer.PushMatrix();
+
+		renderer.LoadIdentity();
+
+		renderer.TranslateMatrix({ 0,0, -100 });
+
+
+		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
+
+		GameObjects::testObjMeshMutable.AssignFrom(GameObjects::testObjMesh);
+		GameObjects::testObjMeshMutable.data.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
+		GameObjects::testObjMeshMutable.RefreshVBO();
+
+		glBindTexture(GL_TEXTURE_2D, GameObjects::backgroundTexturePtr->getTexID());
+		renderer.DrawVertexRenderStruct(GameObjects::testObjMeshMutable);
+
+		renderer.PopMatrix();
+
+		renderer.PopProjectionMatrix();
+
+		renderer.DisableVertexAttribArray(vColorName);
+		renderer.DisableVertexAttribArray(vTexCoordName);
+
+		renderer.shaderManager.PopShader();
+
+
+		/*
 		renderer.shaderManager.PushShader(colorShaderName);
 
 		//renderer.RenderUniform1i(textureUniformName, 0);
@@ -140,20 +175,14 @@ namespace ZL
 		renderer.EnableVertexAttribArray(vColorName);
 
 		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width)/ static_cast<float>(Env::height), 10, 10000);
-
-
 		renderer.PushMatrix();
 
 		renderer.LoadIdentity();
 
-		//renderer.RotateMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0));
-
-
 		renderer.TranslateMatrix({ 0,0, -1000 });
 
-		//
+		
 		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
-
 
 		GameObjects::colorCubeMeshMutable.AssignFrom(GameObjects::colorCubeMesh);
 		GameObjects::colorCubeMeshMutable.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
@@ -161,23 +190,13 @@ namespace ZL
 		renderer.DrawVertexRenderStruct(GameObjects::colorCubeMeshMutable);
 
 		renderer.PopMatrix();
-		
-		
-		/*
-		DrawBackground();
-	
-		DrawPipes();
-
-		DrawBird();
-
-		DrawUi();*/
-
+				
 		renderer.PopProjectionMatrix();
 
 		renderer.DisableVertexAttribArray(vColorName);
 		renderer.DisableVertexAttribArray(vPositionName);
 
-		renderer.shaderManager.PopShader();
+		renderer.shaderManager.PopShader();*/
 		
 		CheckGlError();
 
@@ -232,7 +251,7 @@ namespace ZL
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
 		renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-
+		
 		//Load textures
 		GameObjects::birdTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./bird.bmp32"));
 		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
@@ -270,6 +289,12 @@ namespace ZL
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.data = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.RefreshVBO();
+
+		GameObjects::testObjMesh = LoadFromObjFile("./chair_01.obj");
+		GameObjects::testObjMesh.Scale(10);
+		GameObjects::testObjMesh.SwapZandY();
+		GameObjects::testObjMeshMutable.data = GameObjects::testObjMesh;
+		GameObjects::testObjMeshMutable.RefreshVBO();
 
 		//Set some game values
 		Env::birdStartPos = { Env::width * 0.2f, Env::getActualClientHeight() * 0.5f };

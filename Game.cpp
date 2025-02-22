@@ -36,6 +36,9 @@ namespace ZL
 
 		VertexDataStruct colorCubeMesh;
 		VertexRenderStruct colorCubeMeshMutable;
+
+		VertexDataStruct testObjMesh;
+		VertexRenderStruct testObjMeshMutable;
 	}
 
 

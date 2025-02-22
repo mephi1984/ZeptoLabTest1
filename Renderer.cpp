@@ -274,31 +274,46 @@ namespace ZL {
 		}
 	}
 
-	void VertexRenderStruct::RotateByMatrix(Matrix3f m)
+	void VertexDataStruct::Scale(float scale)
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = PositionData[i] * scale;
+		}
+	}
+
+	void VertexDataStruct::SwapZandY()
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			auto value = PositionData[i].v[1];
+			PositionData[i].v[1] = PositionData[i].v[2];
+			PositionData[i].v[2] = value;
+		}
+	}
+
+	void VertexDataStruct::RotateByMatrix(Matrix3f m)
 	{
 
-		for (int i = 0; i < data.PositionData.size(); i++)
+		for (int i = 0; i < PositionData.size(); i++)
 		{
-			data.PositionData[i] = MultVectorMatrix(data.PositionData[i], m);
+			PositionData[i] = MultVectorMatrix(PositionData[i], m);
 		}
 
-		for (int i = 0; i < data.NormalData.size(); i++)
+		for (int i = 0; i < NormalData.size(); i++)
 		{
-			data.NormalData[i] = MultVectorMatrix(data.NormalData[i], m);
+			NormalData[i] = MultVectorMatrix(NormalData[i], m);
 		}
 
-		for (int i = 0; i < data.TangentData.size(); i++)
+		for (int i = 0; i < TangentData.size(); i++)
 		{
-			data.TangentData[i] = MultVectorMatrix(data.TangentData[i], m);
+			TangentData[i] = MultVectorMatrix(TangentData[i], m);
 		}
 
-		for (int i = 0; i < data.BinormalData.size(); i++)
+		for (int i = 0; i < BinormalData.size(); i++)
 		{
-			data.BinormalData[i] = MultVectorMatrix(data.BinormalData[i], m);
+			BinormalData[i] = MultVectorMatrix(BinormalData[i], m);
 		}
-
-
-		RefreshVBO();
 	}
 
 	void VertexRenderStruct::AssignFrom(const VertexDataStruct& v)

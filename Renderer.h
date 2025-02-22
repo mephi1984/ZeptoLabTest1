@@ -48,6 +48,11 @@ namespace ZL {
 		std::vector<Vector3f> TangentData;
 		std::vector<Vector3f> BinormalData;
 		std::vector<Vector3f> ColorData;
+
+		void RotateByMatrix(Matrix3f m);
+
+		void Scale(float scale);
+		void SwapZandY();
 	};
 
 	struct VertexRenderStruct
@@ -62,8 +67,6 @@ namespace ZL {
 		std::shared_ptr<VBOHolder> binormalVBO;
 		std::shared_ptr<VBOHolder> colorVBO;
 		void RefreshVBO();
-
-		void RotateByMatrix(Matrix3f m);
 
 		void AssignFrom(const VertexDataStruct& v);
 	};

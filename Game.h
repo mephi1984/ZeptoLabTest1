@@ -108,5 +108,7 @@ namespace ZL
 
 		extern VertexDataStruct colorCubeMesh;
 		extern VertexRenderStruct colorCubeMeshMutable;
+		extern VertexDataStruct testObjMesh;
+		extern VertexRenderStruct testObjMeshMutable;
 	}
 }
