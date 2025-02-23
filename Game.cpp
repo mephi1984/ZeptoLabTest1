@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "AnimatedModel.h"
 
 namespace ZL
 {
@@ -26,7 +27,7 @@ namespace ZL
 		std::shared_ptr<Texture> pipeTexturePtr;
 		std::shared_ptr<Texture> gameOverTexturePtr;
 		std::shared_ptr<Texture> testObjTexturePtr;
-		std::shared_ptr<Texture> md3TexturePtr;
+		//std::shared_ptr<Texture> md3TexturePtr;
 
 		VertexRenderStruct birdMesh;
 
@@ -42,8 +43,8 @@ namespace ZL
 		VertexDataStruct testObjMesh;
 		VertexRenderStruct testObjMeshMutable;
 
-		std::vector<VertexDataStruct> testmd3;
-		std::vector<VertexRenderStruct> testmd3mutable;
+		ZL::AnimatedModel testmd3;
+		//std::vector<VertexRenderStruct> testmd3mutable;
 
 	}
 

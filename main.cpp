@@ -13,8 +13,9 @@
 #include <fstream>
 
 #include "Game.h"
+#include "AnimatedModel.h"
 
-std::vector<ZL::VertexDataStruct> testLoadModel();
+ZL::AnimatedModel testLoadModel();
 
 namespace ZL
 {
@@ -140,15 +141,27 @@ namespace ZL
 		renderer.EnableVertexAttribArray(vPositionName);
 		renderer.EnableVertexAttribArray(vTexCoordName);
 
-		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 1, 1000);
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 100, 100000);
 		renderer.PushMatrix();
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ 0,0, -300 });
+		renderer.TranslateMatrix({ 0,0, -30000 });
 
 
 		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
+
+
+		for (int i = 0; i < GameObjects::testmd3.parts.size(); i++)
+		{
+
+			for (int j = 0; j < GameObjects::testmd3.parts[i].renderMeshes.size(); j++)
+			{
+				
+				glBindTexture(GL_TEXTURE_2D, GameObjects::testmd3.parts[i].textures[0]->getTexID());
+				renderer.DrawVertexRenderStruct(GameObjects::testmd3.parts[i].renderMeshes[j]);
+			}
+		}
 
 		/*
 		GameObjects::testObjMeshMutable.AssignFrom(GameObjects::testObjMesh);
@@ -162,10 +175,11 @@ namespace ZL
 		//glBindTexture(GL_TEXTURE_2D, GameObjects::testObjTexturePtr->getTexID());	
 		//renderer.DrawVertexRenderStruct(GameObjects::testObjMeshMutable);
 
+		/*
 		glBindTexture(GL_TEXTURE_2D, GameObjects::md3TexturePtr->getTexID());
 		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[0]);
 		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[1]);
-
+		*/
 		renderer.PopMatrix();
 
 		renderer.PopProjectionMatrix();
@@ -260,6 +274,7 @@ namespace ZL
 
 		GameObjects::testmd3 = testLoadModel();
 
+		/*
 		GameObjects::testmd3mutable.resize(GameObjects::testmd3.size());
 
 		for (int i = 0; i < GameObjects::testmd3.size(); i++)
@@ -268,7 +283,7 @@ namespace ZL
 
 			GameObjects::testmd3mutable[i].data = GameObjects::testmd3[i];
 			GameObjects::testmd3mutable[i].RefreshVBO();
-		}
+		}*/
 
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
@@ -281,7 +296,7 @@ namespace ZL
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
 		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
 
-		GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
+		//GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
 
 
 		CheckGlError();
