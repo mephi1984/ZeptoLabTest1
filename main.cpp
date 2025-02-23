@@ -14,6 +14,8 @@
 
 #include "Game.h"
 
+std::vector<ZL::VertexDataStruct> testLoadModel();
+
 namespace ZL
 {
 
@@ -143,23 +145,32 @@ namespace ZL
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ 0,0, -100 });
+		renderer.TranslateMatrix({ 0,0, -300 });
 
 
 		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
 
+		/*
 		GameObjects::testObjMeshMutable.AssignFrom(GameObjects::testObjMesh);
 		GameObjects::testObjMeshMutable.data.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
-		GameObjects::testObjMeshMutable.RefreshVBO();
+		GameObjects::testObjMeshMutable.RefreshVBO();*/
 
-		glBindTexture(GL_TEXTURE_2D, GameObjects::testObjTexturePtr->getTexID());
-		renderer.DrawVertexRenderStruct(GameObjects::testObjMeshMutable);
+
+		//GameObjects::testmd3mutable[0].RefreshVBO();
+		//GameObjects::testmd3mutable[1].RefreshVBO();
+
+		//glBindTexture(GL_TEXTURE_2D, GameObjects::testObjTexturePtr->getTexID());	
+		//renderer.DrawVertexRenderStruct(GameObjects::testObjMeshMutable);
+
+		glBindTexture(GL_TEXTURE_2D, GameObjects::md3TexturePtr->getTexID());
+		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[0]);
+		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[1]);
 
 		renderer.PopMatrix();
 
 		renderer.PopProjectionMatrix();
 
-		renderer.DisableVertexAttribArray(vColorName);
+		renderer.DisableVertexAttribArray(vPositionName);
 		renderer.DisableVertexAttribArray(vTexCoordName);
 
 		renderer.shaderManager.PopShader();
@@ -247,6 +258,17 @@ namespace ZL
 
 		CheckGlError();
 
+		GameObjects::testmd3 = testLoadModel();
+
+		GameObjects::testmd3mutable.resize(GameObjects::testmd3.size());
+
+		for (int i = 0; i < GameObjects::testmd3.size(); i++)
+		{
+			GameObjects::testmd3[i].Scale(0.01);
+
+			GameObjects::testmd3mutable[i].data = GameObjects::testmd3[i];
+			GameObjects::testmd3mutable[i].RefreshVBO();
+		}
 
 		//Load shaders:
 		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
@@ -258,6 +280,8 @@ namespace ZL
 		GameObjects::pipeTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./pipe.bmp32"));
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
 		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
+
+		GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
 
 
 		CheckGlError();

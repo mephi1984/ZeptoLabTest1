@@ -26,6 +26,7 @@ namespace ZL
 		std::shared_ptr<Texture> pipeTexturePtr;
 		std::shared_ptr<Texture> gameOverTexturePtr;
 		std::shared_ptr<Texture> testObjTexturePtr;
+		std::shared_ptr<Texture> md3TexturePtr;
 
 		VertexRenderStruct birdMesh;
 
@@ -40,6 +41,10 @@ namespace ZL
 
 		VertexDataStruct testObjMesh;
 		VertexRenderStruct testObjMeshMutable;
+
+		std::vector<VertexDataStruct> testmd3;
+		std::vector<VertexRenderStruct> testmd3mutable;
+
 	}
 
 
