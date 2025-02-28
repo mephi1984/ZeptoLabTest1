@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Renderer.h"
 #include "AnimatedModel.h"
+#include "BoneAnimatedModel.h"
 #include <memory>
 
 namespace ZL
@@ -118,5 +119,8 @@ namespace ZL
 		extern ZL::AnimatedModel testmd3;
 		//extern std::vector<VertexDataStruct> testmd3;
 		//extern std::vector<VertexRenderStruct> testmd3mutable;
+
+		extern BoneSystem bx;
+		extern VertexRenderStruct bxMutable;
 	}
 }

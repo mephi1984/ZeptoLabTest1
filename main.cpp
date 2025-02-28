@@ -14,6 +14,7 @@
 
 #include "Game.h"
 #include "AnimatedModel.h"
+#include "BoneAnimatedModel.h"
 
 ZL::AnimatedModel testLoadModel();
 
@@ -135,20 +136,24 @@ namespace ZL
 		
 		glViewport(0, 0, Env::width, Env::height);
 
-		renderer.shaderManager.PushShader(defaultShaderName);
-		renderer.RenderUniform1i(textureUniformName, 0);
+		//renderer.shaderManager.PushShader(defaultShaderName);
+		renderer.shaderManager.PushShader(colorShaderName);
+		//renderer.RenderUniform1i(textureUniformName, 0);
 
 		renderer.EnableVertexAttribArray(vPositionName);
-		renderer.EnableVertexAttribArray(vTexCoordName);
+		//renderer.EnableVertexAttribArray(vTexCoordName);
 
-		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 100, 100000);
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 0.1, 1000);
 		renderer.PushMatrix();
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ 0,0, -30000 });
+		renderer.TranslateMatrix({ 0,0, -200 });
 
+		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
+		//renderer.RotateMatrix(QuatFromRotateAroundZ(-M_PI / 4.0));
 
+		/*
 		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 3.0));
 
 
@@ -162,7 +167,7 @@ namespace ZL
 				renderer.DrawVertexRenderStruct(GameObjects::testmd3.parts[i].renderMeshes[j]);
 			}
 		}
-
+		*/
 		/*
 		GameObjects::testObjMeshMutable.AssignFrom(GameObjects::testObjMesh);
 		GameObjects::testObjMeshMutable.data.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(gs.rotateTimer * M_PI / 3.0)));
@@ -180,12 +185,17 @@ namespace ZL
 		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[0]);
 		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[1]);
 		*/
+
+		GameObjects::bxMutable.AssignFrom(GameObjects::bx.mesh);
+		GameObjects::bxMutable.RefreshVBO();
+		renderer.DrawVertexRenderStruct(GameObjects::bxMutable);
+
 		renderer.PopMatrix();
 
 		renderer.PopProjectionMatrix();
 
 		renderer.DisableVertexAttribArray(vPositionName);
-		renderer.DisableVertexAttribArray(vTexCoordName);
+		//renderer.DisableVertexAttribArray(vTexCoordName);
 
 		renderer.shaderManager.PopShader();
 
@@ -294,9 +304,13 @@ namespace ZL
 		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
 		GameObjects::pipeTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./pipe.bmp32"));
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
-		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
+		//GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
+		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
 
 		//GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
+
+		GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data.txt");
+		//GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data02.txt");
 
 
 		CheckGlError();
@@ -374,6 +388,11 @@ namespace ZL
 			}
 			if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
+				static int x = 0;
+
+				GameObjects::bx.Interpolate(x);
+				x = x + 2;
+				/*
 				if (gs.isGameOver)
 				{
 					gs.RestartGame();
@@ -381,7 +400,7 @@ namespace ZL
 				else
 				{
 					gs.BirdJump();
-				}
+				}*/
 			}
 		}
 

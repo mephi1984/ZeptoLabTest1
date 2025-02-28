@@ -1034,7 +1034,8 @@ ZL::AnimatedModel CMD3::convertToAnimatedModel()
 		for (int i = 0; i < textureNames[m].size(); i++)
 		{
 			std::string texName = textureNames[m][i];
-			result.parts[m].textures.push_back(std::make_shared<ZL::Texture>(ZL::CreateTextureDataFromPng(texName)));
+			//result.parts[m].textures.push_back(std::make_shared<ZL::Texture>(ZL::CreateTextureDataFromPng(texName)));
+			result.parts[m].textures.push_back(std::make_shared<ZL::Texture>(ZL::CreateTextureDataFromBmp24("chair_01_Base_Color.bmp")));
 		}
 
 		for (int n = 0; n < numMeshes; n++)

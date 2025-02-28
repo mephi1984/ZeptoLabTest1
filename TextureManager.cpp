@@ -1,5 +1,7 @@
 #include "TextureManager.h"
+#ifdef PNG_ENABLED
 #include "png.h"
+#endif
 
 namespace ZL
 {
@@ -164,6 +166,8 @@ namespace ZL
 		return texData;
 	}
 
+#ifdef PNG_ENABLED
+
 	TextureDataStruct CreateTextureDataFromPng(const std::string& fullFileName)
 	{
 		TextureDataStruct texData;
@@ -272,5 +276,5 @@ namespace ZL
 
 		return texData;
 	}
-
+#endif
 }

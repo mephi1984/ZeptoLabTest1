@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "AnimatedModel.h"
+#include "BoneAnimatedModel.h"
+
 
 namespace ZL
 {
@@ -45,6 +47,9 @@ namespace ZL
 
 		ZL::AnimatedModel testmd3;
 		//std::vector<VertexRenderStruct> testmd3mutable;
+
+		BoneSystem bx;
+		VertexRenderStruct bxMutable;
 
 	}
 

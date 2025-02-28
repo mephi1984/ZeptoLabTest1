@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoneAnimatedModel.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedModel.h" />
+    <ClInclude Include="BoneAnimatedModel.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="md3test.h" />
