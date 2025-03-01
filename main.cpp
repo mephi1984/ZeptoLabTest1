@@ -411,16 +411,7 @@ namespace ZL
         ZL::AddItemToInventory("RoomCeramics", roomTexturePtr);
         ZL::AddItemToInventory("Cone", coneTexturePtr);
 
-        // std::cout << "Before removal:\n";
         ZL::PrintInventory();
-		21s  
-		   ~/g/ZeptoLabTest1    Albert ⇣2 +5  git commit -m "added sh file for start in linux"
-	   [Albert 666bfc1] added sh file for start in linux
-    // Удаляем "Cone" из инвентаря
-        // ZL::RemoveItemFromInventory("Cone");
-
-        // std::cout << "\nAfter removal:\n";
-        // ZL::PrintInventory();
 
 		 // Initialize audio player and start background music
         GameObjects::audioPlayer = std::make_unique<AudioPlayer>();
@@ -536,9 +527,7 @@ namespace ZL
                 case SDLK_w:
                     Env::upPressed = false;
                     break;
-                case SDLK_DOWN: 21s  
-				   ~/g/ZeptoLabTest1    Albert ⇣2 +5  git commit -m "added sh file for start in linux"
-			   [Albert 666bfc1] added sh file for start in linux
+                case SDLK_DOWN:
                 case SDLK_s:
                     Env::downPressed = false;
                     break;
