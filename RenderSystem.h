@@ -24,6 +24,8 @@ private:
     Renderer renderer;
     ShaderManager shaderManager;
     Matrix4f currentProjectionModelView; // Добавлено для хранения матрицы между drawWorld и drawUI
+    int lastMouseX = 0;
+    int lastMouseY = 0;
 };
 
 } // namespace ZL

@@ -147,6 +147,11 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
         }
     }
+    if (event.type == SDL_MOUSEMOTION) {
+        // Сохраняем позицию мыши для последующей проверки
+        lastMouseX = event.motion.x;
+        lastMouseY = event.motion.y;
+    }
 }
 
 void GameObjectManager::updateScene(size_t ms) {
@@ -176,6 +181,48 @@ void GameObjectManager::updateScene(size_t ms) {
         );
         ao.highlighted = (dist < 50.f);
     }
+}
+
+bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
+    // Простая проверка попадания точки в квадрат 64x64 вокруг центра объекта
+    const int objectSize = 32; // Половина размера области выделения
+    return (screenX >= objectScreenX - objectSize && 
+            screenX <= objectScreenX + objectSize &&
+            screenY >= objectScreenY - objectSize && 
+            screenY <= objectScreenY + objectSize);
+}
+
+void GameObjectManager::checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView) {
+    for (auto& ao : activeObjects) {
+        int screenX, screenY;
+        worldToScreenCoordinates(ao.objectPos, projectionModelView, 
+            Environment::width, Environment::height, screenX, screenY);
+            
+        if (isPointInObject(mouseX, mouseY, screenX, screenY)) {
+            std::cout << "Mouse over object at screen coordinates: " 
+                      << screenX << ", " << screenY 
+                      << " (world pos: " 
+                      << ao.objectPos.v[0] << ", "
+                      << ao.objectPos.v[1] << ", "
+                      << ao.objectPos.v[2] << ")" 
+                      << std::endl;
+        }
+    }
+}
+
+void GameObjectManager::worldToScreenCoordinates(Vector3f objectPos,
+    Matrix4f projectionModelView,
+    int screenWidth, int screenHeight,
+    int& screenX, int& screenY) {
+
+    Vector4f inx = { objectPos.v[0], objectPos.v[1], objectPos.v[2], 1.0f};
+    Vector4f clipCoords = MultMatrixVector(projectionModelView, inx);
+
+    float ndcX = clipCoords.v[0] / clipCoords.v[3];
+    float ndcY = clipCoords.v[1] / clipCoords.v[3];
+
+    screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
+    screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
 }
 
 }  // namespace ZL

@@ -15,6 +15,7 @@ public:
     void update();
     void handleEvent(const SDL_Event& event);
     void updateScene(size_t ms);
+    void checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView); // Добавляем новый метод
 
     std::shared_ptr<ZL::Texture> testObjTexturePtr;
     std::shared_ptr<ZL::Texture> roomTexturePtr;
@@ -46,6 +47,13 @@ public:
 
 private:
     int animationCounter = 0;
+    int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
+    int lastMouseY = 0;
+    bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
+    void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
+        Matrix4f projectionModelView,
+        int screenWidth, int screenHeight,
+        int& screenX, int& screenY);
 };
 
 }  // namespace ZL
