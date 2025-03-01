@@ -513,39 +513,11 @@ namespace ZL
                     }
                     break;
                 case SDLK_SPACE:
-                        // Play the symphony when space is pressed
-                        if (GameObjects::audioPlayer) {
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
                     }
                     break;
-                // Добавляем тестовые клавиши
-                case SDLK_i: // Добавить предмет по нажатию I
-                    {
-                        static int testItemCount = 0;
-                        auto testTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-                        AddItemToInventory("TestItem_" + std::to_string(testItemCount++), testTexture);
-                        std::cout << "Added test item to inventory\n";
-                        PrintInventory();
-                    }
-                    break;
-                    
-                case SDLK_o: // Удалить последний предмет по нажатию O
-                    {
-                        auto inventory = ReturnInventory();
-                        if (!inventory.empty()) {
-                            RemoveItemFromInventory(inventory.back().name);
-                            std::cout << "Removed last item from inventory\n";
-                            PrintInventory();
-                        }
-                    }
-                    break;
-                    
-                case SDLK_p: // Вывести текущий инвентарь по нажатию P
-                    std::cout << "\nCurrent inventory contents:\n";
-                    PrintInventory();
-                    break;
                 }
-
             }
 
             if (event.type == SDL_KEYUP) {
