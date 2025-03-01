@@ -121,12 +121,15 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        for (auto& ao : activeObjects) {
-          if (ao.highlighted){
-                AddItemToInventory(ao.name, ao.activeObjectTexturePtr);
-                PrintInventory();
-          }
+    for (size_t i = 0; i < activeObjects.size(); ++i) {
+        auto& ao = activeObjects[i];
+        if (ao.highlighted) {
+            AddItemToInventory(ao.name, ao.activeObjectTexturePtr);
+            activeObjects.erase(activeObjects.begin() + i);
+        // Можно выйти из цикла, если объект удален, чтобы избежать ошибок индексации.
+            break;
         }
+    }
 //        bx.Interpolate(animationCounter);
 //        animationCounter += 2;
     }

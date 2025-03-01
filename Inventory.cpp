@@ -32,15 +32,6 @@ namespace ZL
         }
     }
 
-    bool HasObject(const std::string& name){
-            for (const auto& item : gInventory) {
-                if (item.name == name) {
-                    return true;
-                }
-            }
-            return false;
-    }
-
     const std::vector<InventoryItem>& ReturnInventory()
     {
         return gInventory;
