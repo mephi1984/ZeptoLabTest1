@@ -402,8 +402,11 @@ namespace ZL
         std::cout << "\nAfter removal:\n";
         ZL::PrintInventory();
 
-		 // Initialize audio player
+		 // Initialize audio player and start background music
         GameObjects::audioPlayer = std::make_unique<AudioPlayer>();
+        if (GameObjects::audioPlayer) {
+            GameObjects::audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
+        }
 
 		///
 	}
@@ -457,25 +460,37 @@ namespace ZL
 				case SDLK_LEFT:
 				case SDLK_a:
 					Env::leftPressed = true;
+					if (GameObjects::audioPlayer) {
+                        GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                    }
 					break;
 				case SDLK_RIGHT:
 				case SDLK_d:
 					Env::rightPressed = true;
+					if (GameObjects::audioPlayer) {
+                        GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                    }
 					break;
 				case SDLK_UP:
 				case SDLK_w:
 					Env::upPressed = true;
+					if (GameObjects::audioPlayer) {
+                        GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                    }
 					break;
 				case SDLK_DOWN:
 				case SDLK_s:
 					Env::downPressed = true;
+					if (GameObjects::audioPlayer) {
+                        GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                    }
 					break;
 				case SDLK_SPACE:
                         // Play the symphony when space is pressed
                         if (GameObjects::audioPlayer) {
-                            GameObjects::audioPlayer->playFromSoundsDir("Symphony No.6 (1st movement).ogg");
-                        }
-                        break;
+                        GameObjects::audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
+                    }
+                    break;
 				}
 
 			}
