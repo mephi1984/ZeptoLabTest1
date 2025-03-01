@@ -540,57 +540,26 @@ namespace ZL
 
 };
 
-int main(int argc, char* argv[])
-{
+#include "Game.h"
 
-	constexpr int CONST_WIDTH = 1280;
-	constexpr int CONST_HEIGHT = 720;
+int main(int argc, char* argv[]) {
+    constexpr int CONST_WIDTH = 1280;
+    constexpr int CONST_HEIGHT = 720;
 
-	ZL::Env::width = CONST_WIDTH;
-	ZL::Env::height = CONST_HEIGHT;
+    Environment::width = CONST_WIDTH;
+    Environment::height = CONST_HEIGHT;
+
+    Game game;
+    game.setup();
 
 #ifdef EMSCRIPTEN
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_Renderer* renderer = NULL;
-	SDL_CreateWindowAndRenderer(CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL, &ZL::window, &renderer);
+    emscripten_set_main_loop([]() { game.update(); }, 0, 1);
 #else
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-		SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
-		return 1;
-	}
-
-
-	// Use a core profile setup.
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	ZL::window = SDL_CreateWindow("Jumping Bird", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL);
-#endif
-	//todo
-	ZL::Env::windowHeaderHeight = 0;
-
-	ZL::gl_context = SDL_GL_CreateContext(ZL::window);
-
-	ZL::CheckGlError();
-
-	ZL::setup();
-#ifdef EMSCRIPTEN
-	// register update as callback
-	emscripten_set_main_loop(ZL::update, 0, 1);
-#else
-	while (!ZL::ExitGameLoop) {
-
-		ZL::update();
-		SDL_Delay(2);
-
-	}
-	SDL_GL_DeleteContext(ZL::gl_context);
-	SDL_DestroyWindow(ZL::window);
-	SDL_Quit();
-
-	exit(0);
+    while (!game.shouldExit()) {
+        game.update();
+        SDL_Delay(2);
+    }
 #endif
 
+    return 0;
 }
