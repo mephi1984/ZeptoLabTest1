@@ -5,11 +5,16 @@
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
+#include <SDL2/SDL.h>
+
+namespace ZL {
 
 class GameObjectManager {
 public:
     void initialize();
     void update();
+    void handleEvent(const SDL_Event& event);
+    void updateScene(size_t ms);
 
     std::shared_ptr<ZL::Texture> testObjTexturePtr;
     std::shared_ptr<ZL::Texture> roomTexturePtr;
@@ -38,4 +43,9 @@ public:
     
     static const float INVENTORY_ICON_SIZE;
     static const float INVENTORY_MARGIN;
+
+private:
+    int animationCounter = 0;
 };
+
+}  // namespace ZL

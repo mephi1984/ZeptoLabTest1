@@ -1,6 +1,8 @@
 #pragma once
 #include "Math.h"
 
+namespace ZL {
+
 class Environment {
 public:
     static int windowHeaderHeight;
@@ -13,6 +15,8 @@ public:
     static bool upPressed;
     static bool downPressed;
 
-    static ZL::Vector3f cameraShift;
-    static ZL::Vector3f characterPos;
+    static Vector3f cameraShift;
+    static Vector3f characterPos;
 };
+
+} // namespace ZL
