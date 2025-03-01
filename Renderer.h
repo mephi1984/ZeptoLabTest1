@@ -104,6 +104,8 @@ namespace ZL {
 		void PopMatrix();
 
 
+		Matrix4f GetProjectionModelViewMatrix();
+
 		void SetMatrix();
 
 

@@ -383,6 +383,10 @@ namespace ZL {
 		SetMatrix();
 	}
 
+	Matrix4f Renderer::GetProjectionModelViewMatrix()
+	{
+		return ProjectionModelViewMatrix;
+	}
 
 	void Renderer::SetMatrix()
 	{
