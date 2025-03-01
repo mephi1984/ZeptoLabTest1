@@ -309,7 +309,7 @@ namespace ZL
 
 		//GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
 
-		GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data.txt");
+		GameObjects::bx.LoadFromFile("mesh_armature_and_animation_data.txt");
 		//GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data02.txt");
 
 
