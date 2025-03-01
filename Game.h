@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include "GameObjectManager.h"
-#include "Renderer.h"
+#include "RenderSystem.h"
 #include "Environment.h"
 
 namespace ZL {
@@ -22,15 +22,12 @@ public:
 private:
     void processTickCount();
     void drawScene();
-    void worldToScreenCoordinates(Vector3f objectPos,
-        Matrix4f projectionModelView,
-        int screenWidth, int screenHeight,
-        int& screenX, int& screenY);
 
     SDL_Window* window;
     SDL_GLContext glContext;
-    Renderer renderer;
+    RenderSystem renderSystem;
     GameObjectManager gameObjects;
+    Renderer& renderer;  // Ссылка на renderer из RenderSystem
     
     bool exitGameLoop;
     size_t newTickCount;
@@ -40,4 +37,4 @@ private:
     static const size_t CONST_MAX_TIME_INTERVAL = 1000;
 };
 
-}  // namespace ZL
+} // namespace ZL
