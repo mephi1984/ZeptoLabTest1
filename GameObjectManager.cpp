@@ -112,16 +112,19 @@ void GameObjectManager::initialize() {
 
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
-    if (event.type == SDL_MOUSEBUTTONDOWN) {
+//  debug room switching
+    if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
+
+        current_room_index = 1;
+        std::cout << "Current room" << current_room_index << std::endl;
+
+
+    }
+    else if (event.type == SDL_MOUSEBUTTONDOWN) {
         bx.Interpolate(animationCounter);
         animationCounter += 2;
     }
-    else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
 
-        //switchRoom();
-
-
-    }
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
