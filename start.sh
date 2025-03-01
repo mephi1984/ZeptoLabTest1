@@ -8,4 +8,4 @@ g++ Game.cpp main.cpp Math.cpp OpenGlExtensions.cpp Physics.cpp Renderer.cpp \
     $(pkg-config --cflags --libs vorbis vorbisfile ogg) \
     -lopenal
 
-./sdl_app
+#./sdl_app

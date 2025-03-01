@@ -47,13 +47,21 @@ void Game::setup() {
     ZL::BindOpenGlFunctions();
     ZL::CheckGlError();
 
+    std::cout << "Hello 1" << std::endl;
+
     // Initialize renderer
     renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
     renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-    renderer.InitOpenGL();
 
     // Initialize game objects
+    std::cout << "Hello 2" << std::endl;
+
     gameObjects.initialize();
+
+    std::cout << "Hello 3" << std::endl;
+
+    renderer.InitOpenGL();
+
 }
 
 void Game::drawScene() {
@@ -72,7 +80,7 @@ void Game::processTickCount() {
         size_t delta = (newTickCount - lastTickCount > CONST_MAX_TIME_INTERVAL) ? 
             CONST_MAX_TIME_INTERVAL : newTickCount - lastTickCount;
         
-        gameObjects.update();
+        gameObjects.updateScene(delta);
         
         lastTickCount = newTickCount;
     }
@@ -98,6 +106,7 @@ void Game::update() {
             exitGameLoop = true;
         }
         gameObjects.handleEvent(event);
+
     }
     render();
 }

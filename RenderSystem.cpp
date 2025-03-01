@@ -18,7 +18,7 @@ void RenderSystem::drawScene(const GameObjectManager& gameObjects) {
     static const std::string vTexCoordName = "vTexCoord";
     static const std::string textureUniformName = "Texture";
 
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glViewport(0, 0, Environment::width, Environment::height);
@@ -51,6 +51,7 @@ void RenderSystem::drawWorld(const GameObjectManager& gameObjects) {
     float t = 0.3;
     renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
 
+
     // Draw cone
     glBindTexture(GL_TEXTURE_2D, gameObjects.coneTexturePtr->getTexID());
     renderer.DrawVertexRenderStruct(gameObjects.coneMeshMutable);
@@ -69,6 +70,7 @@ void RenderSystem::drawWorld(const GameObjectManager& gameObjects) {
     // Draw room
     glBindTexture(GL_TEXTURE_2D, gameObjects.roomTexturePtr->getTexID());
     renderer.DrawVertexRenderStruct(gameObjects.textMeshMutable);
+
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
     

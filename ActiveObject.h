@@ -3,6 +3,7 @@
 #include "Math.h"
 #include <memory>
 
+namespace ZL {
 struct ActiveObject {
     std::shared_ptr<ZL::Texture> activeObjectTexturePtr;
     ZL::VertexDataStruct activeObjectMesh;
@@ -15,3 +16,5 @@ struct ActiveObject {
     ZL::Vector3f objectPos;
     bool highlighted = false;
 };
+
+}

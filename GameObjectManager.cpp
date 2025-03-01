@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "ObjLoader.h"
 #include "Inventory.h"
+#include "Room.h"
 #include "TextModel.h"  // Add this include for LoadFromTextFile
 
 namespace ZL {
@@ -10,10 +11,13 @@ const float GameObjectManager::INVENTORY_ICON_SIZE = 32.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
 void GameObjectManager::initialize() {
-    // Load textures
-    roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+
+    std::cout << "Hello x1" << std::endl;
+
     coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
-    
+
+    std::cout << "Hello x2" << std::endl;
+
     // Load models
     colorCubeMesh = CreateCube3D(5.0);
     colorCubeMeshMutable.data = CreateCube3D(5.0);
@@ -25,14 +29,22 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
+    std::cout << "Hello x2" << std::endl;
+
     textMesh = ZL::LoadFromTextFile("./mesh001.txt");  // Add ZL:: namespace
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
+
+    std::cout << "Hello x3" << std::endl;
+
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
     coneMeshMutable.AssignFrom(coneMesh);
     coneMeshMutable.RefreshVBO();
+
+    std::cout << "Hello x4" << std::endl;
+
 
     // Load bone animations
     bx.LoadFromFile("mesh_armature_and_animation_data.txt");
@@ -51,11 +63,16 @@ void GameObjectManager::initialize() {
     ao1.activeObjectScreenMeshMutable.RefreshVBO();
     activeObjects.push_back(ao1);
 
+    std::cout << "Hello x5" << std::endl;
+
+
     // Initialize audio
     audioPlayer = std::make_unique<AudioPlayer>();
     if (audioPlayer) {
         audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
     }
+
+    std::cout << "Hello x6" << std::endl;
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
@@ -66,21 +83,33 @@ void GameObjectManager::initialize() {
     inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
     inventoryIconMeshMutable.RefreshVBO();
 
+    std::cout << "Hello x7" << std::endl;
+
+
     // Add test items to inventory
     auto testRoomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
     auto testConeTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
     AddItemToInventory("RoomCeramics", testRoomTexture);
     AddItemToInventory("Cone", testConeTexture);
+
+    std::cout << "Hello x8" << std::endl;
+
+
+    roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+
 }
 
-void GameObjectManager::update() {
-    updateScene(16); // Добавим фиксированный timestep для обновления сцены
-}
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     if (event.type == SDL_MOUSEBUTTONDOWN) {
         bx.Interpolate(animationCounter);
         animationCounter += 2;
+    }
+    else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
+
+        //switchRoom();
+
+
     }
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
@@ -154,6 +183,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
 }
 
+
 void GameObjectManager::updateScene(size_t ms) {
     const float SPEED = 0.1f;
     if (Environment::leftPressed) {
@@ -180,6 +210,7 @@ void GameObjectManager::updateScene(size_t ms) {
             pow(Environment::characterPos.v[2] - ao.objectPos.v[2], 2)
         );
         ao.highlighted = (dist < 50.f);
+
     }
 }
 

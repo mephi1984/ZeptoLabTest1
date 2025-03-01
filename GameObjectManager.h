@@ -12,7 +12,7 @@ namespace ZL {
 class GameObjectManager {
 public:
     void initialize();
-    void update();
+
     void handleEvent(const SDL_Event& event);
     void updateScene(size_t ms);
     void checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView); // Добавляем новый метод
@@ -36,7 +36,7 @@ public:
     ZL::VertexDataStruct coneMesh;
     ZL::VertexRenderStruct coneMeshMutable;
 
-    std::vector<ActiveObject> activeObjects;
+    std::vector<ZL::ActiveObject> activeObjects;
     std::unique_ptr<AudioPlayer> audioPlayer;
 
     ZL::VertexDataStruct inventoryIconMesh;
