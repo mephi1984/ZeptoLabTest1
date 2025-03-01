@@ -16,7 +16,7 @@
 #include "AnimatedModel.h"
 #include "BoneAnimatedModel.h"
 
-ZL::AnimatedModel testLoadModel();
+//ZL::AnimatedModel testLoadModel();
 
 namespace ZL
 {
@@ -282,7 +282,7 @@ namespace ZL
 
 		CheckGlError();
 
-		GameObjects::testmd3 = testLoadModel();
+		///GameObjects::testmd3 = testLoadModel();
 
 		/*
 		GameObjects::testmd3mutable.resize(GameObjects::testmd3.size());
