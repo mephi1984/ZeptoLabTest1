@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
+#include "Room.h"
+#include <SDL2/SDL.h>
 #include "OpenGlExtensions.h"
 
 namespace ZL {
@@ -12,6 +14,8 @@ namespace ZL {
 class GameObjectManager {
 public:
     void initialize();
+
+    void switch_room(int index);
 
     void handleEvent(const SDL_Event& event);
     void updateScene(size_t ms);
@@ -37,6 +41,7 @@ public:
     ZL::VertexRenderStruct coneMeshMutable;
 
     std::vector<ZL::ActiveObject> activeObjects;
+    std::vector<ZL::Room> rooms;
     std::unique_ptr<AudioPlayer> audioPlayer;
 
     ZL::VertexDataStruct inventoryIconMesh;
@@ -49,6 +54,7 @@ private:
     int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
+    int current_room_index;
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
