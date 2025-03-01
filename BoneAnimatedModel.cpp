@@ -251,7 +251,7 @@ namespace ZL
 		}
 
 		std::getline(f, tempLine);//=== Vertex Weights ===
-		std::vector<std::array<BoneWeight, 3>> localVerticesBoneWeight;
+		std::vector<std::array<BoneWeight, MAX_BONE_COUNT>> localVerticesBoneWeight;
 		localVerticesBoneWeight.resize(numberVertices);
 
 		for (int i = 0; i < numberVertices; i++)
@@ -268,9 +268,9 @@ namespace ZL
 				throw std::runtime_error("No number found in the input string.");
 			}
 
-			if (boneCount > 3)
+			if (boneCount > MAX_BONE_COUNT)
 			{
-				throw std::runtime_error("more than 3 bones");
+				throw std::runtime_error("more than 5 bones");
 			}
 
 			float sumWeights = 0;
@@ -464,6 +464,7 @@ namespace ZL
 		//std::vector<Matrix3f> skinningMatrixForEachBone;
 		skinningMatrixForEachBone.resize(currentBones.size());
 
+		
 		for (int i = 0; i < currentBones.size(); i++)
 		{
 			currentBones[i].boneStartWorld.v[0] = oneFrameBones[i].boneStartWorld.v[0] + t * (nextFrameBones[i].boneStartWorld.v[0] - oneFrameBones[i].boneStartWorld.v[0]);
@@ -472,8 +473,10 @@ namespace ZL
 			
 			Vector4f q1 = MatrixToQuat(oneFrameBones[i].boneMatrixWorld);
 			Vector4f q2 = MatrixToQuat(nextFrameBones[i].boneMatrixWorld);
+			Vector4f q1_norm = q1.normalized();
+			Vector4f q2_norm = q2.normalized();
 
-			Vector4f result = slerp(q1, q2, t);
+			Vector4f result = slerp(q1_norm, q2_norm, t);
 
 			currentBones[i].boneMatrixWorld = QuatToMatrix(result);
 
@@ -486,7 +489,20 @@ namespace ZL
 			skinningMatrixForEachBone[i] = MultMatrixMatrix(currentBoneMatrixWorld4, inverstedStartBoneMatrixWorld4);
 			
 		}
+		
+		
+		/*
+		for (int i = 0; i < currentBones.size(); i++)
+		{
+			currentBones[i].boneStartWorld = oneFrameBones[i].boneStartWorld;
+			currentBones[i].boneMatrixWorld = oneFrameBones[i].boneMatrixWorld;
+			Matrix4f currentBoneMatrixWorld4 = MakeMatrix4x4(currentBones[i].boneMatrixWorld, currentBones[i].boneStartWorld);
+			Matrix4f startBoneMatrixWorld4 = MakeMatrix4x4(animations[0].keyFrames[0].bones[i].boneMatrixWorld, animations[0].keyFrames[0].bones[i].boneStartWorld);
+			Matrix4f inverstedStartBoneMatrixWorld4 = InverseMatrix(startBoneMatrixWorld4);
+			skinningMatrixForEachBone[i] = MultMatrixMatrix(currentBoneMatrixWorld4, inverstedStartBoneMatrixWorld4);
 
+		}
+		*/
 		for (int i = 0; i < mesh.PositionData.size(); i++)
 		{
 			Vector4f originalPos = { 
@@ -495,15 +511,28 @@ namespace ZL
 				startMesh.PositionData[i].v[2], 1.0};
 
 			Vector4f finalPos = Vector4f{0.f, 0.f, 0.f, 0.f};
+
+			bool vMoved = false;
 			//Vector3f finalPos = Vector3f{ 0.f, 0.f, 0.f };
 
-			for (int j = 0; j < 3; j++)
+			for (int j = 0; j < MAX_BONE_COUNT; j++)
 			{
 				if (verticesBoneWeight[i][j].weight != 0)
 				{
+					vMoved = true;
 					//finalPos = finalPos + MultVectorMatrix(originalPos, skinningMatrixForEachBone[verticesBoneWeight[i][j].boneIndex]) * verticesBoneWeight[i][j].weight;
 					finalPos = finalPos + MultMatrixVector(skinningMatrixForEachBone[verticesBoneWeight[i][j].boneIndex], originalPos) * verticesBoneWeight[i][j].weight;
 				}
+			}
+
+			if (abs(finalPos.v[0] - originalPos.v[0]) > 1 || abs(finalPos.v[1] - originalPos.v[1]) > 1 || abs(finalPos.v[2] - originalPos.v[2]) > 1)
+			{
+				std::cout << "Hello!" << std::endl;
+			}
+
+			if (!vMoved)
+			{
+				std::cout << "Hello!" << std::endl;
 			}
 
 			mesh.PositionData[i].v[0] = finalPos.v[0];

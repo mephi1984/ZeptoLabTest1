@@ -247,68 +247,42 @@ namespace ZL {
 	Vector4f MatrixToQuat(const Matrix3f& m)
 	{
 		Vector4f r;
-		float f;
+		float trace = m.m[0] + m.m[4] + m.m[8]; 
 
-
-		if (m.m[0] >= m.m[4] && m.m[0] >= m.m[8])
+		if (trace > 0)
 		{
-			f = sqrtf(1.0 + m.m[0] - m.m[4] - m.m[8]);
-			if (f != 0)
-			{
-				r.v[3] = (m.m[5] - m.m[7]) / (f + f);
-				r.v[0] = f / 2;
-				r.v[1] = (m.m[3] + m.m[1]) / (f + f);
-				r.v[2] = (m.m[6] + m.m[2]) / (f + f);
-			}
-			else
-			{
-				r.v[3] = 1;
-				r.v[2] = 0;
-				r.v[1] = 0;
-				r.v[0] = 0;
-			}
+			float s = 0.5f / sqrtf(trace + 1.0f);
+			r.v[3] = 0.25f / s;
+			r.v[0] = (m.m[5] - m.m[7]) * s;
+			r.v[1] = (m.m[6] - m.m[2]) * s;
+			r.v[2] = (m.m[1] - m.m[3]) * s;
+		}
+		else if (m.m[0] > m.m[4] && m.m[0] > m.m[8])
+		{
+			float s = 2.0f * sqrtf(1.0f + m.m[0] - m.m[4] - m.m[8]);
+			r.v[3] = (m.m[5] - m.m[7]) / s;
+			r.v[0] = 0.25f * s;
+			r.v[1] = (m.m[1] + m.m[3]) / s;
+			r.v[2] = (m.m[6] + m.m[2]) / s;
+		}
+		else if (m.m[4] > m.m[8])
+		{
+			float s = 2.0f * sqrtf(1.0f + m.m[4] - m.m[0] - m.m[8]);
+			r.v[3] = (m.m[6] - m.m[2]) / s;
+			r.v[0] = (m.m[1] + m.m[3]) / s;
+			r.v[1] = 0.25f * s;
+			r.v[2] = (m.m[5] + m.m[7]) / s;
+		}
+		else
+		{
+			float s = 2.0f * sqrtf(1.0f + m.m[8] - m.m[0] - m.m[4]);
+			r.v[3] = (m.m[1] - m.m[3]) / s;
+			r.v[0] = (m.m[6] + m.m[2]) / s;
+			r.v[1] = (m.m[5] + m.m[7]) / s;
+			r.v[2] = 0.25f * s;
 		}
 
-		if (m.m[4] >= m.m[0] && m.m[4] >= m.m[8])
-		{
-			f = sqrtf(1 + m.m[4] - m.m[0] - m.m[8]);
-			if (f != 0)
-			{
-				r.v[3] = (m.m[6] - m.m[2]) / (f + f);
-				r.v[1] = f / 2;
-				r.v[0] = (m.m[1] + m.m[3]) / (f + f);
-				r.v[2] = (m.m[7] + m.m[5]) / (f + f);
-			}
-			else
-			{
-				r.v[3] = 1;
-				r.v[2] = 0;
-				r.v[1] = 0;
-				r.v[0] = 0;
-			}
-		}
-
-		if (m.m[8] >= m.m[4] && m.m[8] >= m.m[0])
-		{
-			f = sqrtf(1 + m.m[8] - m.m[2]);
-			if (f != 0)
-			{
-				r.v[3] = (m.m[1] - m.m[3]) / (f + f);
-				r.v[2] = f / 2;
-				r.v[1] = (m.m[5] + m.m[7]) / (f + f);
-				r.v[0] = (m.m[6] + m.m[2]) / (f + f);
-			}
-			else
-			{
-				r.v[3] = 1;
-				r.v[2] = 0;
-				r.v[1] = 0;
-				r.v[0] = 0;
-			}
-		}
-
-		return r;
-
+		return r.normalized();
 	}
 
 	Vector4f QuatFromRotateAroundX(float angle)
@@ -681,65 +655,51 @@ namespace ZL {
 		return r;
 	}
 
-	Vector4f slerp(const Vector4f& q1, const Vector4f& q2, double t)
+	Vector4f slerp(const Vector4f& q1, const Vector4f& q2, float t)
 	{
-		// ��������� ������� ���� ����� �������������
-		double cosTheta = q1.dot(q2);
+		const float epsilon = 1e-6f;
 
-		// ���� cosTheta < 0, ������ ���� ������� �����������, ����� ������� ���������� ����
-		Vector4f q2Adjusted = q2;
-		if (cosTheta < 0.0) {
-			//q2Adjusted = { -q2.w, -q2.x, -q2.y, -q2.z };
-			q2Adjusted.v[0] = -q2.v[0];
-			q2Adjusted.v[1] = -q2.v[1];
-			q2Adjusted.v[2] = -q2.v[2];
-			q2Adjusted.v[3] = -q2.v[3];
+		// Нормализация входных кватернионов
+		Vector4f q1_norm = q1.normalized();
+		Vector4f q2_norm = q2.normalized();
+
+		float cosTheta = q1_norm.dot(q2_norm);
+
+		// Если q1 и q2 близки к противоположным направлениям, корректируем q2
+		Vector4f q2_adjusted = q2_norm;
+		if (cosTheta < 0.0f) {
+			q2_adjusted.v[0] = -q2_adjusted.v[0];
+			q2_adjusted.v[1] = -q2_adjusted.v[1];
+			q2_adjusted.v[2] = -q2_adjusted.v[2];
+			q2_adjusted.v[3] = -q2_adjusted.v[3];
 			cosTheta = -cosTheta;
 		}
 
-		// ���� ����������� ������, ���������� �������� ������������
-		const double epsilon = 1e-6;
-		if (cosTheta > 1.0 - epsilon) {
-
+		// Если кватернионы близки, используем линейную интерполяцию
+		if (cosTheta > 1.0f - epsilon) {
 			Vector4f result;
 
-			result.v[0] = q1.v[0] + t * (q2Adjusted.v[0] - q1.v[0]);
-			result.v[1] = q1.v[1] + t * (q2Adjusted.v[1] - q1.v[1]);
-			result.v[2] = q1.v[2] + t * (q2Adjusted.v[2] - q1.v[2]);
-			result.v[3] = q1.v[3] + t * (q2Adjusted.v[3] - q1.v[3]);
-			
-			/*Quaternion result = {
-				q1.w + t * (q2Adjusted.w - q1.w),
-				q1.x + t * (q2Adjusted.x - q1.x),
-				q1.y + t * (q2Adjusted.y - q1.y),
-				q1.z + t * (q2Adjusted.z - q1.z)
-			};*/
+			result.v[0] = q1_norm.v[0] + t * (q2_adjusted.v[0] - q1_norm.v[0]);
+			result.v[1] = q1_norm.v[1] + t * (q2_adjusted.v[1] - q1_norm.v[1]);
+			result.v[2] = q1_norm.v[2] + t * (q2_adjusted.v[2] - q1_norm.v[2]);
+			result.v[3] = q1_norm.v[3] + t * (q2_adjusted.v[3] - q1_norm.v[3]);
+
 			return result.normalized();
 		}
 
-		// ��������� ���� theta
-		double theta = std::acos(cosTheta);
-		double sinTheta = std::sin(theta);
+		// Иначе используем сферическую интерполяцию
+		float theta = std::acos(cosTheta);
+		float sinTheta = std::sin(theta);
 
-		// ��������� ������������ ��� ������������
-		double coeff1 = std::sin((1.0 - t) * theta) / sinTheta;
-		double coeff2 = std::sin(t * theta) / sinTheta;
+		float coeff1 = std::sin((1.0f - t) * theta) / sinTheta;
+		float coeff2 = std::sin(t * theta) / sinTheta;
 
-		// �������������
-		/*
-		Quaternion result = {
-			coeff1 * q1.w + coeff2 * q2Adjusted.w,
-			coeff1 * q1.x + coeff2 * q2Adjusted.x,
-			coeff1 * q1.y + coeff2 * q2Adjusted.y,
-			coeff1 * q1.z + coeff2 * q2Adjusted.z
-		};*/
 		Vector4f result;
 
-		result.v[0] = coeff1 * q1.v[0] + coeff2 * q2Adjusted.v[0];
-		result.v[1] = coeff1 * q1.v[1] + coeff2 * q2Adjusted.v[1];
-		result.v[2] = coeff1 * q1.v[2] + coeff2 * q2Adjusted.v[2];
-		result.v[3] = coeff1 * q1.v[3] + coeff2 * q2Adjusted.v[3];
-
+		result.v[0] = coeff1 * q1_norm.v[0] + coeff2 * q2_adjusted.v[0];
+		result.v[1] = coeff1 * q1_norm.v[1] + coeff2 * q2_adjusted.v[1];
+		result.v[2] = coeff1 * q1_norm.v[2] + coeff2 * q2_adjusted.v[2];
+		result.v[3] = coeff1 * q1_norm.v[3] + coeff2 * q2_adjusted.v[3];
 
 		return result.normalized();
 	}

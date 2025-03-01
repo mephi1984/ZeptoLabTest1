@@ -6,6 +6,7 @@
 
 namespace ZL
 {
+	constexpr int MAX_BONE_COUNT = 6;
 	struct Bone
 	{
 		Vector3f boneStartWorld;
@@ -39,7 +40,9 @@ namespace ZL
 	{
 		VertexDataStruct mesh;
 		VertexDataStruct startMesh;
-		std::vector<std::array<BoneWeight, 3>> verticesBoneWeight;
+		std::vector<std::array<BoneWeight, MAX_BONE_COUNT>> verticesBoneWeight;
+		
+		Matrix4f armatureMatrix;
 
 		std::vector<Bone> startBones;
 		std::vector<Bone> currentBones;

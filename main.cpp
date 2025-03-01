@@ -144,6 +144,34 @@ namespace ZL
 		
 		glViewport(0, 0, Env::width, Env::height);
 
+		renderer.shaderManager.PushShader(colorShaderName);
+		renderer.RenderUniform1i(textureUniformName, 0);
+		renderer.EnableVertexAttribArray(vPositionName);
+
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5, static_cast<float>(Env::width) / static_cast<float>(Env::height), 50, 10000);
+		renderer.PushMatrix();
+
+		renderer.LoadIdentity();
+
+		renderer.TranslateMatrix({ 0,0, -100 * Env::zoom });
+
+		float t = 0.3;
+
+		renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
+
+		GameObjects::bxMutable.AssignFrom(GameObjects::bx.mesh);
+		GameObjects::bxMutable.RefreshVBO();
+		renderer.DrawVertexRenderStruct(GameObjects::bxMutable);
+
+
+		renderer.PopMatrix();
+		renderer.PopProjectionMatrix();
+
+		renderer.DisableVertexAttribArray(vPositionName);
+
+		renderer.shaderManager.PopShader();
+#if 0
+
 		renderer.shaderManager.PushShader(defaultShaderName);
 		renderer.RenderUniform1i(textureUniformName, 0);
 
@@ -217,6 +245,7 @@ namespace ZL
 
 		renderer.shaderManager.PopShader();
 		
+#endif
 		CheckGlError();
 
 	}
@@ -318,7 +347,8 @@ namespace ZL
 		renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
 		std::cout << "Hello test 2x" << std::endl;
 
-		GameObjects::bx.LoadFromFile("mesh_armature_and_animation_data.txt");
+		//GameObjects::bx.LoadFromFile("mesh_armature_and_animation_data.txt");
+		GameObjects::bx.LoadFromFile("via004.txt");
 
 		std::cout << "Hello test 3" << std::endl;
 
@@ -337,6 +367,7 @@ namespace ZL
 		GameObjects::testObjMeshMutable.data = GameObjects::testObjMesh;
 		GameObjects::testObjMeshMutable.RefreshVBO();
 
+		/*
 		GameObjects::textMesh = LoadFromTextFile("./mesh001.txt");
 
 		GameObjects::coneMesh = LoadFromTextFile("./cone001.txt");
@@ -347,7 +378,7 @@ namespace ZL
 		GameObjects::textMeshMutable.RefreshVBO();
 		GameObjects::coneMeshMutable.AssignFrom(GameObjects::coneMesh);
 		GameObjects::coneMeshMutable.RefreshVBO();
-
+		*/
 
 		ActiveObject ao1;
 
@@ -425,7 +456,7 @@ namespace ZL
 				static int x = 0;
 
 				GameObjects::bx.Interpolate(x);
-				x = x + 2;
+				x = x + 3;
 			}
 			if (event.type == SDL_MOUSEWHEEL) {
 
