@@ -26,6 +26,16 @@ namespace ZL
 
 		int width = 0;
 		int height = 0;
+
+		float zoom = 10.0;
+
+		bool leftPressed = false;
+		bool rightPressed = false;
+		bool upPressed = false;
+		bool downPressed = false;
+
+		Vector3f cameraShift = {0,0,0};
+
 		/*
 		Vector2f birdStartPos;
 
@@ -41,7 +51,8 @@ namespace ZL
 	{
 		std::shared_ptr<Texture> testObjTexturePtr;
 		std::shared_ptr<Texture> roomTexturePtr;
-		
+		std::shared_ptr<Texture> coneTexturePtr;
+
 		VertexDataStruct colorCubeMesh;
 		VertexRenderStruct colorCubeMeshMutable;
 
@@ -53,6 +64,9 @@ namespace ZL
 
 		VertexDataStruct textMesh;
 		VertexRenderStruct textMeshMutable;
+
+		VertexDataStruct coneMesh;
+		VertexRenderStruct coneMeshMutable;
 
 	}
 
@@ -85,7 +99,7 @@ namespace ZL
 		static const std::string vColorName = "vColor";
 		static const std::string textureUniformName = "Texture";
 
-		glClearColor(0.0f, 0.1f, 0.0f, 1.0f);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 		
 		glViewport(0, 0, Env::width, Env::height);
@@ -96,23 +110,32 @@ namespace ZL
 		renderer.EnableVertexAttribArray(vPositionName);
 		renderer.EnableVertexAttribArray(vTexCoordName);
 
-		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 10, 50000);
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5, static_cast<float>(Env::width) / static_cast<float>(Env::height), 50, 10000);
 		renderer.PushMatrix();
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ 0,0, -4000 });
-
-		float t = 0.7;
+		renderer.TranslateMatrix({ 0,0, -100* Env::zoom });
+	
+		float t = 0.3;
 
 		renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
 
-		GameObjects::textMeshMutable.AssignFrom(GameObjects::textMesh);
-		GameObjects::textMeshMutable.RefreshVBO();
+		//GameObjects::textMeshMutable.AssignFrom(GameObjects::textMesh);
+		//GameObjects::textMeshMutable.RefreshVBO();
 
+		glBindTexture(GL_TEXTURE_2D, GameObjects::coneTexturePtr->getTexID());
+		renderer.DrawVertexRenderStruct(GameObjects::coneMeshMutable);
+
+		renderer.TranslateMatrix(Env::cameraShift);
 
 		glBindTexture(GL_TEXTURE_2D, GameObjects::roomTexturePtr->getTexID());
 		renderer.DrawVertexRenderStruct(GameObjects::textMeshMutable);
+
+		
+		
+
+
 
 		//renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
 		//renderer.RotateMatrix(QuatFromRotateAroundZ(-M_PI / 4.0));
@@ -204,6 +227,27 @@ namespace ZL
 	}
 
 	
+	void UpdateScene(size_t ms)
+	{
+		const float SPEED = 0.1f;
+		if (Env::leftPressed)
+		{
+			Env::cameraShift.v[0] += SPEED * ms;
+		}
+		if (Env::rightPressed)
+		{
+			Env::cameraShift.v[0] -= SPEED * ms;
+		}
+
+		if (Env::upPressed)
+		{
+			Env::cameraShift.v[2] += SPEED * ms;
+		}
+		if (Env::downPressed)
+		{
+			Env::cameraShift.v[2] -= SPEED * ms;
+		}
+	}
 
 	void ProcessTickCount()
 	{
@@ -219,11 +263,11 @@ namespace ZL
 		{
 			if (NewTickCount - LastTickCount > CONST_MAX_TIME_INTERVAL)
 			{
-				//gs.UpdateScene(CONST_MAX_TIME_INTERVAL); //Limit game update speed to FPS
+				UpdateScene(CONST_MAX_TIME_INTERVAL); //Limit game update speed to FPS
 			}
 			else
 			{
-				//gs.UpdateScene(NewTickCount - LastTickCount);
+				UpdateScene(NewTickCount - LastTickCount);
 			}
 			
 			LastTickCount = NewTickCount;
@@ -263,7 +307,8 @@ namespace ZL
 		CheckGlError();
 
 		GameObjects::roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
-		
+		GameObjects::coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
+
 
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.data = CreateCube3D(5.0);
@@ -276,6 +321,15 @@ namespace ZL
 		GameObjects::testObjMeshMutable.RefreshVBO();
 
 		GameObjects::textMesh = LoadFromTextFile("./mesh001.txt");
+
+		GameObjects::coneMesh = LoadFromTextFile("./cone001.txt");
+
+		GameObjects::coneMesh.Scale(200);
+
+		GameObjects::textMeshMutable.AssignFrom(GameObjects::textMesh);
+		GameObjects::textMeshMutable.RefreshVBO();
+		GameObjects::coneMeshMutable.AssignFrom(GameObjects::coneMesh);
+		GameObjects::coneMeshMutable.RefreshVBO();
 
 		std::cout << "Hello test 4x" << std::endl;
 		
@@ -309,18 +363,74 @@ namespace ZL
 			if (event.type == SDL_QUIT) {
 				ExitGameLoop = true;
 			}
-			if (event.type == SDL_MOUSEBUTTONDOWN)
-			{
+			if (event.type == SDL_MOUSEBUTTONDOWN) {
 				static int x = 0;
 
 				GameObjects::bx.Interpolate(x);
 				x = x + 2;
 			}
+			if (event.type == SDL_MOUSEWHEEL) {
+
+				static const float zoomstep = 1.0f;
+				if (event.wheel.y > 0) {
+					// Прокрутка вверх - увеличиваем zoom
+					Env::zoom -= zoomstep;
+				}
+				else if (event.wheel.y < 0) {
+					// Прокрутка вниз - уменьшаем zoom
+					Env::zoom += zoomstep;
+				}
+				// Ограничиваем zoom, чтобы он не стал отрицательным
+				if (Env::zoom < zoomstep) {
+					Env::zoom = zoomstep;
+				}
+			}
+			if (event.type == SDL_KEYDOWN) {
+				switch (event.key.keysym.sym) {
+				case SDLK_LEFT:
+				case SDLK_a:
+					Env::leftPressed = true;
+					break;
+				case SDLK_RIGHT:
+				case SDLK_d:
+					Env::rightPressed = true;
+					break;
+				case SDLK_UP:
+				case SDLK_w:
+					Env::upPressed = true;
+					break;
+				case SDLK_DOWN:
+				case SDLK_s:
+					Env::downPressed = true;
+					break;
+				}
+
+			}
+
+			if (event.type == SDL_KEYUP) {
+				switch (event.key.keysym.sym) {
+				case SDLK_LEFT:
+				case SDLK_a:
+					Env::leftPressed = false;
+					break;
+				case SDLK_RIGHT:
+				case SDLK_d:
+					Env::rightPressed = false;
+					break;
+				case SDLK_UP:
+				case SDLK_w:
+					Env::upPressed = false;
+					break;
+				case SDLK_DOWN:
+				case SDLK_s:
+					Env::downPressed = false;
+					break;
+				}
+			}
 		}
 
 		render();
-
-	};
+	}
 
 };
 

@@ -618,6 +618,8 @@ namespace ZL {
 		static const std::string vColor("vColor");
 		static const std::string vTexCoord("vTexCoord");
 		static const std::string vPosition("vPosition");
+		
+		//glBindVertexArray(VertexRenderStruct.vao->getBuffer());
 
 		//Check if main thread, check if data is not empty...
 		if (VertexRenderStruct.data.NormalData.size() > 0)

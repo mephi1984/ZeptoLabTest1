@@ -186,11 +186,11 @@ namespace ZL
 			result.PositionData.push_back(vertices[triangles[i][1]]);
 			result.PositionData.push_back(vertices[triangles[i][2]]);
 
-
+			/*
 			result.NormalData.push_back(normals[triangles[i][0]]);
 			result.NormalData.push_back(normals[triangles[i][1]]);
 			result.NormalData.push_back(normals[triangles[i][2]]);
-
+			*/
 			result.TexCoordData.push_back(uvCoords[i][0]);
 			result.TexCoordData.push_back(uvCoords[i][1]);
 			result.TexCoordData.push_back(uvCoords[i][2]);
@@ -205,10 +205,11 @@ namespace ZL
 			result.PositionData[i].v[1] = tempVec.v[2];
 			result.PositionData[i].v[2] = tempVec.v[0];
 
+			/*
 			tempVec = result.NormalData[i];
 			result.NormalData[i].v[0] = tempVec.v[1];
 			result.NormalData[i].v[1] = tempVec.v[2];
-			result.NormalData[i].v[2] = tempVec.v[0];
+			result.NormalData[i].v[2] = tempVec.v[0];*/
 
 		}
 
