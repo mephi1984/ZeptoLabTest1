@@ -33,3 +33,4 @@ target_link_libraries(audioplayer
 # Test executable
 add_executable(test_audio examples/test_audio.cpp)
 target_link_libraries(test_audio PRIVATE audioplayer stdc++fs)
+git add ../../sounds

@@ -44,22 +44,29 @@ bool AudioPlayer::isOggFile(const std::string& filename) const {
 }
 
 std::string AudioPlayer::findFileInSounds(const std::string& filename) {
-    // Check relative to executable location first (../../sounds)
-    std::filesystem::path soundsDir = std::filesystem::current_path() / ".." / ".." / "sounds";
+    // Primary search path - "sounds" directory next to executable
+    std::filesystem::path soundsDir = std::filesystem::current_path() / "sounds";
     
-    // Fallback to ../sounds if not found
-    std::filesystem::path altSoundsDir = std::filesystem::current_path() / ".." / "sounds";
+    // Alternative search paths
+    std::vector<std::filesystem::path> altPaths = {
+        std::filesystem::current_path() / ".." / "sounds",          // One level up
+        std::filesystem::current_path() / ".." / ".." / "sounds",   // Two levels up
+        "/home/albert/gay-jam/ZeptoLabTest1/sounds"                 // Absolute path
+    };
     
     std::cout << "🔍 Searching for \"" << filename << "\" in:\n";
     std::cout << "   " << soundsDir << "\n";
-    std::cout << "   " << altSoundsDir << "\n";
     
     if (std::filesystem::exists(soundsDir / filename)) {
         return (soundsDir / filename).string();
     }
     
-    if (std::filesystem::exists(altSoundsDir / filename)) {
-        return (altSoundsDir / filename).string();
+    // Try alternative paths
+    for (const auto& path : altPaths) {
+        std::cout << "   " << path << "\n";
+        if (std::filesystem::exists(path / filename)) {
+            return (path / filename).string();
+        }
     }
     
     throw std::runtime_error("❌ File not found: " + filename);
