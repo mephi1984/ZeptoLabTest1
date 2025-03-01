@@ -116,13 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Work\SDL2-2.28.3\include;C:\Work\Projects\lpng1645\build\install\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Work\SDL2-2.28.3\include;C:\Work\Projects\lpng1645\build\install\include;C:\Work\OpenAL 1.1 SDK\include;C:\Work\Projects\libogg\include;C:\Work\Projects\vorbis\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libpng16_staticd.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;shell32.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Work\SDL2-2.28.3\lib\x64;C:\Work\Projects\lpng1645\build\install\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libogg_static.lib;audioplayer.lib;vorbisfile.lib;vorbis.lib;OpenAL32.lib;libpng16_staticd.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;shell32.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Work\Projects\ZeptoLabTest1\cmakeaudioplayer\build\Debug;C:\Work\SDL2-2.28.3\lib\x64;C:\Work\Projects\lpng1645\build\install\lib;C:\Work\Projects\vorbis\build\lib\Debug;C:\Work\OpenAL 1.1 SDK\libs\Win64;C:\Work\Projects\libogg\win32\VS2010\x64\Debug</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
@@ -146,7 +146,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoneAnimatedModel.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Math.cpp" />
@@ -155,15 +159,21 @@
     <ClCompile Include="OpenGlExtensions.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="TextModel.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActiveObject.h" />
     <ClInclude Include="AnimatedModel.h" />
     <ClInclude Include="BoneAnimatedModel.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="md3test.h" />
@@ -171,6 +181,7 @@
     <ClInclude Include="OpenGlExtensions.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="TextModel.h" />
     <ClInclude Include="TextureManager.h" />

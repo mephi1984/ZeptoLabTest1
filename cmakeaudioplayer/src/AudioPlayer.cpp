@@ -6,7 +6,8 @@
 #include <cstdint>
 #include <algorithm>
 
-AudioPlayer::AudioPlayer() : device(nullptr), context(nullptr), source(0), buffer(0), playing(false) {
+AudioPlayer::AudioPlayer() : device(nullptr), context(nullptr), 
+    musicSource(0), soundSource(0), musicBuffer(0), soundBuffer(0), playing(false) {
     device = alcOpenDevice(nullptr);
     if (!device) {
         throw std::runtime_error("Failed to open audio device");
@@ -19,15 +20,21 @@ AudioPlayer::AudioPlayer() : device(nullptr), context(nullptr), source(0), buffe
     }
 
     alcMakeContextCurrent(context);
-    alGenSources(1, &source);
-    alGenBuffers(1, &buffer);
+    alGenSources(1, &musicSource);
+    alGenSources(1, &soundSource);
+    alGenBuffers(1, &musicBuffer);
+    alGenBuffers(1, &soundBuffer);
 }
 
 AudioPlayer::~AudioPlayer() {
-    if (source)
-        alDeleteSources(1, &source);
-    if (buffer)
-        alDeleteBuffers(1, &buffer);
+    if (musicSource)
+        alDeleteSources(1, &musicSource);
+    if (soundSource)
+        alDeleteSources(1, &soundSource);
+    if (musicBuffer)
+        alDeleteBuffers(1, &musicBuffer);
+    if (soundBuffer)
+        alDeleteBuffers(1, &soundBuffer);
     
     if (context) {
         alcMakeContextCurrent(nullptr);
@@ -44,28 +51,35 @@ bool AudioPlayer::isOggFile(const std::string& filename) const {
 }
 
 std::string AudioPlayer::findFileInSounds(const std::string& filename) {
-    // Check relative to executable location first (../../sounds)
-    std::filesystem::path soundsDir = std::filesystem::current_path() / ".." / ".." / "sounds";
+    // Primary search path - "sounds" directory next to executable
+    std::filesystem::path soundsDir = std::filesystem::current_path() / "sounds";
     
-    // Fallback to ../sounds if not found
-    std::filesystem::path altSoundsDir = std::filesystem::current_path() / ".." / "sounds";
+    // Alternative search paths
+    std::vector<std::filesystem::path> altPaths = {
+        std::filesystem::current_path() / ".." / "sounds",          // One level up
+        std::filesystem::current_path() / ".." / ".." / "sounds",   // Two levels up
+        "/home/albert/gay-jam/ZeptoLabTest1/sounds"                 // Absolute path
+    };
     
     std::cout << "🔍 Searching for \"" << filename << "\" in:\n";
     std::cout << "   " << soundsDir << "\n";
-    std::cout << "   " << altSoundsDir << "\n";
     
     if (std::filesystem::exists(soundsDir / filename)) {
         return (soundsDir / filename).string();
     }
     
-    if (std::filesystem::exists(altSoundsDir / filename)) {
-        return (altSoundsDir / filename).string();
+    // Try alternative paths
+    for (const auto& path : altPaths) {
+        std::cout << "   " << path << "\n";
+        if (std::filesystem::exists(path / filename)) {
+            return (path / filename).string();
+        }
     }
     
     throw std::runtime_error("❌ File not found: " + filename);
 }
 
-std::vector<char> AudioPlayer::loadOgg(const std::string& filename) {
+std::vector<char> AudioPlayer::loadOgg(const std::string& filename, ALuint buffer) {
     FILE* file = fopen(filename.c_str(), "rb");
     if (!file) {
         throw std::runtime_error("Cannot open file: " + filename);
@@ -101,45 +115,79 @@ std::vector<char> AudioPlayer::loadOgg(const std::string& filename) {
     return audioData;
 }
 
-bool AudioPlayer::playFromSoundsDir(const std::string& filename) {
+bool AudioPlayer::playMusic(const std::string& filename) {
     try {
+        // Если filename пустой, просто проверяем играет ли музыка
+        if (filename.empty()) {
+            if (!isPlaying()) {
+                alSourcei(musicSource, AL_LOOPING, AL_TRUE);  // Включаем зацикливание
+                alSourcePlay(musicSource);
+            }
+            return true;
+        }
+
+        // Если filename не пустой, загружаем новую музыку
         if (!isOggFile(filename)) {
-            std::cerr << "❌ Error: File must be an .ogg file\n";
+            std::cerr << "❌ Error: Music file must be an .ogg file\n";
             return false;
         }
 
         std::string fullPath = findFileInSounds(filename);
-        std::cout << "✅ Found file: " << fullPath << "\n";
+        std::cout << "✅ Found music file: " << fullPath << "\n";
         
-        auto audioData = loadOgg(fullPath);
-        alSourcei(source, AL_BUFFER, buffer);
+        // Останавливаем текущую музыку
+        alSourceStop(musicSource);
         
-        alGetError(); // Clear any previous errors
+        // Загружаем и настраиваем новую музыку
+        loadOgg(fullPath, musicBuffer);
+        alSourcei(musicSource, AL_BUFFER, musicBuffer);
+        alSourcei(musicSource, AL_LOOPING, AL_TRUE);  // Включаем зацикливание
         
-        std::cout << "▶️ Starting playback...\n";
-        alSourcePlay(source);
+        std::cout << "▶️ Starting music playback...\n";
+        alSourcePlay(musicSource);
         
-        ALenum error = alGetError();
-        if (error != AL_NO_ERROR) {
-            std::cerr << "❌ OpenAL error: " << error << std::endl;
-            return false;
-        }
-        
+        currentMusic = filename;
         playing = true;
         return true;
     } catch (const std::exception& e) {
-        std::cerr << "❌ Error: " << e.what() << std::endl;
+        std::cerr << "❌ Error playing music: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool AudioPlayer::playSound(const std::string& filename) {
+    try {
+        if (!isOggFile(filename)) {
+            std::cerr << "❌ Error: Sound file must be an .ogg file\n";
+            return false;
+        }
+
+        std::string fullPath = findFileInSounds(filename);
+        std::cout << "✅ Found sound file: " << fullPath << "\n";
+        
+        // Загружаем и настраиваем звук
+        loadOgg(fullPath, soundBuffer);
+        alSourcei(soundSource, AL_BUFFER, soundBuffer);
+        alSourcei(soundSource, AL_LOOPING, AL_FALSE);  // Выключаем зацикливание
+        
+        std::cout << "▶️ Playing sound effect...\n";
+        alSourcePlay(soundSource);
+        
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "❌ Error playing sound: " << e.what() << std::endl;
         return false;
     }
 }
 
 void AudioPlayer::stop() {
-    alSourceStop(source);
+    alSourceStop(musicSource);
+    alSourceStop(soundSource);
     playing = false;
 }
 
 bool AudioPlayer::isPlaying() const {
     ALint state;
-    alGetSourcei(source, AL_SOURCE_STATE, &state);
+    alGetSourcei(musicSource, AL_SOURCE_STATE, &state);
     return state == AL_PLAYING;
 }
