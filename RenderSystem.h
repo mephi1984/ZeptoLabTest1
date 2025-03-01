@@ -20,7 +20,7 @@ public:
 private:
     void drawWorld(const GameObjectManager& gameObjects);
     void drawUI(const GameObjectManager& gameObjects);
-    
+
     Renderer renderer;
     ShaderManager shaderManager;
     Matrix4f currentProjectionModelView; // Добавлено для хранения матрицы между drawWorld и drawUI
