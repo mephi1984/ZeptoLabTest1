@@ -17,6 +17,9 @@
 #include "BoneAnimatedModel.h"
 #include "TextModel.h"
 
+#include "Inventory.h"
+#include <memory>
+
 namespace ZL
 {
 	void worldToScreenCoordinates(Vector3f objectPos,
@@ -377,6 +380,23 @@ namespace ZL
 
 
 		std::cout << "Hello test 5x" << std::endl;
+
+//               РўР•РЎРўРР РЈР•Рњ Р’Р—РђРРњРћР”Р•Р™РЎРўР’РР• РЎ РРќР’Р•РќРўРђР Р•Рњ
+        auto roomTexturePtr = std::make_shared<ZL::Texture>(ZL::CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+        auto coneTexturePtr = std::make_shared<ZL::Texture>(ZL::CreateTextureDataFromBmp24("./conus.bmp"));
+
+    // Р”РѕР±Р°РІР»СЏРµРј РїСЂРµРґРјРµС‚С‹ РІ РёРЅРІРµРЅС‚Р°СЂСЊ
+        ZL::AddItemToInventory("RoomCeramics", roomTexturePtr);
+        ZL::AddItemToInventory("Cone", coneTexturePtr);
+
+        std::cout << "Before removal:\n";
+        ZL::PrintInventory();
+
+    // РЈРґР°Р»СЏРµРј "Cone" РёР· РёРЅРІРµРЅС‚Р°СЂСЏ
+        ZL::RemoveItemFromInventory("Cone");
+
+        std::cout << "\nAfter removal:\n";
+        ZL::PrintInventory();
 	}
 
 	void render() {
@@ -411,14 +431,14 @@ namespace ZL
 
 				static const float zoomstep = 1.0f;
 				if (event.wheel.y > 0) {
-					// Прокрутка вверх - увеличиваем zoom
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ zoom
 					Env::zoom -= zoomstep;
 				}
 				else if (event.wheel.y < 0) {
-					// Прокрутка вниз - уменьшаем zoom
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ zoom
 					Env::zoom += zoomstep;
 				}
-				// Ограничиваем zoom, чтобы он не стал отрицательным
+				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ zoom, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				if (Env::zoom < zoomstep) {
 					Env::zoom = zoomstep;
 				}
