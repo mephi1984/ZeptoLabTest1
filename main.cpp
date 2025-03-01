@@ -16,17 +16,47 @@
 #include "AnimatedModel.h"
 #include "BoneAnimatedModel.h"
 
-//ZL::AnimatedModel testLoadModel();
-
 namespace ZL
 {
+
+	namespace Env
+	{
+		int windowHeaderHeight = 0;
+
+		int width = 0;
+		int height = 0;
+
+		Vector2f birdStartPos;
+
+		float backgroundSectionWidth;
+
+		int getActualClientHeight()
+		{
+			return height - windowHeaderHeight;
+		}
+	}
+
+	namespace GameObjects
+	{
+		std::shared_ptr<Texture> testObjTexturePtr;
+		
+		VertexDataStruct colorCubeMesh;
+		VertexRenderStruct colorCubeMeshMutable;
+
+		VertexDataStruct testObjMesh;
+		VertexRenderStruct testObjMeshMutable;
+
+		BoneSystem bx;
+		VertexRenderStruct bxMutable;
+
+	}
 
 	static SDL_Window* window = NULL;
 	static SDL_GLContext gl_context;
 
 	Renderer renderer;
 
-	GameState gs;
+	//GameState gs;
 
 
 	const size_t CONST_TIMER_INTERVAL = 10;
@@ -39,87 +69,6 @@ namespace ZL
 	size_t NewTickCount;
 	size_t LastTickCount;
 
-
-	void DrawBackground()
-	{
-		renderer.PushMatrix();
-
-		renderer.LoadIdentity();
-
-		//renderer.TranslateMatrix({ -gs.backgroundShift, 0.0f, 0.f });
-
-		glBindTexture(GL_TEXTURE_2D, GameObjects::backgroundTexturePtr->getTexID());
-
-		renderer.DrawVertexRenderStruct(GameObjects::backgroundMesh);
-
-		renderer.PopMatrix();
-	}
-
-	void DrawBird()
-	{
-		renderer.PushMatrix();
-
-		renderer.LoadIdentity();
-
-		Vector2f birdScreenShift = gs.birdCurrentPos - Env::birdStartPos;
-
-		renderer.TranslateMatrix({ 200.f + birdScreenShift.v[0], Env::getActualClientHeight() * 0.5f + birdScreenShift.v[1], 0.f });
-
-		renderer.RotateMatrix(QuatFromRotateAroundZ(gs.birdAngle));
-
-		glBindTexture(GL_TEXTURE_2D, GameObjects::birdTexturePtr->getTexID());
-
-		renderer.DrawVertexRenderStruct(GameObjects::birdMesh);
-
-		renderer.PopMatrix();
-	}
-
-	void DrawPipes()
-	{
-		for (auto& pipePair : gs.pipePairArr)
-		{
-			glBindTexture(GL_TEXTURE_2D, GameObjects::pipeTexturePtr->getTexID());
-
-
-			//Draw bottom pipe:
-			renderer.PushMatrix();
-
-			renderer.LoadIdentity();
-
-			renderer.TranslateMatrix({ (pipePair.xPos), pipePair.bottomPipeVShift, 0.f });
-
-			renderer.DrawVertexRenderStruct(GameObjects::pipeMesh);
-
-
-			//Draw top pipe:
-
-			renderer.LoadIdentity();
-
-			renderer.TranslateMatrix({ (pipePair.xPos), Env::getActualClientHeight() + pipePair.topPipeVShift, 0.f });
-
-			renderer.ScaleMatrix({ 1.f, -1.f, 1.f });
-
-			renderer.DrawVertexRenderStruct(GameObjects::pipeMesh);
-
-			renderer.PopMatrix();
-		}
-	}
-
-	void DrawUi()
-	{
-		if (gs.isGameOver)
-		{
-			renderer.PushMatrix();
-
-			renderer.LoadIdentity();
-
-			glBindTexture(GL_TEXTURE_2D, GameObjects::gameOverTexturePtr->getTexID());
-
-			renderer.DrawVertexRenderStruct(GameObjects::gameOverMesh);
-
-			renderer.PopMatrix();
-		}
-	}
 
 	void DrawScene()
 	{
@@ -255,11 +204,11 @@ namespace ZL
 		{
 			if (NewTickCount - LastTickCount > CONST_MAX_TIME_INTERVAL)
 			{
-				gs.UpdateScene(CONST_MAX_TIME_INTERVAL); //Limit game update speed to FPS
+				//gs.UpdateScene(CONST_MAX_TIME_INTERVAL); //Limit game update speed to FPS
 			}
 			else
 			{
-				gs.UpdateScene(NewTickCount - LastTickCount);
+				//gs.UpdateScene(NewTickCount - LastTickCount);
 			}
 			
 			LastTickCount = NewTickCount;
@@ -284,71 +233,20 @@ namespace ZL
 
 		CheckGlError();
 
-		//GameObjects::testmd3 = testLoadModel();
-
-		/*
-		GameObjects::testmd3mutable.resize(GameObjects::testmd3.size());
-
-		for (int i = 0; i < GameObjects::testmd3.size(); i++)
-		{
-			GameObjects::testmd3[i].Scale(0.01);
-
-			GameObjects::testmd3mutable[i].data = GameObjects::testmd3[i];
-			GameObjects::testmd3mutable[i].RefreshVBO();
-		}*/
-
 		//Load shaders:
 		std::cout << "Hello test 1" << std::endl;
-                renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
+        renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
 
 		std::cout << "Hello test 2" << std::endl;
 		renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
 		std::cout << "Hello test 2x" << std::endl;
 
-		//Load textures
-		GameObjects::birdTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./bird.bmp32"));
-		std::cout << "Hello test 3x" << std::endl;
-
-                GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
-		GameObjects::pipeTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./pipe.bmp32"));
-		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
-		//GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
-		//GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
-
-		//GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
-
 		GameObjects::bx.LoadFromFile("mesh_armature_and_animation_data.txt");
-		//GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data02.txt");
-
 
 		std::cout << "Hello test 3" << std::endl;
 
 		CheckGlError();
-		//Create bird mesh
-		GameObjects::birdMesh.data = CreateRect2D({ 0.f, 0.f }, { GameConsts::birdScale * BIRD_WIDTH, GameConsts::birdScale * BIRD_HEIGHT }, 0);
-		GameObjects::birdMesh.RefreshVBO();
-
-		float backgroundTextureScale = Env::height / static_cast<float>(BACKGROUND_HEIGHT);
-
-
-		//Create pipe mesh
-		GameObjects::pipeMesh.data = CreateRect2D({ PIPE_WIDTH * GameConsts::pipeScale * (-0.5f), Env::getActualClientHeight() * 0.5f + PIPE_HEIGHT * GameConsts::pipeScale * (-0.5f) }, { PIPE_WIDTH * GameConsts::pipeScale * 0.5f, PIPE_HEIGHT * GameConsts::pipeScale * 0.5f }, 0);
-		GameObjects::pipeMesh.RefreshVBO();
-
-		//Create background mesh depending on screen size
-
-		Env::backgroundSectionWidth = BACKGROUND_WIDTH * backgroundTextureScale;
-
-		GameObjects::backgroundMesh.data = CreateRectHorizontalSections2D({ BACKGROUND_WIDTH * backgroundTextureScale * (0.5f), BACKGROUND_HEIGHT * backgroundTextureScale * (0.5f) }, { BACKGROUND_WIDTH * backgroundTextureScale * 0.5f, BACKGROUND_HEIGHT * backgroundTextureScale * 0.5f }, -0.5, 2);
-		GameObjects::backgroundMesh.RefreshVBO();
-		CheckGlError();
-
-		//Create Game Over UI mesh depending on screen size
-
-		float gameOverTextureScale = Env::height / static_cast<float>(GAMEOVER_HEIGHT);
-
-		GameObjects::gameOverMesh.data = CreateRect2D({ GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, { GAMEOVER_WIDTH * gameOverTextureScale * 0.5f, GAMEOVER_HEIGHT * gameOverTextureScale * 0.5f }, 0.1f);
-		GameObjects::gameOverMesh.RefreshVBO();
+		
 
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.data = CreateCube3D(5.0);
@@ -362,15 +260,7 @@ namespace ZL
 
 
 		std::cout << "Hello test 4x" << std::endl;
-		//Set some game values
-		Env::birdStartPos = { Env::width * 0.2f, Env::getActualClientHeight() * 0.5f };
-
-		//Exact value depends on the bird look texture and must be calculated manually:
-		gs.birdEllipse.a = GameConsts::birdScale * 236.f;
-		gs.birdEllipse.b = GameConsts::birdScale * 160.f;
-
-		gs.RestartGame();
-
+		
 		renderer.InitOpenGL();
 
 		CheckGlError();
@@ -407,15 +297,6 @@ namespace ZL
 
 				GameObjects::bx.Interpolate(x);
 				x = x + 2;
-				/*
-				if (gs.isGameOver)
-				{
-					gs.RestartGame();
-				}
-				else
-				{
-					gs.BirdJump();
-				}*/
 			}
 		}
 
