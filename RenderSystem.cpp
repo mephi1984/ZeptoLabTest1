@@ -71,6 +71,10 @@ void RenderSystem::drawWorld(const GameObjectManager& gameObjects) {
     renderer.DrawVertexRenderStruct(gameObjects.textMeshMutable);
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
+    
+    // Проверяем пересечение с мышью после расчета всех матриц
+    const_cast<GameObjectManager&>(gameObjects).checkMouseIntersection(
+        lastMouseX, lastMouseY, latestProjectionModelView);
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
