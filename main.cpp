@@ -112,6 +112,12 @@ namespace ZL
 
 		// Add AudioPlayer instance
         std::unique_ptr<AudioPlayer> audioPlayer;
+
+		// Добавляем структуры для иконок инвентаря
+		VertexDataStruct inventoryIconMesh;
+		VertexRenderStruct inventoryIconMeshMutable;
+		const float INVENTORY_ICON_SIZE = 32.0f; // Размер иконки в пикселях
+		const float INVENTORY_MARGIN = 10.0f;    // Отступ от края экрана
 	}
 
 	static SDL_Window* window = NULL;
@@ -211,6 +217,18 @@ namespace ZL
 				renderer.DrawVertexRenderStruct(ao.activeObjectScreenMeshMutable);
 				renderer.PopMatrix();
 			}
+		}
+
+		// Отрисовка иконок инвентаря
+		const auto& inventory = ReturnInventory();
+		for (size_t i = 0; i < inventory.size(); ++i) {
+			renderer.PushMatrix();
+			float xPos = Env::width - GameObjects::INVENTORY_MARGIN - GameObjects::INVENTORY_ICON_SIZE;
+			float yPos = GameObjects::INVENTORY_MARGIN + i * (GameObjects::INVENTORY_ICON_SIZE + GameObjects::INVENTORY_MARGIN);
+			renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+			glBindTexture(GL_TEXTURE_2D, inventory[i].texture->getTexID());
+			renderer.DrawVertexRenderStruct(GameObjects::inventoryIconMeshMutable);
+			renderer.PopMatrix();
 		}
 
 		renderer.PopMatrix();
@@ -393,20 +411,29 @@ namespace ZL
         ZL::AddItemToInventory("RoomCeramics", roomTexturePtr);
         ZL::AddItemToInventory("Cone", coneTexturePtr);
 
-        std::cout << "Before removal:\n";
+        // std::cout << "Before removal:\n";
         ZL::PrintInventory();
 
     // Удаляем "Cone" из инвентаря
-        ZL::RemoveItemFromInventory("Cone");
+        // ZL::RemoveItemFromInventory("Cone");
 
-        std::cout << "\nAfter removal:\n";
-        ZL::PrintInventory();
+        // std::cout << "\nAfter removal:\n";
+        // ZL::PrintInventory();
 
 		 // Initialize audio player and start background music
         GameObjects::audioPlayer = std::make_unique<AudioPlayer>();
         if (GameObjects::audioPlayer) {
             GameObjects::audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
         }
+
+		// Инициализация меша иконки инвентаря
+		GameObjects::inventoryIconMesh = CreateRect2D(
+			{0.0f, 0.0f},
+			{GameObjects::INVENTORY_ICON_SIZE/2, GameObjects::INVENTORY_ICON_SIZE/2},
+			0.5f
+		);
+		GameObjects::inventoryIconMeshMutable.AssignFrom(GameObjects::inventoryIconMesh);
+		GameObjects::inventoryIconMeshMutable.RefreshVBO();
 
 		///
 	}
@@ -427,98 +454,96 @@ namespace ZL
 
 	}
 
-	void update() {
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				ExitGameLoop = true;
-			}
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
-				static int x = 0;
+    void update() {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                ExitGameLoop = true;
+            }
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                static int x = 0;
 
-				GameObjects::bx.Interpolate(x);
-				x = x + 2;
-			}
-			if (event.type == SDL_MOUSEWHEEL) {
+                GameObjects::bx.Interpolate(x);
+                x = x + 2;
+            }
+            if (event.type == SDL_MOUSEWHEEL) {
 
-				static const float zoomstep = 1.0f;
-				if (event.wheel.y > 0) {
-					// ��������� ����� - ����������� zoom
-					Env::zoom -= zoomstep;
-				}
-				else if (event.wheel.y < 0) {
-					// ��������� ���� - ��������� zoom
-					Env::zoom += zoomstep;
-				}
-				// ������������ zoom, ����� �� �� ���� �������������
-				if (Env::zoom < zoomstep) {
-					Env::zoom = zoomstep;
-				}
-			}
-			if (event.type == SDL_KEYDOWN) {
-				switch (event.key.keysym.sym) {
-				case SDLK_LEFT:
-				case SDLK_a:
-					Env::leftPressed = true;
-					if (GameObjects::audioPlayer) {
+                static const float zoomstep = 1.0f;
+                if (event.wheel.y > 0) {
+                    // ��������� ����� - ����������� zoom
+                    Env::zoom -= zoomstep;
+                }
+                else if (event.wheel.y < 0) {
+                    // ��������� ���� - ��������� zoom
+                    Env::zoom += zoomstep;
+                }
+                // ������������ zoom, ����� �� �� ���� �������������
+                if (Env::zoom < zoomstep) {
+                    Env::zoom = zoomstep;
+                }
+            }
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                case SDLK_LEFT:
+                case SDLK_a:
+                    Env::leftPressed = true;
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                     }
-					break;
-				case SDLK_RIGHT:
-				case SDLK_d:
-					Env::rightPressed = true;
-					if (GameObjects::audioPlayer) {
+                    break;
+                case SDLK_RIGHT:
+                case SDLK_d:
+                    Env::rightPressed = true;
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                     }
-					break;
-				case SDLK_UP:
-				case SDLK_w:
-					Env::upPressed = true;
-					if (GameObjects::audioPlayer) {
+                    break;
+                case SDLK_UP:
+                case SDLK_w:
+                    Env::upPressed = true;
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                     }
-					break;
-				case SDLK_DOWN:
-				case SDLK_s:
-					Env::downPressed = true;
-					if (GameObjects::audioPlayer) {
+                    break;
+                case SDLK_DOWN:
+                case SDLK_s:
+                    Env::downPressed = true;
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                     }
-					break;
-				case SDLK_SPACE:
-                        // Play the symphony when space is pressed
-                        if (GameObjects::audioPlayer) {
+                    break;
+                case SDLK_SPACE:
+                    if (GameObjects::audioPlayer) {
                         GameObjects::audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
                     }
                     break;
-				}
+                }
+            }
 
-			}
+            if (event.type == SDL_KEYUP) {
+                switch (event.key.keysym.sym) {
+                case SDLK_LEFT:
+                case SDLK_a:
+                    Env::leftPressed = false;
+                    break;
+                case SDLK_RIGHT:
+                case SDLK_d:
+                    Env::rightPressed = false;
+                    break;
+                case SDLK_UP:
+                case SDLK_w:
+                    Env::upPressed = false;
+                    break;
+                case SDLK_DOWN:
+                case SDLK_s:
+                    Env::downPressed = false;
+                    break;
+                }
+            }
+        }
 
-			if (event.type == SDL_KEYUP) {
-				switch (event.key.keysym.sym) {
-				case SDLK_LEFT:
-				case SDLK_a:
-					Env::leftPressed = false;
-					break;
-				case SDLK_RIGHT:
-				case SDLK_d:
-					Env::rightPressed = false;
-					break;
-				case SDLK_UP:
-				case SDLK_w:
-					Env::upPressed = false;
-					break;
-				case SDLK_DOWN:
-				case SDLK_s:
-					Env::downPressed = false;
-					break;
-				}
-			}
-		}
-
-		render();
-	}
+        render();
+    }
 
 };
 
