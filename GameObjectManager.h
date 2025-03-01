@@ -14,6 +14,8 @@ class GameObjectManager {
 public:
     void initialize();
 
+    void switch_room(int index);
+
     void handleEvent(const SDL_Event& event);
     void updateScene(size_t ms);
     void checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView); // Добавляем новый метод

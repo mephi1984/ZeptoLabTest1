@@ -62,28 +62,25 @@ void GameObjectManager::initialize() {
     ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
     ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
     ao1.activeObjectScreenMeshMutable.RefreshVBO();
-    activeObjects.push_back(ao1);
 
     Room room_1;
     room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
-//    room_1.objects = ao1;
+    room_1.objects.push_back(ao1);
+    room_1.sound_name = "file_example_OOG_5MG.ogg";
     rooms.push_back(room_1);
 
     Room room_2;
-    room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+    room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
+    room_2.sound_name = "Symphony No.6 (1st movement).ogg";
     rooms.push_back(room_2);
 
-
-    std::cout << "Hello x5" << std::endl;
-
+    activeObjects = rooms[current_room_index].objects;
 
     // Initialize audio
     audioPlayer = std::make_unique<AudioPlayer>();
     if (audioPlayer) {
-        audioPlayer->playMusic("Symphony No.6 (1st movement).ogg");
+        audioPlayer->playMusic(rooms[current_room_index].sound_name);
     }
-
-    std::cout << "Hello x6" << std::endl;
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
@@ -94,8 +91,6 @@ void GameObjectManager::initialize() {
     inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
     inventoryIconMeshMutable.RefreshVBO();
 
-    std::cout << "Hello x7" << std::endl;
-
 
     // Add test items to inventory
     auto testRoomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
@@ -103,22 +98,31 @@ void GameObjectManager::initialize() {
     AddItemToInventory("RoomCeramics", testRoomTexture);
     AddItemToInventory("Cone", testConeTexture);
 
-    std::cout << "Hello x8" << std::endl;
-
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
-    std::cout << "Current room" << current_room_index << std::endl;
 }
+
+void GameObjectManager::switch_room(int index){
+    current_room_index = index;
+
+    roomTexturePtr = rooms[current_room_index].roomTexture;
+
+    if (audioPlayer) {
+        audioPlayer->stop();
+        audioPlayer->playMusic(rooms[current_room_index].sound_name);
+    }
+
+    activeObjects = rooms[current_room_index].objects;
+
+    std::cout << "Current music" << rooms[current_room_index].sound_name << std::endl;
+}
+
 
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
 //  debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
-
-        current_room_index = 1;
-        std::cout << "Current room" << current_room_index << std::endl;
-
-
+        switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         bx.Interpolate(animationCounter);

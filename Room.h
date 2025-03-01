@@ -9,5 +9,6 @@ namespace ZL
 struct Room{
   std::shared_ptr<ZL::Texture> roomTexture;
   std::vector<ActiveObject> objects;
+  std::string sound_name;
 };
 }
