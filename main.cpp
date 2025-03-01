@@ -284,7 +284,7 @@ void UpdateScene(size_t ms)
 
 //                Создание кухни
         auto kitchen = std::make_shared<Room>("Kitchen");
-    	kitchen->createRoomMesh(1000.0f);  // Создаём меш комнаты (куб 1000x1000)
+   		kitchen->createRoomMesh("./Kitchen_ceramics.bmp");  // Создаём меш прямо из текстуры
 
         auto kitchenTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
     	kitchen->addTexture(kitchenTexture);

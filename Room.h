@@ -37,12 +37,18 @@ namespace ZL
         Room(const std::string& roomName) : name(roomName) {}
 
         // Создаем меш комнаты (куб)
-        void createRoomMesh(float size = 500.0f)
+        void createRoomMesh(const std::string& texturePath)
         {
-            roomMesh = CreateCube3D(size);  // Создаем куб с размерами size
+            // Загружаем текстуру
+            auto texture = std::make_shared<Texture>(CreateTextureDataFromBmp24(texturePath));
+            addTexture(texture); // Добавляем текстуру в комнату
+
+            // Создаём меш комнаты на основе текстуры (например, прямоугольник)
+            roomMesh = CreateRect2D({0.0f, 0.0f}, {1024.0f, 1024.0f}, 1.0f);
             roomMeshMutable.AssignFrom(roomMesh);
             roomMeshMutable.RefreshVBO();
         }
+
 
         void addTexture(std::shared_ptr<Texture> texture)
         {
