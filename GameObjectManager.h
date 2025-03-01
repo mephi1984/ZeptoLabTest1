@@ -7,6 +7,7 @@
 #include "ActiveObject.h"
 #include "Room.h"
 #include <SDL2/SDL.h>
+#include "OpenGlExtensions.h"
 
 namespace ZL {
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include "OpenGlExtensions.h"
 
 namespace ZL {
     class InputManager {
