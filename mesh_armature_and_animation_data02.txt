@@ -1,0 +1,77 @@
+=== Armature Matrix ===
+<Vector (1.0000, 0.0000, 0.0000, 0.0000)>
+<Vector (0.0000, 1.0000, 0.0000, 0.0000)>
+<Vector (0.0000, 0.0000, 1.0000, 0.0000)>
+<Vector (0.0000, 0.0000, 0.0000, 1.0000)>
+=== Armature Bones: 2
+Bone: Bone
+  HEAD_LOCAL: <Vector (0.0000, 0.0000, 0.0000)>
+  TAIL_LOCAL: <Vector (0.0000, 0.0000, 1.0000)>
+  Length: 1.0
+    <Vector (1.0000, 0.0000, 0.0000)>
+    <Vector (0.0000, 0.0000, -1.0000)>
+    <Vector (0.0000, 1.0000, 0.0000)>
+  Parent: None
+  Children: ['Bone.001']
+Bone: Bone.001
+  HEAD_LOCAL: <Vector (0.0000, 0.0000, 1.0000)>
+  TAIL_LOCAL: <Vector (0.0000, 0.0000, 2.0736)>
+  Length: 1.0736327081284343
+    <Vector (1.0000, 0.0000, 0.0000)>
+    <Vector (0.0000, 1.0000, 0.0000)>
+    <Vector (0.0000, 0.0000, 1.0000)>
+  Parent: Bone
+  Children: []
+===Vertices: 3
+Vertex 0: <Vector (1.0000, -1.0000, 0.0000)>
+Vertex 1: <Vector (-1.0000, 1.0000, 0.0000)>
+Vertex 2: <Vector (1.0000, 1.0000, 0.0000)>
+===Triangles: 1
+Triangle: [0, 2, 1]
+=== Vertex Weights ===
+Vertex 0:
+Vertex groups: 1
+  Group: 'Bone.001', Weight: 0.514522135257721
+Vertex 1:
+Vertex groups: 1
+  Group: 'Bone.001', Weight: 0.4854777455329895
+Vertex 2:
+Vertex groups: 1
+  Group: 'Bone.001', Weight: 0.4942711293697357
+=== Animation Keyframes ===
+=== Bone Transforms per Keyframe ===
+Keyframes: 2
+Frame: 0
+  Bone: Bone
+    Location: <Vector (0.0000, 0.0000, 0.0000)>
+    Rotation: <Euler (x=1.5708, y=-0.0000, z=0.0000), order='XYZ'>
+    Matrix:
+      <Vector (1.0000, 0.0000, 0.0000, 0.0000)>
+      <Vector (0.0000, 0.0000, -1.0000, 0.0000)>
+      <Vector (0.0000, 1.0000, 0.0000, 0.0000)>
+      <Vector (0.0000, 0.0000, 0.0000, 1.0000)>
+  Bone: Bone.001
+    Location: <Vector (0.0000, 0.0000, 1.0000)>
+    Rotation: <Euler (x=1.5832, y=0.0010, z=0.0040), order='XYZ'>
+    Matrix:
+      <Vector (1.0000, 0.0011, 0.0040, 0.0000)>
+      <Vector (0.0040, -0.0124, -0.9999, 0.0000)>
+      <Vector (-0.0010, 0.9999, -0.0124, 1.0000)>
+      <Vector (0.0000, 0.0000, 0.0000, 1.0000)>
+Frame: 100
+  Bone: Bone
+    Location: <Vector (0.0000, 0.0000, 0.0000)>
+    Rotation: <Euler (x=1.5708, y=-0.0000, z=0.0000), order='XYZ'>
+    Matrix:
+      <Vector (1.0000, 0.0000, 0.0000, 0.0000)>
+      <Vector (0.0000, 0.0000, -1.0000, 0.0000)>
+      <Vector (0.0000, 1.0000, 0.0000, 0.0000)>
+      <Vector (0.0000, 0.0000, 0.0000, 1.0000)>
+  Bone: Bone.001
+    Location: <Vector (0.0000, 0.0000, 1.0000)>
+    Rotation: <Euler (x=2.4399, y=-0.2051, z=0.2907), order='XYZ'>
+    Matrix:
+      <Vector (0.9380, 0.0930, 0.3340, 0.0000)>
+      <Vector (0.2806, -0.7694, -0.5738, 0.0000)>
+      <Vector (0.2036, 0.6320, -0.7478, 1.0000)>
+      <Vector (0.0000, 0.0000, 0.0000, 1.0000)>
