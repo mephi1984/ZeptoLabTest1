@@ -98,7 +98,6 @@ void GameObjectManager::initialize() {
     AddItemToInventory("RoomCeramics", testRoomTexture);
     AddItemToInventory("Cone", testConeTexture);
 
-
     roomTexturePtr = rooms[current_room_index].roomTexture;
 }
 
@@ -107,8 +106,11 @@ void GameObjectManager::switch_room(int index){
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
 
+    audioPlayer.reset();  // This deletes the current AudioPlayer
+
+    // Reinitialize it
+    audioPlayer = std::make_unique<AudioPlayer>();
     if (audioPlayer) {
-        audioPlayer->stop();
         audioPlayer->playMusic(rooms[current_room_index].sound_name);
     }
 

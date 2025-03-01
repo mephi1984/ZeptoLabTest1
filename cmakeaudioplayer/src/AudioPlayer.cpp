@@ -143,7 +143,8 @@ bool AudioPlayer::playMusic(const std::string& filename) {
         alSourcei(musicSource, AL_BUFFER, musicBuffer);
         alSourcei(musicSource, AL_LOOPING, AL_TRUE);  // Включаем зацикливание
         
-        std::cout << "▶️ Starting music playback...\n";
+        std::cout << "▶️ Starting music playback... " << musicSource << std::endl;
+        std::cout << "▶️ Music buffer... " << musicBuffer << std::endl;
         alSourcePlay(musicSource);
         
         currentMusic = filename;
