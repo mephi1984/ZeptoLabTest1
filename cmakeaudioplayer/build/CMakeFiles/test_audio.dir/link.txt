@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/test_audio.dir/link.d CMakeFiles/test_audio.dir/examples/test_audio.cpp.o -o test_audio  libaudioplayer.a -lstdc++fs /usr/lib/libopenal.so -lvorbis -lvorbisfile -logg
