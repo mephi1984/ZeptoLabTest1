@@ -1,11 +1,19 @@
+//----------- Vertex shader
+
 attribute vec3 vPosition;
 attribute vec2 vTexCoord;
 varying vec2 texCoord;
 
 uniform mat4 ProjectionModelViewMatrix;
 
-void main() 
+void main()
 {
 	gl_Position = ProjectionModelViewMatrix * vec4(vPosition.xyz, 1.0);
 	texCoord = vTexCoord;
 }
+
+//------------- Fragment shader
+
+
+
+In windows it is ok. In linux, error: Failed to compile fragment shader code!

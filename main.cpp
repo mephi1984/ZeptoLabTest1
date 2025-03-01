@@ -186,6 +186,8 @@ namespace ZL
 		renderer.DrawVertexRenderStruct(GameObjects::testmd3mutable[1]);
 		*/
 
+
+
 		GameObjects::bxMutable.AssignFrom(GameObjects::bx.mesh);
 		GameObjects::bxMutable.RefreshVBO();
 		renderer.DrawVertexRenderStruct(GameObjects::bxMutable);
@@ -282,7 +284,7 @@ namespace ZL
 
 		CheckGlError();
 
-		///GameObjects::testmd3 = testLoadModel();
+		//GameObjects::testmd3 = testLoadModel();
 
 		/*
 		GameObjects::testmd3mutable.resize(GameObjects::testmd3.size());
@@ -296,22 +298,30 @@ namespace ZL
 		}*/
 
 		//Load shaders:
-		renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
+		std::cout << "Hello test 1" << std::endl;
+                renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
+
+		std::cout << "Hello test 2" << std::endl;
 		renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-		
+		std::cout << "Hello test 2x" << std::endl;
+
 		//Load textures
 		GameObjects::birdTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./bird.bmp32"));
-		GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
+		std::cout << "Hello test 3x" << std::endl;
+
+                GameObjects::backgroundTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
 		GameObjects::pipeTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./pipe.bmp32"));
 		GameObjects::gameOverTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./game_over.bmp32"));
 		//GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./chair_01_Base_Color.png"));
-		GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
+		//GameObjects::testObjTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
 
 		//GameObjects::md3TexturePtr = std::make_shared<Texture>(CreateTextureDataFromPng("./model/sarge/band.png"));
 
 		GameObjects::bx.LoadFromFile("mesh_armature_and_animation_data.txt");
 		//GameObjects::bx.LoadFromFile("C:\\Work\\GameJam2025-02\\mesh_armature_and_animation_data02.txt");
 
+
+		std::cout << "Hello test 3" << std::endl;
 
 		CheckGlError();
 		//Create bird mesh
@@ -350,6 +360,8 @@ namespace ZL
 		GameObjects::testObjMeshMutable.data = GameObjects::testObjMesh;
 		GameObjects::testObjMeshMutable.RefreshVBO();
 
+
+		std::cout << "Hello test 4x" << std::endl;
 		//Set some game values
 		Env::birdStartPos = { Env::width * 0.2f, Env::getActualClientHeight() * 0.5f };
 
@@ -362,6 +374,9 @@ namespace ZL
 		renderer.InitOpenGL();
 
 		CheckGlError();
+
+
+		std::cout << "Hello test 5x" << std::endl;
 	}
 
 	void render() {

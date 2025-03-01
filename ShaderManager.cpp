@@ -1,5 +1,5 @@
 #include "ShaderManager.h"
-
+#include <iostream>
 
 
 namespace ZL {
@@ -127,6 +127,7 @@ namespace ZL {
 
 		std::string fragmentShader = readTextFile(fragmentShaderFileName);
 
+                ///std::cout << "Shader: "<< vertexShader << std::endl;
 		shaderResourceMap[shaderName] = std::make_shared<ShaderResource>(vertexShader, fragmentShader);
 	}
 

@@ -1,7 +1,5 @@
 // OBJ_Loader.h - A Single Header OBJ Model Loader
 
-#pragma once
-
 #include "ObjLoader.h"
 
 // Iostream - STD I/O Library
