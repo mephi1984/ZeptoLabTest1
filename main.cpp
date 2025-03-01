@@ -18,6 +18,7 @@
 #include "TextModel.h"
 
 #include "Inventory.h"
+#include "cmakeaudioplayer/include/AudioPlayer.hpp"
 #include <memory>
 
 namespace ZL
@@ -32,11 +33,11 @@ namespace ZL
 
 		Vector4f clipCoords = MultMatrixVector(projectionModelView, inx);
 
-		// Перспективное деление
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		float ndcX = clipCoords.v[0] / clipCoords.v[3];
 		float ndcY = clipCoords.v[1] / clipCoords.v[3];
 
-		// Преобразуем NDC в экранные координаты
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ NDC пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
 		//screenY = (int)((1.0f - ndcY) * 0.5f * screenHeight);
 		screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
@@ -108,6 +109,9 @@ namespace ZL
 		VertexRenderStruct coneMeshMutable;
 
 		std::vector<ActiveObject> activeObjects;
+
+		// Add AudioPlayer instance
+        std::unique_ptr<AudioPlayer> audioPlayer;
 	}
 
 	static SDL_Window* window = NULL;
@@ -397,6 +401,11 @@ namespace ZL
 
         std::cout << "\nAfter removal:\n";
         ZL::PrintInventory();
+
+		 // Initialize audio player
+        GameObjects::audioPlayer = std::make_unique<AudioPlayer>();
+
+		///
 	}
 
 	void render() {
@@ -461,6 +470,12 @@ namespace ZL
 				case SDLK_s:
 					Env::downPressed = true;
 					break;
+				case SDLK_SPACE:
+                        // Play the symphony when space is pressed
+                        if (GameObjects::audioPlayer) {
+                            GameObjects::audioPlayer->playFromSoundsDir("Symphony No.6 (1st movement).ogg");
+                        }
+                        break;
 				}
 
 			}
