@@ -2,7 +2,6 @@
 #include "Environment.h"
 #include "ObjLoader.h"
 #include "Inventory.h"
-#include "Room.h"
 #include "TextModel.h"  // Add this include for LoadFromTextFile
 
 namespace ZL {
@@ -11,6 +10,8 @@ const float GameObjectManager::INVENTORY_ICON_SIZE = 32.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
 void GameObjectManager::initialize() {
+
+  current_room_index = 0;
 
     std::cout << "Hello x1" << std::endl;
 
@@ -63,6 +64,16 @@ void GameObjectManager::initialize() {
     ao1.activeObjectScreenMeshMutable.RefreshVBO();
     activeObjects.push_back(ao1);
 
+    Room room_1;
+    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+//    room_1.objects = ao1;
+    rooms.push_back(room_1);
+
+    Room room_2;
+    room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+    rooms.push_back(room_2);
+
+
     std::cout << "Hello x5" << std::endl;
 
 
@@ -95,8 +106,8 @@ void GameObjectManager::initialize() {
     std::cout << "Hello x8" << std::endl;
 
 
-    roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
-
+    roomTexturePtr = rooms[current_room_index].roomTexture;
+    std::cout << "Current room" << current_room_index << std::endl;
 }
 
 

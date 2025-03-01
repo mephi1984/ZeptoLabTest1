@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
+#include "Room.h"
 #include <SDL2/SDL.h>
 
 namespace ZL {
@@ -37,6 +38,7 @@ public:
     ZL::VertexRenderStruct coneMeshMutable;
 
     std::vector<ZL::ActiveObject> activeObjects;
+    std::vector<ZL::Room> rooms;
     std::unique_ptr<AudioPlayer> audioPlayer;
 
     ZL::VertexDataStruct inventoryIconMesh;
@@ -49,6 +51,7 @@ private:
     int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
+    int current_room_index;
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
