@@ -10,6 +10,12 @@
 #include "emscripten.h"
 #endif
 
+#ifdef __linux__
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GLES3/gl3.h>
+
+#endif
 
 #include <exception>
 #include <stdexcept>

@@ -5,7 +5,8 @@
 #include <exception>
 #include <map>
 #include <stack>
-
+#include <memory>
+#include <unordered_map>
 namespace ZL
 {
 	std::string readTextFile(const std::string& filename);
