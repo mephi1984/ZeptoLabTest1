@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include "OpenGlExtensions.h"
 #include "GameObjectManager.h"
 #include "RenderSystem.h"
 #include "Environment.h"

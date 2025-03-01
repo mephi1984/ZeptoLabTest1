@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
-#include <SDL2/SDL.h>
+#include "OpenGlExtensions.h"
 
 namespace ZL {
 

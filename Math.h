@@ -100,7 +100,7 @@ namespace ZL {
 	Vector4f MultVectorMatrix(Vector4f v, Matrix4f mt);
 	Vector4f MultMatrixVector(Matrix4f mt, Vector4f v);
 
-	Vector4f slerp(const Vector4f& q1, const Vector4f& q2, double t);
+	Vector4f slerp(const Vector4f& q1, const Vector4f& q2, float t);
 	Matrix3f InverseMatrix(const Matrix3f& m);
 	Matrix4f InverseMatrix(const Matrix4f& m);
 	Matrix3f MultMatrixMatrix(const Matrix3f& m1, const Matrix3f& m2);

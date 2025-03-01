@@ -3,7 +3,7 @@
 #include "BoneAnimatedModel.h"
 #include "Utils.h"
 #include "Inventory.h"  // Add this include
-#include <SDL2/SDL.h>
+#include "OpenGlExtensions.h"
 #include <iostream>
 
 namespace ZL
