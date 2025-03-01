@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "AnimatedModel.h"
 #include "BoneAnimatedModel.h"
+#include "TextModel.h"
 
 namespace ZL
 {
@@ -25,7 +26,7 @@ namespace ZL
 
 		int width = 0;
 		int height = 0;
-
+		/*
 		Vector2f birdStartPos;
 
 		float backgroundSectionWidth;
@@ -33,12 +34,13 @@ namespace ZL
 		int getActualClientHeight()
 		{
 			return height - windowHeaderHeight;
-		}
+		}*/
 	}
 
 	namespace GameObjects
 	{
 		std::shared_ptr<Texture> testObjTexturePtr;
+		std::shared_ptr<Texture> roomTexturePtr;
 		
 		VertexDataStruct colorCubeMesh;
 		VertexRenderStruct colorCubeMeshMutable;
@@ -48,6 +50,9 @@ namespace ZL
 
 		BoneSystem bx;
 		VertexRenderStruct bxMutable;
+
+		VertexDataStruct textMesh;
+		VertexRenderStruct textMeshMutable;
 
 	}
 
@@ -85,21 +90,31 @@ namespace ZL
 		
 		glViewport(0, 0, Env::width, Env::height);
 
-		//renderer.shaderManager.PushShader(defaultShaderName);
-		renderer.shaderManager.PushShader(colorShaderName);
-		//renderer.RenderUniform1i(textureUniformName, 0);
+		renderer.shaderManager.PushShader(defaultShaderName);
+		renderer.RenderUniform1i(textureUniformName, 0);
 
 		renderer.EnableVertexAttribArray(vPositionName);
-		//renderer.EnableVertexAttribArray(vTexCoordName);
+		renderer.EnableVertexAttribArray(vTexCoordName);
 
-		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 0.1, 1000);
+		renderer.PushPerspectiveProjectionMatrix(1.0 / 6.0, static_cast<float>(Env::width) / static_cast<float>(Env::height), 10, 50000);
 		renderer.PushMatrix();
 
 		renderer.LoadIdentity();
 
-		renderer.TranslateMatrix({ 0,0, -200 });
+		renderer.TranslateMatrix({ 0,0, -4000 });
 
-		renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
+		float t = 0.7;
+
+		renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
+
+		GameObjects::textMeshMutable.AssignFrom(GameObjects::textMesh);
+		GameObjects::textMeshMutable.RefreshVBO();
+
+
+		glBindTexture(GL_TEXTURE_2D, GameObjects::roomTexturePtr->getTexID());
+		renderer.DrawVertexRenderStruct(GameObjects::textMeshMutable);
+
+		//renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
 		//renderer.RotateMatrix(QuatFromRotateAroundZ(-M_PI / 4.0));
 
 		/*
@@ -137,16 +152,16 @@ namespace ZL
 
 
 
-		GameObjects::bxMutable.AssignFrom(GameObjects::bx.mesh);
-		GameObjects::bxMutable.RefreshVBO();
-		renderer.DrawVertexRenderStruct(GameObjects::bxMutable);
+		//GameObjects::bxMutable.AssignFrom(GameObjects::bx.mesh);
+		//GameObjects::bxMutable.RefreshVBO();
+		//renderer.DrawVertexRenderStruct(GameObjects::bxMutable);
 
 		renderer.PopMatrix();
 
 		renderer.PopProjectionMatrix();
 
 		renderer.DisableVertexAttribArray(vPositionName);
-		//renderer.DisableVertexAttribArray(vTexCoordName);
+		renderer.DisableVertexAttribArray(vTexCoordName);
 
 		renderer.shaderManager.PopShader();
 
@@ -246,6 +261,8 @@ namespace ZL
 		std::cout << "Hello test 3" << std::endl;
 
 		CheckGlError();
+
+		GameObjects::roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
 		
 
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
@@ -258,6 +275,7 @@ namespace ZL
 		GameObjects::testObjMeshMutable.data = GameObjects::testObjMesh;
 		GameObjects::testObjMeshMutable.RefreshVBO();
 
+		GameObjects::textMesh = LoadFromTextFile("./mesh001.txt");
 
 		std::cout << "Hello test 4x" << std::endl;
 		

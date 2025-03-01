@@ -51,6 +51,9 @@
     <ClCompile Include="BoneAnimatedModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BoneAnimatedModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

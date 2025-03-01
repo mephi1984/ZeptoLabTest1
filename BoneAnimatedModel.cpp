@@ -40,6 +40,7 @@ namespace ZL
 		static const std::regex pattern_int(R"([-]?\d+)");
 		static const std::regex pattern_boneChildren(R"(\'([^\']+)\')");
 		static const std::regex pattern_bone_weight(R"(\'([^\']+)\'.*?([-]?\d+\.\d+))");
+		
 		std::smatch match;
 
 		int numberBones;
@@ -219,7 +220,7 @@ namespace ZL
 			vertices[i] = Vector3f{floatValues[0], floatValues[1], floatValues[2]};
 		}
 
-		std::getline(f, tempLine); //vertice count
+		std::getline(f, tempLine); //triangle count
 		int numberTriangles;
 
 		if (std::regex_search(tempLine, match, pattern_count)) {
