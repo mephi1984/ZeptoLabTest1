@@ -1,7 +1,7 @@
 #include "Math.h"
 
 #include <exception>
-
+#include <cmath>
 namespace ZL {
 
 	Vector2f operator+(const Vector2f& x, const Vector2f& y)

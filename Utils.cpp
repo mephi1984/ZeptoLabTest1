@@ -1,5 +1,5 @@
 #include "Utils.h"
-
+#include <cstring>
 #include <iterator>
 #include <vector>
 #include <iostream>
