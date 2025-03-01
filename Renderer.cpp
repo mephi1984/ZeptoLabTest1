@@ -29,8 +29,13 @@ namespace ZL {
 	VAOHolder::~VAOHolder()
 	{
 #ifndef EMSCRIPTEN
-		glDeleteVertexArrays(1, &vao);
 
+#ifdef __linux__
+		glDeleteVertexArrays(1, &vao);
+#else
+		//Windows
+		glDeleteVertexArray(1, &vao);
+#endif
 #endif
 	}
 
