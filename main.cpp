@@ -18,6 +18,7 @@
 #include "TextModel.h"
 
 #include "Inventory.h"
+#include "Room.h"
 #include "cmakeaudioplayer/include/AudioPlayer.hpp"
 #include <memory>
 
@@ -71,25 +72,11 @@ namespace ZL
 		}*/
 	}
 
-	struct ActiveObject
-	{
-		std::shared_ptr<Texture> activeObjectTexturePtr;
-		VertexDataStruct activeObjectMesh;
-		VertexRenderStruct activeObjectMeshMutable;
-
-		std::shared_ptr<Texture> activeObjectScreenTexturePtr;
-		VertexDataStruct activeObjectScreenMesh;
-		VertexRenderStruct activeObjectScreenMeshMutable;
-
-
-		Vector3f objectPos;
-		bool highlighted = false;
-	};
 
 	namespace GameObjects
 	{
+        std::vector<std::shared_ptr<Room>> rooms;
 		std::shared_ptr<Texture> testObjTexturePtr;
-		std::shared_ptr<Texture> roomTexturePtr;
 		std::shared_ptr<Texture> coneTexturePtr;
 		//std::shared_ptr<Texture> activeObjectTexturePtr;
 
@@ -107,8 +94,6 @@ namespace ZL
 
 		VertexDataStruct coneMesh;
 		VertexRenderStruct coneMeshMutable;
-
-		std::vector<ActiveObject> activeObjects;
 
 		// Add AudioPlayer instance
         std::unique_ptr<AudioPlayer> audioPlayer;
@@ -175,45 +160,15 @@ namespace ZL
 
 
 		//ActiveObject ao1;
-
-		for (auto& ao : GameObjects::activeObjects)
-		{
-			renderer.PushMatrix();
-			renderer.TranslateMatrix(ao.objectPos);
-			glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
-			renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
-			renderer.PopMatrix();
-		}
-
-		glBindTexture(GL_TEXTURE_2D, GameObjects::roomTexturePtr->getTexID());
+		for (auto& room : GameObjects::rooms) {
+        	room->render(renderer);
+   		}
 		renderer.DrawVertexRenderStruct(GameObjects::textMeshMutable);
 
 		auto latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
 
 		renderer.PopMatrix();
 
-		renderer.PopProjectionMatrix();
-		glClear(GL_DEPTH_BUFFER_BIT);
-		renderer.PushProjectionMatrix(static_cast<float>(Env::width), static_cast<float>(Env::height));
-		renderer.PushMatrix();
-
-		renderer.LoadIdentity();
-
-		for (auto& ao : GameObjects::activeObjects)
-		{
-			if (ao.highlighted)
-			{
-				int screenX, screenY;
-				worldToScreenCoordinates(ao.objectPos, latestProjectionModelView, Env::width, Env::height, screenX, screenY);
-				renderer.PushMatrix();
-				renderer.TranslateMatrix(Vector3f{screenX + 0.f, screenY + 0.f, 0.0f});
-				glBindTexture(GL_TEXTURE_2D, ao.activeObjectScreenTexturePtr->getTexID());
-				renderer.DrawVertexRenderStruct(ao.activeObjectScreenMeshMutable);
-				renderer.PopMatrix();
-			}
-		}
-
-		renderer.PopMatrix();
 		renderer.PopProjectionMatrix();
 
 		renderer.DisableVertexAttribArray(vPositionName);
@@ -226,50 +181,49 @@ namespace ZL
 	}
 
 	
-	void UpdateScene(size_t ms)
-	{
-		const float SPEED = 0.1f;
-		if (Env::leftPressed)
-		{
-			Env::cameraShift.v[0] += SPEED * ms;
-		}
-		if (Env::rightPressed)
-		{
-			Env::cameraShift.v[0] -= SPEED * ms;
-		}
+void UpdateScene(size_t ms)
+{
+    const float SPEED = 0.1f;
+    if (Env::leftPressed)
+    {
+        Env::cameraShift.v[0] += SPEED * ms;
+    }
+    if (Env::rightPressed)
+    {
+        Env::cameraShift.v[0] -= SPEED * ms;
+    }
+    if (Env::upPressed)
+    {
+        Env::cameraShift.v[2] += SPEED * ms;
+    }
+    if (Env::downPressed)
+    {
+        Env::cameraShift.v[2] -= SPEED * ms;
+    }
 
-		if (Env::upPressed)
-		{
-			Env::cameraShift.v[2] += SPEED * ms;
-		}
-		if (Env::downPressed)
-		{
-			Env::cameraShift.v[2] -= SPEED * ms;
-		}
+    Env::characterPos.v[0] = -Env::cameraShift.v[0];
+    Env::characterPos.v[1] = -Env::cameraShift.v[1];
+    Env::characterPos.v[2] = -Env::cameraShift.v[2];
 
-		Env::characterPos.v[0] = -Env::cameraShift.v[0];
-		Env::characterPos.v[1] = -Env::cameraShift.v[1];
-		Env::characterPos.v[2] = -Env::cameraShift.v[2];
-
-		for (auto& ao : GameObjects::activeObjects)
-		{
-			if (sqrtf(
-				(Env::characterPos.v[0] - ao.objectPos.v[0]) * (Env::characterPos.v[0] - ao.objectPos.v[0])
-				+
-				(Env::characterPos.v[1] - ao.objectPos.v[1]) * (Env::characterPos.v[1] - ao.objectPos.v[1])
-				+
-				(Env::characterPos.v[2] - ao.objectPos.v[2]) * (Env::characterPos.v[2] - ao.objectPos.v[2])
-			) < 50.f)
-			{
-				ao.highlighted = true;
-			}
-			else
-			{
-				ao.highlighted = false;
-			}
-		}
-
-	}
+    for (auto& room : GameObjects::rooms) {
+        for (auto& ao : room->getObjects()) {
+            if (sqrtf(
+                (Env::characterPos.v[0] - ao.objectPos.v[0]) * (Env::characterPos.v[0] - ao.objectPos.v[0])
+                +
+                (Env::characterPos.v[1] - ao.objectPos.v[1]) * (Env::characterPos.v[1] - ao.objectPos.v[1])
+                +
+                (Env::characterPos.v[2] - ao.objectPos.v[2]) * (Env::characterPos.v[2] - ao.objectPos.v[2])
+            ) < 50.f)
+            {
+                ao.highlighted = true;
+            }
+            else
+            {
+                ao.highlighted = false;
+            }
+        }
+    }
+}
 
 	void ProcessTickCount()
 	{
@@ -328,9 +282,27 @@ namespace ZL
 
 		CheckGlError();
 
-		GameObjects::roomTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+//                Создание кухни
+        auto kitchen = std::make_shared<Room>("Kitchen");
+    	kitchen->createRoomMesh(1000.0f);  // Создаём меш комнаты (куб 1000x1000)
+
+        auto kitchenTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+    	kitchen->addTexture(kitchenTexture);
+
+        GameObjects::rooms.push_back(kitchen);
+
+        ActiveObject book;
+    	book.activeObjectMesh = LoadFromTextFile("./book001.txt");
+    	book.activeObjectMesh.Scale(4);
+    	book.activeObjectMeshMutable.AssignFrom(book.activeObjectMesh);
+    	book.activeObjectMeshMutable.RefreshVBO();
+    	book.objectPos = Vector3f{50, 0, -300};
+    	book.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+    	kitchen->addObject(book);
+
+
 		GameObjects::coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
-		
+
 		GameObjects::colorCubeMesh = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.data = CreateCube3D(5.0);
 		GameObjects::colorCubeMeshMutable.RefreshVBO();
@@ -351,28 +323,6 @@ namespace ZL
 		GameObjects::textMeshMutable.RefreshVBO();
 		GameObjects::coneMeshMutable.AssignFrom(GameObjects::coneMesh);
 		GameObjects::coneMeshMutable.RefreshVBO();
-
-
-		ActiveObject ao1;
-
-
-
-		ao1.activeObjectMesh = LoadFromTextFile("./book001.txt");
-		ao1.activeObjectMesh.Scale(4);
-
-		ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
-		ao1.activeObjectMeshMutable.RefreshVBO();
-
-		ao1.objectPos = Vector3f{50, 0, -300};
-		ao1.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-
-		ao1.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-
-		ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-		ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
-		ao1.activeObjectScreenMeshMutable.RefreshVBO();
-
-		GameObjects::activeObjects.push_back(ao1);
 
 
 
