@@ -11,7 +11,7 @@ namespace ZL
         gInventory.push_back({ name, tex });
     }
 
-    void RemoveItemFromInventory(const std::string& name)
+    void RemoveItemFromInventory(const std::string name)
     {
         gInventory.erase(
             std::remove_if(gInventory.begin(), gInventory.end(),
@@ -30,6 +30,15 @@ namespace ZL
                       << (item.texture ? item.texture->getTexID() : 0)
                       << std::endl;
         }
+    }
+
+    bool HasObject(const std::string& name){
+            for (const auto& item : gInventory) {
+                if (item.name == name) {
+                    return true;
+                }
+            }
+            return false;
     }
 
     const std::vector<InventoryItem>& ReturnInventory()

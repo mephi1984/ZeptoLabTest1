@@ -24,6 +24,9 @@ namespace ZL
     // Удалить предмет из инвентаря
     void RemoveItemFromInventory(const std::string& name);
 
+//    todo check if object exists
+    bool HasObject(const std::string name);
+
     // Вывести все предметы в инвентаре
     void PrintInventory();
 

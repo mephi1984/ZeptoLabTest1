@@ -52,6 +52,7 @@ void GameObjectManager::initialize() {
 
     // Create active object
     ActiveObject ao1;
+    ao1.name = "book";
     ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
     ao1.activeObjectMesh.Scale(4);
     ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
@@ -91,13 +92,6 @@ void GameObjectManager::initialize() {
     inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
     inventoryIconMeshMutable.RefreshVBO();
 
-
-    // Add test items to inventory
-    auto testRoomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
-    auto testConeTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
-    AddItemToInventory("RoomCeramics", testRoomTexture);
-    AddItemToInventory("Cone", testConeTexture);
-
     roomTexturePtr = rooms[current_room_index].roomTexture;
 }
 
@@ -127,8 +121,14 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        bx.Interpolate(animationCounter);
-        animationCounter += 2;
+        for (auto& ao : activeObjects) {
+          if (ao.highlighted){
+                AddItemToInventory(ao.name, ao.activeObjectTexturePtr);
+                PrintInventory();
+          }
+        }
+//        bx.Interpolate(animationCounter);
+//        animationCounter += 2;
     }
 
     else if (event.type == SDL_MOUSEWHEEL) {
