@@ -12,12 +12,24 @@ AudioPlayerAsync::~AudioPlayerAsync() {
     worker.join();
 }
 
+void AudioPlayerAsync::stopAsync() {
+    std::unique_lock<std::mutex> lock(mtx);
+    taskQueue.push([this]() {
+        //audioPlayerMutex.lock();
+        audioPlayer->stop();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        //audioPlayerMutex.unlock();
+        });
+    cv.notify_one();
+}
+
 void AudioPlayerAsync::resetAsync() {
     std::unique_lock<std::mutex> lock(mtx);
     taskQueue.push([this]() {
         //audioPlayerMutex.lock();
         audioPlayer.reset();
         audioPlayer = std::make_unique<AudioPlayer>();
+        
         //audioPlayerMutex.unlock();
         });
     cv.notify_one();

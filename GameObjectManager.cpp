@@ -28,7 +28,8 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
+    //textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
+    textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
@@ -82,7 +83,7 @@ void GameObjectManager::initialize() {
 
 
     Room room_1;
-    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
     room_1.objects.push_back(ao1);
     room_1.sound_name = "Symphony No.6 (1st movement).ogg";
     room_1.roomLogic = createRoom1Logic();
@@ -140,6 +141,7 @@ void GameObjectManager::switch_room(int index){
     if (audioPlayer) {
         audioPlayer->playMusic(rooms[current_room_index].sound_name);
     }*/
+    audioPlayerAsync.stopAsync();
     audioPlayerAsync.resetAsync();
     audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
 

@@ -18,6 +18,8 @@ public:
 
     void playMusicAsync(std::string musicName);
 
+    void stopAsync();
+
     void exit()
     {
         stop = true;
