@@ -25,6 +25,8 @@ public:
         stop = true;
     }
 
+    std::thread worker;
+
 private:
     std::unique_ptr<AudioPlayer> audioPlayer;
     //std::mutex audioPlayerMutex;
@@ -35,9 +37,6 @@ private:
     std::string latestSoundName;
     std::string latestMusicName;
 
-    
-
-    std::thread worker;
     std::mutex mtx;
     std::condition_variable cv;
     std::queue<std::function<void()>> taskQueue;

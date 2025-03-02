@@ -44,6 +44,8 @@ public:
     static bool showMouse;
     static bool exitGameLoop;
 
+    static bool gameIsLoading;
+
 
 };
 
