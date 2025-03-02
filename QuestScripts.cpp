@@ -11,13 +11,14 @@ namespace ZL
 
     std::function<void(GameObjectManager&, size_t)> createRoom1Logic()
     {
-        return [](GameObjectManager& gom, size_t ms)
+        return [elapsedTime = 0u](GameObjectManager& gom, size_t ms) mutable
         {
             if (gom.bearName.compare("TOM") == 0) {
-                gInventoryMap.clear();
-                gom.objects_in_inventory = 0;
-//                std::this_thread::sleep_for(std::chrono::seconds(1));
-                gom.switch_room(1);
+                elapsedTime += ms;
+                if (elapsedTime >= 2000) {
+                    gInventoryMap.clear();
+                    gom.switch_room(1);
+                }
             }
         };
     }
