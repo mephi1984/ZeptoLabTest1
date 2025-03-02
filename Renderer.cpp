@@ -583,6 +583,18 @@ namespace ZL {
 		}
 	}
 
+	void Renderer::RenderUniform3fv(const std::string& uniformName, const float* value)
+	{
+		auto shader = shaderManager.GetCurrentShader();
+
+		auto uniform = shader->uniformList.find(uniformName);
+
+		if (uniform != shader->uniformList.end())
+		{
+			glUniform3fv(uniform->second, 1, value);
+		}
+	}
+
 	void Renderer::RenderUniform1i(const std::string& uniformName, const int value)
 	{
 		auto shader = shaderManager.GetCurrentShader();

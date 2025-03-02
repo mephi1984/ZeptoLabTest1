@@ -361,6 +361,18 @@ void GameObjectManager::updateScene(size_t ms) {
         Environment::cameraShift.v[0] += directionVector.v[0] * ms;
         Environment::cameraShift.v[2] += directionVector.v[1] * ms;
     }
+    if (Environment::downPressed) {
+        Environment::cameraShift.v[0] -= directionVector.v[0] * ms;
+        Environment::cameraShift.v[2] -= directionVector.v[1] * ms;
+    }
+    if (Environment::rightPressed) {
+        Environment::cameraShift.v[2] += directionVector.v[0] * ms;
+        Environment::cameraShift.v[0] -= directionVector.v[1] * ms;
+    }
+    if (Environment::leftPressed) {
+        Environment::cameraShift.v[2] -= directionVector.v[0] * ms;
+        Environment::cameraShift.v[0] += directionVector.v[1] * ms;
+    }
 
     Environment::characterPos.v[0] = -Environment::cameraShift.v[0];
     Environment::characterPos.v[1] = -Environment::cameraShift.v[1];
