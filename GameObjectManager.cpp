@@ -89,6 +89,26 @@ void GameObjectManager::initialize() {
             ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
             ao1.activeObjectScreenMeshMutable.RefreshVBO();
 
+
+
+
+            ActiveObject cubeForFirstRoom;
+            cubeForFirstRoom.name = "cube";
+            cubeForFirstRoom.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoom.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            cubeForFirstRoom.activeObjectMesh.Scale(30);
+            cubeForFirstRoom.activeObjectMeshMutable.AssignFrom(cubeForFirstRoom.activeObjectMesh);
+            cubeForFirstRoom.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoom.objectPos = Vector3f{ 0,50 , 0 };
+            cubeForFirstRoom.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
+            cubeForFirstRoom.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoom.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoom.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoom.activeObjectScreenMesh);
+            cubeForFirstRoom.activeObjectScreenMeshMutable.RefreshVBO();
+            
+
+
+
             /*
             ActiveObject ao2;
             ao2.name = "superchair001";
@@ -111,6 +131,7 @@ void GameObjectManager::initialize() {
             Room room_1;
             room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
             room_1.objects.push_back(ao1);
+            room_1.objects.push_back(cubeForFirstRoom);
             room_1.sound_name = "Symphony No.6 (1st movement).ogg";
             room_1.roomLogic = createRoom1Logic();
             room_1.textMesh = preloadedRoomMeshArr[0];
