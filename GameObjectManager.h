@@ -6,6 +6,7 @@
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "Inventory.h"
 #ifdef __linux__
 #include <SDL2/SDL.h>
 #endif
@@ -52,7 +53,10 @@ public:
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
-    
+    std::vector<InventoryItem> selectedCubes;
+
+    std::string bearName;
+
     AudioPlayerAsync audioPlayerAsync;
 
     ZL::VertexDataStruct inventoryIconMesh;

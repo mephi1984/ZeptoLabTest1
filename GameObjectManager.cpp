@@ -11,7 +11,7 @@ const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 20.0f;
 
 void GameObjectManager::initialize() {
-
+	bearName = "";
   current_room_index = 0;
   objects_in_inventory = 0;
 
@@ -159,6 +159,25 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
       if (InventoryItem* item = GetItemSelected(true)) {
+		      if (InventoryItem* item = GetItemSelected(true)) {
+        if (current_room_index==1) {
+            if (bearName.length() < 3) {
+              if (item->name == "cube_T"){
+                    bearName += "T";
+                    selectedCubes.push_back(*item);
+                    std::cout << bearName << std::endl;
+                }
+              else if (item->name == "cube_O"){
+                    bearName += "O";
+                    selectedCubes.push_back(*item);
+                }
+              else if (item->name == "cube_M"){
+                    bearName += "M";
+                    selectedCubes.push_back(*item);
+                }
+              }
+            }
+        }
 
       }
       else {
