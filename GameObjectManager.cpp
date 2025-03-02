@@ -70,12 +70,12 @@ void GameObjectManager::initialize() {
 
 
             textMesh.Scale(10);
-            textMesh.SwapZandY();
-            textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            //textMesh.SwapZandY();
+            //textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
             textMesh.Move(Vector3f{ 0, 93, 0 });
 
-    coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
-    coneMesh.Scale(200);
+    //coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
+    //coneMesh.Scale(200);
 
 
             textMeshMutable.AssignFrom(textMesh);
@@ -162,6 +162,9 @@ void GameObjectManager::initialize() {
 
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
+
+            collisionMgr.setRoomBoundary(800, 800);
+            collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{80, 0, 200}, Vector3f{400, 0, 400}));
 
             return true;
 
@@ -370,7 +373,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 Environment::cameraAlpha = 0.9 * M_PI / 2.0;
             }
         }
-        else {checkCollision
+        else {
             lastMouseX = event.motion.x;
             lastMouseY = event.motion.y;
         }
@@ -424,16 +427,23 @@ void GameObjectManager::updateScene(size_t ms) {
         newPosition.v[0] += directionVector.v[1] * ms;
     }
 
+    
     Vector3f characterNewPos{-newPosition.v[0], -newPosition.v[1], -newPosition.v[2]};
+
+    std::cout << "Player position: x=" << characterNewPos.v[0]
+        << ", y=" << characterNewPos.v[1]
+        << ", z=" << characterNewPos.v[2] << "\r";
+    std::cout.flush();
+
     // Заменяем проверку walkArea.isInside() на проверку через collisionMgr
-    if (!collisionMgr.checkCollision(characterNewPos)) {
+    if (collisionMgr.checkCollision(characterNewPos) == false) {
         Environment::cameraShift = newPosition;
         Environment::characterPos = characterNewPos;
-
+        /*
         std::cout << "Player position: x=" << characterNewPos.v[0]
                   << ", y=" << characterNewPos.v[1]
                   << ", z=" << characterNewPos.v[2] << "\r";
-        std::cout.flush(); // Чтобы обновлялось в той же строке
+        std::cout.flush(); // Чтобы обновлялось в той же строке*/
     }
 
     for (auto& [key, obj] : aoMgr.activeObjectsEntities) {

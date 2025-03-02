@@ -173,6 +173,7 @@
     <ClInclude Include="AnimatedModel.h" />
     <ClInclude Include="AudioPlayerAsync.h" />
     <ClInclude Include="BoneAnimatedModel.h" />
+    <ClInclude Include="BoundaryBox.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObjectManager.h" />

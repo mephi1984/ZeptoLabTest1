@@ -146,5 +146,8 @@
     <ClInclude Include="AudioPlayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BoundaryBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
