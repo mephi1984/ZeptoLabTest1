@@ -164,14 +164,19 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     // Устанавливаем нужный шейдер для UI (например, "default")
     renderer.shaderManager.PushShader("default");
 
+    // Если шейдер ожидает атрибуты вершин, их нужно включить
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
     renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
         static_cast<float>(Environment::height));
     renderer.PushMatrix();
     renderer.LoadIdentity();
 
-//    Draw hidden UI
     for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
-      std::cout << ao -> name << std::endl;
+      std::cout << ao->name << std::endl;
       std::cout << "Draw" << std::endl;
       if (ao->activeObjectScreenTexturePtr) {
           std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
@@ -179,7 +184,9 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
           worldToScreenCoordinates(ao->objectPos, currentProjectionModelView,
                                    Environment::width, Environment::height, screenX, screenY);
           renderer.PushMatrix();
-          renderer.TranslateMatrix(Vector3f{100, 100, 0});
+          // Здесь можно использовать вычисленные screenX, screenY,
+          // но для теста оставляем фиксированное значение
+          renderer.TranslateMatrix(Vector3f{screenX + 0.f, screenY + 0.f, 0.0f});
           glBindTexture(GL_TEXTURE_2D, ao->activeObjectScreenTexturePtr->getTexID());
           renderer.DrawVertexRenderStruct(ao->activeObjectScreenMeshMutable);
           renderer.PopMatrix();
@@ -209,7 +216,11 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
 
-    // Снимаем шейдер, тем самым балансируем стек
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
     renderer.shaderManager.PopShader();
 }
 
