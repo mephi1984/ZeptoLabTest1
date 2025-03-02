@@ -12,7 +12,6 @@ namespace ZL
 Game::Game() 
     : window(nullptr)
     , glContext(nullptr)
-    , exitGameLoop(false)
     , newTickCount(0)
     , lastTickCount(0)
     , renderer(renderSystem.getRenderer())  // Инициализация ссылки на renderer
@@ -41,6 +40,8 @@ void Game::setup() {
 
     window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
         Environment::width, Environment::height, SDL_WINDOW_OPENGL);
+
+    Environment::window = window;
     
     glContext = SDL_GL_CreateContext(window);
 
@@ -103,7 +104,7 @@ void Game::update() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            exitGameLoop = true;
+            Environment::exitGameLoop = true;
         }
         gameObjects.handleEvent(event);
 

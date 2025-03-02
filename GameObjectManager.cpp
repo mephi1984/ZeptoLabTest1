@@ -107,6 +107,9 @@ void GameObjectManager::initialize() {
     inventoryIconMeshMutable.RefreshVBO();
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
+
+    //SDL_ShowCursor(SDL_DISABLE);
+    SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 void GameObjectManager::switch_room(int index){
@@ -164,6 +167,25 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
     else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
+        case SDLK_SPACE:
+            Environment::showMouse = !Environment::showMouse;
+
+            if (Environment::showMouse)
+            {
+                SDL_SetRelativeMouseMode(SDL_FALSE);
+            }
+            else
+            {
+                SDL_SetRelativeMouseMode(SDL_TRUE);
+                lastMouseX = 0;
+                lastMouseY = 0;
+            }
+            break;
+
+            case SDLK_ESCAPE:
+            case SDLK_q:
+                Environment::exitGameLoop = true;
+                break;
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = true;
@@ -268,15 +290,60 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
     }
     if (event.type == SDL_MOUSEMOTION) {
-        // Сохраняем позицию мыши для последующей проверки
-        lastMouseX = event.motion.x;
-        lastMouseY = event.motion.y;
+        
+        if (Environment::showMouse == false)
+        {
+            int mouseX, mouseY;
+            SDL_GetRelativeMouseState(&mouseX, &mouseY);
+
+            float diffX = 0.01f * mouseX;
+
+            float diffY = 0.01f * mouseY;
+
+            Environment::cameraPhi += diffX;
+
+            if (Environment::settings_inverseVertical)
+            {
+                Environment::cameraAlpha -= diffY;
+            }
+            else
+            {
+                Environment::cameraAlpha += diffY;
+            }
+            if (Environment::cameraAlpha < 0.1 * M_PI / 2.0)
+            {
+                Environment::cameraAlpha = 0.1 * M_PI / 2.0;
+            }
+            else if (Environment::cameraAlpha > 0.9 * M_PI / 2.0)
+            {
+                Environment::cameraAlpha = 0.9 * M_PI / 2.0;
+            }
+
+        }
+        else
+        {
+            lastMouseX = event.motion.x;
+            lastMouseY = event.motion.y;
+        }
     }
 }
 
 
 void GameObjectManager::updateScene(size_t ms) {
     const float SPEED = 0.1f;
+
+    Vector2f directionVector = { 0.f, SPEED }; //x and z
+
+    // Вычисляем новые координаты вектора
+    float x_new = directionVector.v[0] * cos(Environment::cameraPhi) - directionVector.v[1] * sin(Environment::cameraPhi);
+    float y_new = directionVector.v[0] * sin(Environment::cameraPhi) + directionVector.v[1] * cos(Environment::cameraPhi);
+
+    // Обновляем вектор
+    directionVector.v[0] = x_new;
+    directionVector.v[1] = y_new;
+
+    //Only forward is allowed
+    /*
     if (Environment::leftPressed) {
         Environment::cameraShift.v[0] += SPEED * ms;
     }
@@ -288,6 +355,11 @@ void GameObjectManager::updateScene(size_t ms) {
     }
     if (Environment::downPressed) {
         Environment::cameraShift.v[2] -= SPEED * ms;
+    }*/
+
+    if (Environment::upPressed) {
+        Environment::cameraShift.v[0] += directionVector.v[0] * ms;
+        Environment::cameraShift.v[2] += directionVector.v[1] * ms;
     }
 
     Environment::characterPos.v[0] = -Environment::cameraShift.v[0];
@@ -339,7 +411,6 @@ void GameObjectManager::updateScene(size_t ms) {
             Environment::violaLastWalkFrame = int(Environment::violaCurrentWalkFrame);
         }
     }
-
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
