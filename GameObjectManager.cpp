@@ -2,6 +2,7 @@
 #include "Environment.h"
 #include "ObjLoader.h"
 #include "Inventory.h"
+#include "QuestScripts.h"
 #include "TextModel.h"  // Add this include for LoadFromTextFile
 
 namespace ZL {
@@ -13,11 +14,7 @@ void GameObjectManager::initialize() {
 
   current_room_index = 0;
 
-    std::cout << "Hello x1" << std::endl;
-
     coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
-
-    std::cout << "Hello x2" << std::endl;
 
     // Load models
     colorCubeMesh = CreateCube3D(5.0);
@@ -30,22 +27,14 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    std::cout << "Hello x2" << std::endl;
-
     textMesh = ZL::LoadFromTextFile("./mesh001.txt");  // Add ZL:: namespace
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
-
-    std::cout << "Hello x3" << std::endl;
-
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
     coneMeshMutable.AssignFrom(coneMesh);
     coneMeshMutable.RefreshVBO();
-
-    std::cout << "Hello x4" << std::endl;
-
 
     // Load bone animations
     bx.LoadFromFile("mesh_armature_and_animation_data.txt");
@@ -68,11 +57,13 @@ void GameObjectManager::initialize() {
     room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
     room_1.objects.push_back(ao1);
     room_1.sound_name = "file_example_OOG_5MG.ogg";
+    room_1.roomLogic = createRoom1Logic();
     rooms.push_back(room_1);
 
     Room room_2;
     room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
     room_2.sound_name = "Symphony No.6 (1st movement).ogg";
+    room_2.roomLogic = createRoom1Logic();
     rooms.push_back(room_2);
 
     activeObjects = rooms[current_room_index].objects;
@@ -234,6 +225,10 @@ void GameObjectManager::updateScene(size_t ms) {
         );
         ao.highlighted = (dist < 50.f);
 
+    }
+
+    if (rooms[current_room_index].roomLogic) {
+        rooms[current_room_index].roomLogic(*this, ms);
     }
 }
 
