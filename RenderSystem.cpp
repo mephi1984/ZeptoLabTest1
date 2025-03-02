@@ -62,12 +62,19 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     renderer.LoadIdentity();
     renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
 
-    float t = 0.3;
-    renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
-    renderer.ScaleMatrix(10);
+    renderer.RotateMatrix(QuatFromRotateAroundX(Environment::cameraAlpha));
+    //renderer.RotateMatrix(QuatFromRotateAroundY(Environment::cameraPhi));
 
+    //Go a little bit up to make camera at the position of Viola 
+    renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
+
+
+    //Viola stuff
+    renderer.ScaleMatrix(10);
     renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
 
+
+    
 
     if (Environment::violaCurrentAnimation == 0)
     {
@@ -130,10 +137,13 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.LoadIdentity();
     renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
 
-    float t = 0.3;
-    renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
+    renderer.RotateMatrix(QuatFromRotateAroundX(Environment::cameraAlpha));
+    renderer.RotateMatrix(QuatFromRotateAroundY(Environment::cameraPhi));
 
     renderer.TranslateMatrix(Environment::cameraShift);
+
+    //Go a little bit up to make camera at the position of Viola 
+    renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
 
     // Draw active objects
     for (const auto& ao : gameObjects.activeObjects) {

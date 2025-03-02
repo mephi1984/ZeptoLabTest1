@@ -1,5 +1,9 @@
 #pragma once
 #include "Math.h"
+#ifdef __linux__
+#include <SDL2/SDL.h>
+#endif
+#include "OpenGlExtensions.h"
 
 namespace ZL {
 
@@ -17,6 +21,8 @@ public:
 
     static Vector3f cameraShift;
     static Vector3f characterPos;
+    static float cameraPhi;
+    static float cameraAlpha;
 
     //Viola
     static float violaCurrentIdleFrame;
@@ -28,6 +34,15 @@ public:
     static int violaCurrentAnimation;
 
     static float violaAngleAroundY;
+
+    static bool settings_inverseVertical;
+
+    static SDL_Window* window;
+
+    static float cameraDefaultVerticalShift;
+
+    static bool showMouse;
+    static bool exitGameLoop;
 
 
 };

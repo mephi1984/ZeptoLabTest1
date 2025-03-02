@@ -117,6 +117,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Work\SDL2-2.28.3\include;C:\Work\Projects\lpng1645\build\install\include;C:\Work\OpenAL 1.1 SDK\include;C:\Work\Projects\libogg\include;C:\Work\Projects\vorbis\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,6 +159,7 @@
     <ClCompile Include="ObjLoader.cpp" />
     <ClCompile Include="OpenGlExtensions.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="QuestScripts.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
@@ -180,6 +182,7 @@
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="OpenGlExtensions.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="QuestScripts.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ShaderManager.h" />

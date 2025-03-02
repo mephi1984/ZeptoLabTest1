@@ -17,7 +17,7 @@ public:
     void update();
     void render();
     
-    bool shouldExit() const { return exitGameLoop; }
+    bool shouldExit() const { return Environment::exitGameLoop; }
 
 private:
     void processTickCount();
@@ -29,7 +29,6 @@ private:
     GameObjectManager gameObjects;
     Renderer& renderer;  // Ссылка на renderer из RenderSystem
     
-    bool exitGameLoop;
     size_t newTickCount;
     size_t lastTickCount;
     
