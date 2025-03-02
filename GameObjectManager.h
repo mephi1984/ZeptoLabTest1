@@ -1,7 +1,7 @@
 #pragma once
 #include "TextureManager.h"
 #include "BoneAnimatedModel.h"
-#include "cmakeaudioplayer/include/AudioPlayer.hpp"
+#include "AudioPlayerAsync.h"
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
+#include <thread>
 
 namespace ZL {
 
@@ -47,7 +48,8 @@ public:
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
-    std::unique_ptr<AudioPlayer> audioPlayer;
+    
+    AudioPlayerAsync audioPlayerAsync;
 
     ZL::VertexDataStruct inventoryIconMesh;
     ZL::VertexRenderStruct inventoryIconMeshMutable;
@@ -56,6 +58,8 @@ public:
     static const float INVENTORY_MARGIN;
     ActiveObjectManager aoMgr;
     int objects_in_inventory;
+
+    
 
 private:
     //int animationCounter = 0;

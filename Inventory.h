@@ -32,7 +32,7 @@ namespace ZL
     // Поиск предмета по индексу (возвращает указатель или nullptr)
     InventoryItem* GetItemByHotkey(int hot_key);
     InventoryItem* GetItemSelected(bool isSelected);
-    InventoryItem* GetItemByName(std::string name);
+    InventoryItem* GetItemByName(const std::string& name);
 
     // Вывести весь инвентарь в консоль
     void PrintInventory();
