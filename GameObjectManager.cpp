@@ -38,9 +38,10 @@ void GameObjectManager::initialize() {
 
     // Load bone animations
     //bx.LoadFromFile("./violetta001.txt");
-    bx.LoadFromFile("./idleviola001.txt");
-
+    violaIdleModel.LoadFromFile("./idleviola001.txt");
+    violaWalkModel.LoadFromFile("./walkviolla001.txt");
     // Create active object
+    
     ActiveObject ao1;
     ao1.name = "book";
     ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
@@ -53,6 +54,25 @@ void GameObjectManager::initialize() {
     ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
     ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
     ao1.activeObjectScreenMeshMutable.RefreshVBO();
+
+    /*
+    ActiveObject ao2;
+    ao2.name = "superchair001";
+    ao2.activeObjectMesh = ZL::LoadFromTextFile("./superchair001.txt");  // Add ZL:: namespace
+    ao2.activeObjectMesh.Scale(400);
+    ao2.activeObjectMesh.SwapZandY();
+    ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
+    ao2.activeObjectMeshMutable.RefreshVBO();
+    ao2.objectPos = Vector3f{ 0, 0, 0 };
+    ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
+
+    ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+    ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+    ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
+    ao2.activeObjectScreenMeshMutable.RefreshVBO();
+    */
+
+
 
     Room room_1;
     room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
@@ -149,12 +169,22 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 if (audioPlayer) {
                     audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                 }
+                if (Environment::violaCurrentAnimation == 0)
+                {
+                    Environment::violaCurrentAnimation = 1;
+                    Environment::violaLastWalkFrame = -1;
+                }
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = true;
                 if (audioPlayer) {
                     audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                }
+                if (Environment::violaCurrentAnimation == 0)
+                {
+                    Environment::violaCurrentAnimation = 1;
+                    Environment::violaLastWalkFrame = -1;
                 }
                 break;
             case SDLK_UP:
@@ -163,12 +193,22 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 if (audioPlayer) {
                     audioPlayer->playSound("Звук-Идут-по-земле.ogg");
                 }
+                if (Environment::violaCurrentAnimation == 0)
+                {
+                    Environment::violaCurrentAnimation = 1;
+                    Environment::violaLastWalkFrame = -1;
+                }
                 break;
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = true;
                 if (audioPlayer) {
                     audioPlayer->playSound("Звук-Идут-по-земле.ogg");
+                }
+                if (Environment::violaCurrentAnimation == 0)
+                {
+                    Environment::violaCurrentAnimation = 1;
+                    Environment::violaLastWalkFrame = -1;
                 }
                 break;
             // ...handle other keys...
@@ -179,18 +219,50 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = false;
+                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
+                {
+                    if (Environment::violaCurrentAnimation == 1)
+                    {
+                        Environment::violaCurrentAnimation = 0;
+                        Environment::violaCurrentIdleFrame = -1;
+                    }
+                }
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = false;
+                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
+                {
+                    if (Environment::violaCurrentAnimation == 1)
+                    {
+                        Environment::violaCurrentAnimation = 0;
+                        Environment::violaCurrentIdleFrame = -1;
+                    }
+                }
                 break;
             case SDLK_UP:
             case SDLK_w:
                 Environment::upPressed = false;
+                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
+                {
+                    if (Environment::violaCurrentAnimation == 1)
+                    {
+                        Environment::violaCurrentAnimation = 0;
+                        Environment::violaCurrentIdleFrame = -1;
+                    }
+                }
                 break;
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = false;
+                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
+                {
+                    if (Environment::violaCurrentAnimation == 1)
+                    {
+                        Environment::violaCurrentAnimation = 0;
+                        Environment::violaCurrentIdleFrame = -1;
+                    }
+                }
                 break;
         }
     }
@@ -235,14 +307,37 @@ void GameObjectManager::updateScene(size_t ms) {
         rooms[current_room_index].roomLogic(*this, ms);
     }
 
-    Environment::violaCurrentIdleFrame += ms / 24.f;
-
-    while (Environment::violaCurrentIdleFrame > 40)
+    if (Environment::violaCurrentAnimation == 0)
     {
-        Environment::violaCurrentIdleFrame -= 40;
-    }
 
-    bx.Interpolate(int(Environment::violaCurrentIdleFrame));
+        Environment::violaCurrentIdleFrame += ms / 24.f;
+
+        while (Environment::violaCurrentIdleFrame >= 40)
+        {
+            Environment::violaCurrentIdleFrame -= 40;
+        }
+
+        if (int(Environment::violaCurrentIdleFrame) != Environment::violaLastIdleFrame)
+        {
+            violaIdleModel.Interpolate(int(Environment::violaCurrentIdleFrame));
+            Environment::violaLastIdleFrame = int(Environment::violaCurrentIdleFrame);
+        }
+    }
+    else if (Environment::violaCurrentAnimation == 1)
+    {
+        Environment::violaCurrentWalkFrame += ms / 24.f;
+
+        while (Environment::violaCurrentWalkFrame >= 30)
+        {
+            Environment::violaCurrentWalkFrame -= 30;
+        }
+
+        if (int(Environment::violaCurrentWalkFrame) != Environment::violaLastWalkFrame)
+        {
+            violaWalkModel.Interpolate(int(Environment::violaCurrentWalkFrame));
+            Environment::violaLastWalkFrame = int(Environment::violaCurrentWalkFrame);
+        }
+    }
 
 }
 

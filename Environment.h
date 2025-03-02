@@ -18,7 +18,18 @@ public:
     static Vector3f cameraShift;
     static Vector3f characterPos;
 
+    //Viola
     static float violaCurrentIdleFrame;
+    static float violaCurrentWalkFrame;
+
+    static int violaLastIdleFrame;
+    static int violaLastWalkFrame;
+
+    static int violaCurrentAnimation;
+
+    static float violaAngleAroundY;
+
+
 };
 
 } // namespace ZL

@@ -17,5 +17,11 @@ Vector3f Environment::characterPos = {0, 0, 0};
 
 
 float Environment::violaCurrentIdleFrame = 0.f;
+int Environment::violaLastIdleFrame = -1;
+float Environment::violaCurrentWalkFrame = 0.f;
+int Environment::violaLastWalkFrame = 0;
+
+int Environment::violaCurrentAnimation = 0;
+float Environment::violaAngleAroundY = 0.f;
 
 } // namespace ZL
