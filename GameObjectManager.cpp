@@ -7,7 +7,7 @@
 
 namespace ZL {
 
-const float GameObjectManager::INVENTORY_ICON_SIZE = 32.0f;
+const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
 void GameObjectManager::initialize() {
@@ -27,7 +27,7 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./mesh001.txt");  // Add ZL:: namespace
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
     textMesh.Scale(20);
@@ -99,7 +99,7 @@ void GameObjectManager::initialize() {
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
-        {0.0f, 0.0f},
+        {0.0f, 40.0f},
         {INVENTORY_ICON_SIZE/2, INVENTORY_ICON_SIZE/2},
         0.5f
     );
