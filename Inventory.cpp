@@ -1,39 +1,51 @@
 #include "Inventory.h"
-#include <algorithm> // Для std::remove_if
 
 namespace ZL
 {
-    // Определяем глобальный инвентарь
-    std::vector<InventoryItem> gInventory;
+    // Определяем глобальную переменную
+    std::unordered_map<std::string, InventoryItem> gInventoryMap;
 
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex)
     {
-        gInventory.push_back({ name, tex });
+        InventoryItem item;
+        item.name = name;
+        item.texture = tex;
+
+        // Вставляем или перезаписываем (operator[] так сделает).
+        gInventoryMap[name] = item;
     }
 
-    void RemoveItemFromInventory(const std::string name)
+    void RemoveItemFromInventory(const std::string& name)
     {
-        gInventory.erase(
-            std::remove_if(gInventory.begin(), gInventory.end(),
-                           [&name](const InventoryItem& item) {
-                               return item.name == name;
-                           }),
-            gInventory.end());
+        // erase вернёт количество удалённых элементов, если нужно проверить
+        gInventoryMap.erase(name);
+    }
+
+    InventoryItem* GetItemByName(const std::string& name)
+    {
+        // Пытаемся найти элемент по ключу
+        auto it = gInventoryMap.find(name);
+        if (it != gInventoryMap.end())
+        {
+            // Возвращаем адрес найденного InventoryItem
+            return &it->second;
+        }
+        // Если не нашли – nullptr
+        return nullptr;
     }
 
     void PrintInventory()
     {
-        for (const auto& item : gInventory)
+        std::cout << "Inventory contents:\n";
+        for (auto& [itemName, item] : gInventoryMap)
         {
-            std::cout << "Item: " << item.name
-                      << ", texture ID = "
-                      << (item.texture ? item.texture->getTexID() : 0)
-                      << std::endl;
+            std::cout << "  - " << itemName << "\n";
         }
     }
 
-    const std::vector<InventoryItem>& ReturnInventory()
+    const std::unordered_map<std::string, InventoryItem>& ReturnInventory()
     {
-        return gInventory;
+        return gInventoryMap;
     }
+
 }

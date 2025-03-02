@@ -107,17 +107,33 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         }
     }
 
-    // Draw inventory
-    const auto& inventory = ZL::ReturnInventory();
-    for (size_t i = 0; i < inventory.size(); ++i) {
-        renderer.PushMatrix();
-        float xPos = Environment::width - gameObjects.INVENTORY_MARGIN - gameObjects.INVENTORY_ICON_SIZE;
-        float yPos = gameObjects.INVENTORY_MARGIN + i * (gameObjects.INVENTORY_ICON_SIZE + gameObjects.INVENTORY_MARGIN);
-        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
-        glBindTexture(GL_TEXTURE_2D, inventory[i].texture->getTexID());
-        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
-        renderer.PopMatrix();
-    }
+const auto& inventoryMap = ZL::ReturnInventory();
+
+// Заводим счётчик i, чтобы вычислять позицию иконки
+int i = 0;
+
+// Итерируемся по всем предметам,
+for (const auto& [name, item] : inventoryMap) {
+    renderer.PushMatrix();
+
+    float xPos = Environment::width
+               - gameObjects.INVENTORY_MARGIN
+               - gameObjects.INVENTORY_ICON_SIZE;
+    float yPos = gameObjects.INVENTORY_MARGIN
+               + i * (gameObjects.INVENTORY_ICON_SIZE
+               + gameObjects.INVENTORY_MARGIN);
+
+    renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+
+    // item.texture->getTexID() – сам текстурный ID
+    glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
+
+    renderer.PopMatrix();
+
+    i++;
+}
+
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
