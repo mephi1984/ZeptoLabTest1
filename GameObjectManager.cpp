@@ -134,7 +134,7 @@ void GameObjectManager::initialize() {
             ActiveObject ao2;
             ao2.name = "book";
             ao2.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(4);
+            ao2.activeObjectMesh.Scale(0);
             ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
             ao2.activeObjectMeshMutable.RefreshVBO();
             ao2.objectPos = Vector3f{ 50, 0, -300 };
@@ -144,6 +144,24 @@ void GameObjectManager::initialize() {
             ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
             ao2.activeObjectScreenMeshMutable.RefreshVBO();
             ao2.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            
+
+
+            ActiveObject carToy;
+            carToy.name = "carToy";
+            carToy.activeObjectMesh = ZL::LoadFromTextFile("./car.txt");  // Add ZL:: namespace
+            carToy.activeObjectMesh.Scale(10);
+            carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
+            carToy.activeObjectMeshMutable.RefreshVBO();
+            carToy.objectPos = Vector3f{ 50, 0, -300 };
+            carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
+            carToy.activeObjectScreenMeshMutable.RefreshVBO();
+            carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            
+
 
 
             Room room_1;
@@ -170,6 +188,7 @@ void GameObjectManager::initialize() {
             Room room_2;
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
             room_2.objects.push_back(ao2);
+            room_2.objects.push_back(carToy);
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
             room_2.textMesh = preloadedRoomMeshArr[1];
@@ -177,6 +196,7 @@ void GameObjectManager::initialize() {
             room_2.collisionMgr.setRoomBoundary(790, 790);
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
