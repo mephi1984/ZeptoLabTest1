@@ -21,6 +21,7 @@ namespace ZL {
 
 class GameObjectManager {
 public:
+    void initializeLoadingScreen();
     void initialize();
 
     void switch_room(int index);
@@ -33,11 +34,11 @@ public:
     std::shared_ptr<ZL::Texture> roomTexturePtr;
     std::shared_ptr<ZL::Texture> coneTexturePtr;
 
-    ZL::VertexDataStruct colorCubeMesh;
-    ZL::VertexRenderStruct colorCubeMeshMutable;
+    //ZL::VertexDataStruct colorCubeMesh;
+    //ZL::VertexRenderStruct colorCubeMeshMutable;
 
-    ZL::VertexDataStruct testObjMesh;
-    ZL::VertexRenderStruct testObjMeshMutable;
+    //ZL::VertexDataStruct testObjMesh;
+    //ZL::VertexRenderStruct testObjMeshMutable;
 
     ZL::BoneSystem violaIdleModel;
     ZL::VertexRenderStruct violaIdleModelMutable;
@@ -48,8 +49,8 @@ public:
     ZL::VertexDataStruct textMesh;
     ZL::VertexRenderStruct textMeshMutable;
 
-    ZL::VertexDataStruct coneMesh;
-    ZL::VertexRenderStruct coneMeshMutable;
+    //ZL::VertexDataStruct coneMesh;
+    //ZL::VertexRenderStruct coneMeshMutable;
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
@@ -69,7 +70,15 @@ public:
     void addRectangle(int x, int y, int width, int height, int r, int g, int b, int borderWidth, int borderR, int borderG, int borderB);
 
 
-    
+
+    std::shared_ptr<ZL::Texture> loadingScreenTexturePtr;
+
+    ZL::VertexDataStruct loadingScreenMesh;
+    ZL::VertexRenderStruct loadingScreenMeshMutable;
+
+    std::list<std::function<bool()>> loadingFunctions;
+    std::thread loadingThread;
+    bool sideThreadLoadingCompleted = false;
 
 private:
     //int animationCounter = 0;

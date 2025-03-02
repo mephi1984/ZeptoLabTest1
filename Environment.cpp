@@ -40,4 +40,6 @@ bool Environment::showMouse = false;
 
 bool Environment::exitGameLoop = false;
 
+bool Environment::gameIsLoading = true;
+
 } // namespace ZL

@@ -72,6 +72,24 @@ void Game::drawScene() {
 }
 
 void Game::processTickCount() {
+
+    if (Environment::gameIsLoading)
+    {
+        if (gameObjects.loadingFunctions.size() != 0)
+        {
+            bool result = gameObjects.loadingFunctions.begin()->operator()();
+            if (result)
+            {
+                gameObjects.loadingFunctions.erase(gameObjects.loadingFunctions.begin());
+            }
+        }
+        else
+        {
+            Environment::gameIsLoading = false;
+        }
+        return;
+    }
+
     if (lastTickCount == 0) {
         lastTickCount = SDL_GetTicks64();
         return;
@@ -105,9 +123,19 @@ void Game::update() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
+            if (gameObjects.loadingThread.joinable())
+            {
+                gameObjects.loadingThread.join();
+            }
+            gameObjects.audioPlayerAsync.exit();
             Environment::exitGameLoop = true;
+            
         }
-        gameObjects.handleEvent(event);
+
+        if (!Environment::gameIsLoading)
+        {
+            gameObjects.handleEvent(event);
+        }
 
     }
     render();
