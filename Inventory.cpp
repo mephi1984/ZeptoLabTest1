@@ -2,7 +2,7 @@
 
 namespace ZL
 {
-    std::unordered_map<int, InventoryItem> gInventoryMap;
+    std::unordered_map<std::string, InventoryItem> gInventoryMap;
 
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int slot_index)
     {
@@ -16,27 +16,38 @@ namespace ZL
         item.hot_key = slot_index;
         item.scale = 1.0f;
 
-        gInventoryMap[slot_index] = item;
+        gInventoryMap[name] = item;
         std::cout << "Added item to slot " << slot_index << std::endl;
     }
 
-    void RemoveItemFromInventory(int slot_index)
+    void RemoveItemFromInventory(const std::string& name)
     {
-        gInventoryMap.erase(slot_index);
+        // erase вернёт количество удалённых элементов, если нужно проверить
+        gInventoryMap.erase(name);
     }
 
-    InventoryItem* GetItemByIndex(int slot_index)
+
+    InventoryItem* GetItemByName(const std::string name)
     {
-        auto it = gInventoryMap.find(slot_index);
-        if (it != gInventoryMap.end()) {
+        // Пытаемся найти элемент по ключу
+        auto it = gInventoryMap.find(name);
+        if (it != gInventoryMap.end())
+        {
+            // Возвращаем адрес найденного InventoryItem
             return &it->second;
         }
+        // Если не нашли – nullptr
         return nullptr;
     }
 
     InventoryItem* GetItemByHotkey(int hotkey)
     {
-        return GetItemByIndex(hotkey); // Now we can just use the index directly
+        for (auto& [_, item] : gInventoryMap) {
+            if (item.hot_key == hotkey) {
+                return &item;
+            }
+        }
+        return nullptr;
     }
 
     InventoryItem* GetItemSelected(bool selected)
@@ -66,7 +77,7 @@ namespace ZL
         }
     }
 
-    const std::unordered_map<int, InventoryItem>& ReturnInventory()
+    const std::unordered_map<std::string, InventoryItem>& ReturnInventory()
     {
         return gInventoryMap;
     }

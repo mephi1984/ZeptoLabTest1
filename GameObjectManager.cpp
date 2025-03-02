@@ -269,7 +269,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 {
 
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
                 }
             }

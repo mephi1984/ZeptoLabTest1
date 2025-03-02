@@ -21,7 +21,7 @@ namespace ZL
     };
 
     // Глобальное хранилище предметов
-    extern std::unordered_map<int, InventoryItem> gInventoryMap;  // Changed key type from string to int
+    extern std::unordered_map<std::string, InventoryItem> gInventoryMap;  // Changed key type from string to int
 
     // Добавить предмет в инвентарь
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int slot_index);
@@ -30,15 +30,15 @@ namespace ZL
     void RemoveItemFromInventory(int slot_index);
 
     // Поиск предмета по индексу (возвращает указатель или nullptr)
-    InventoryItem* GetItemByIndex(int slot_index);
+    InventoryItem* GetItemByHotkey(int hot_key);
+    InventoryItem* GetItemSelected(bool isSelected);
+    InventoryItem* GetItemByName(std::string name);
 
     // Вывести весь инвентарь в консоль
     void PrintInventory();
 
-    const std::unordered_map<int, InventoryItem>& ReturnInventory();
+    const std::unordered_map<std::string, InventoryItem>& ReturnInventory();
 
     // Add these new functions
     void UnselectAllItems();
-    InventoryItem* GetItemByHotkey(int hotkey);
-    InventoryItem* GetItemSelected(bool isSelected);
 }
