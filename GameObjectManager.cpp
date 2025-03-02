@@ -114,6 +114,12 @@ void GameObjectManager::initialize() {
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
 
+    AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
+    objects_in_inventory++;
+    AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
+    objects_in_inventory++;
+
+
     //SDL_ShowCursor(SDL_DISABLE);
     SDL_SetRelativeMouseMode(SDL_TRUE);
 }
@@ -243,28 +249,15 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
 
             case SDLK_1:
-        {
-        int hot_key = 1;
-		std::string keyStr = std::to_string(hot_key);
-
-		auto it = gInventory.find(keyStr);
-		if (it != gInventory.end()) {
-    		it->second.isSelected = true;
-		}
-                std::cout << keyStr << std::endl;
-
-    } break;
-
-    case SDLK_2:
-    {
-        int hot_key = 2;
-		std::string keyStr = std::to_string(hot_key);
-
-		auto it = gInventory.find(keyStr);
-		if (it != gInventory.end()) {
-    		it->second.isSelected = true;
-		}
-    } break;
+            case SDLK_2:
+            {
+                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+                UnselectAllItems();
+                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                    item->isSelected = true;
+                }
+            }
+            break;
             // ...handle other keys...
         }
     }
