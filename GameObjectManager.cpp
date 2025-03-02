@@ -259,14 +259,22 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             case SDLK_1:
             case SDLK_2:
-            {
-                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+            case SDLK_3:
+            case SDLK_4:
+            case SDLK_5:
+            case SDLK_6:
+            case SDLK_7:
+            case SDLK_8:
+            case SDLK_9:
+                {
+
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
                     std:: cout << item->name << std::endl;
                 }
             }
+
             break;
             // ...handle other keys...
         }
