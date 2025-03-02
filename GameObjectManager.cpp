@@ -7,12 +7,13 @@
 
 namespace ZL {
 
-const float GameObjectManager::INVENTORY_ICON_SIZE = 32.0f;
+const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
 void GameObjectManager::initialize() {
 
   current_room_index = 0;
+  objects_in_inventory = 0;
 
     coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
@@ -104,7 +105,7 @@ void GameObjectManager::initialize() {
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
-        {0.0f, 0.0f},
+        {0.0f, 40.0f},
         {INVENTORY_ICON_SIZE/2, INVENTORY_ICON_SIZE/2},
         0.5f
     );
@@ -150,7 +151,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             continue;
         }
 
-        AddItemToInventory(ao->name, ao->activeObjectTexturePtr);
+        AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
+        objects_in_inventory++;
 
         aoMgr.removeByName(ao->name);
     }
@@ -239,6 +241,30 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     Environment::violaLastWalkFrame = -1;
                 }
                 break;
+
+            case SDLK_1:
+        {
+        int hot_key = 1;
+		std::string keyStr = std::to_string(hot_key);
+
+		auto it = gInventory.find(keyStr);
+		if (it != gInventory.end()) {
+    		it->second.isSelected = true;
+		}
+                std::cout << keyStr << std::endl;
+
+    } break;
+
+    case SDLK_2:
+    {
+        int hot_key = 2;
+		std::string keyStr = std::to_string(hot_key);
+
+		auto it = gInventory.find(keyStr);
+		if (it != gInventory.end()) {
+    		it->second.isSelected = true;
+		}
+    } break;
             // ...handle other keys...
         }
     }
