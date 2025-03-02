@@ -81,25 +81,8 @@ void GameObjectManager::initialize() {
         {
 
             // Create active object
-
-            ActiveObject ao1;
-            ao1.name = "book";
-            ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao1.activeObjectMesh.Scale(4);
-            ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
-            ao1.activeObjectMeshMutable.RefreshVBO();
-            ao1.objectPos = Vector3f{ 50, 0, -300 };
-            ao1.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-            ao1.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
-            ao1.activeObjectScreenMeshMutable.RefreshVBO();
-            ao1.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
-
-
-
             ActiveObject cubeForFirstRoomT;
-            cubeForFirstRoomT.name = "cubeT";
+            cubeForFirstRoomT.name = "cube_T";
             cubeForFirstRoomT.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
             cubeForFirstRoomT.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
             cubeForFirstRoomT.activeObjectMesh.Scale(10);
@@ -111,15 +94,11 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomT.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
-
-
-
-
-
+            cubeForFirstRoomT.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
 
 
             ActiveObject cubeForFirstRoomO;
-            cubeForFirstRoomO.name = "cubeO";
+            cubeForFirstRoomO.name = "cube_O";
             cubeForFirstRoomO.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
             cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
             cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 1.5)));
@@ -132,10 +111,11 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
+            cubeForFirstRoomO.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32"));
            
 
             ActiveObject cubeForFirstRoomM;
-            cubeForFirstRoomM.name = "cubeM";
+            cubeForFirstRoomM.name = "cube_M";
             cubeForFirstRoomM.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
             cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
             cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI)));
@@ -143,13 +123,13 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectMesh.Scale(10);
             cubeForFirstRoomM.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectMesh);
             cubeForFirstRoomM.activeObjectMeshMutable.RefreshVBO();
-            cubeForFirstRoomM.objectPos = Vector3f{ 280, 95 , 235 };
+            cubeForFirstRoomM.objectPos = Vector3f{ 200, 95 , 230 };
             cubeForFirstRoomM.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001_4.bmp"));
             cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             cubeForFirstRoomM.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
-
+            cubeForFirstRoomM.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32"));
 
             ActiveObject ao2;
             ao2.name = "book";
@@ -184,10 +164,8 @@ void GameObjectManager::initialize() {
 
 
 
-
             Room room_1;
             room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
-            room_1.objects.push_back(ao1);
             room_1.objects.push_back(cubeForFirstRoomT);
             room_1.objects.push_back(cubeForFirstRoomO);
             room_1.objects.push_back(cubeForFirstRoomM);
@@ -244,13 +222,6 @@ void GameObjectManager::initialize() {
 
             //roomTexturePtr = rooms[current_room_index].roomTexture;
 
-            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
-            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
-            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
-
 
             monsterTexturePtr1 = std::make_shared<Texture>(CreateTextureDataFromBmp32("./monster001.bmp32"));
             monsterTexturePtr2 = std::make_shared<Texture>(CreateTextureDataFromBmp32("./monster002.bmp32"));
@@ -299,6 +270,7 @@ void GameObjectManager::switch_room(int index){
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
+//      todo comment this action
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -602,7 +574,7 @@ void GameObjectManager::updateScene(size_t ms) {
             pow(Environment::characterPos.v[1] - obj.objectPos.v[1], 2) +
             pow(Environment::characterPos.v[2] - obj.objectPos.v[2], 2)
         );
-        obj.highlighted = (dist < 50.f);
+        obj.highlighted = (dist < 150.f);
     }
 
     /*
