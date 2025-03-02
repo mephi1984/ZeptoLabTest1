@@ -183,6 +183,11 @@ namespace ZL
 			{
 				bones[i].children.push_back(getIndexByValue(boneChildren[boneName][j], boneNames));
 			}
+
+			/*if (boneName == "Bone.020")
+			{
+				std::cout << i << std::endl;
+			}*/
 		}
 
 		startBones = bones;
@@ -299,8 +304,6 @@ namespace ZL
 				localVerticesBoneWeight[i][j].weight = localVerticesBoneWeight[i][j].weight / sumWeights;
 			}
 
-
-
 		}
 
 		std::getline(f, tempLine);//=== Animation Keyframes ===
@@ -376,8 +379,9 @@ namespace ZL
 				}
 
 				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0] = floatValues[0];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0 + 1 * 3] = floatValues[1];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0 + 2 * 3] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0 + 1 * 4] = floatValues[1];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0 + 2 * 4] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[0 + 3 * 4] = floatValues[3];
 
 
 				std::getline(f, tempLine);
@@ -390,8 +394,9 @@ namespace ZL
 				}
 
 				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1] = floatValues[0];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1 + 1 * 3] = floatValues[1];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1 + 2 * 3] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1 + 1 * 4] = floatValues[1];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1 + 2 * 4] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[1 + 3 * 4] = floatValues[3];
 
 				std::getline(f, tempLine);
 				b = tempLine.cbegin();
@@ -403,11 +408,26 @@ namespace ZL
 				}
 
 				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2] = floatValues[0];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2 + 1 * 3] = floatValues[1];
-				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2 + 2 * 3] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2 + 1 * 4] = floatValues[1];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2 + 2 * 4] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[2 + 3 * 4] = floatValues[3];
 
 
-				std::getline(f, tempLine);// ignore last matrix line
+				std::getline(f, tempLine);
+				b = tempLine.cbegin();
+				e = tempLine.cend();
+				floatValues.clear();
+				while (std::regex_search(b, e, match, pattern_float)) {
+					floatValues.push_back(std::stof(match.str()));
+					b = match.suffix().first;
+				}
+
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[3] = floatValues[0];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[3 + 1 * 4] = floatValues[1];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[3 + 2 * 4] = floatValues[2];
+				animations[0].keyFrames[i].bones[boneNumber].boneMatrixWorld.m[3 + 3 * 4] = floatValues[3];
+
+				//std::getline(f, tempLine);// ignore last matrix line
 
 				//=============== Matrix end ==================
 			
@@ -471,19 +491,48 @@ namespace ZL
 			currentBones[i].boneStartWorld.v[1] = oneFrameBones[i].boneStartWorld.v[1] + t * (nextFrameBones[i].boneStartWorld.v[1] - oneFrameBones[i].boneStartWorld.v[1]);
 			currentBones[i].boneStartWorld.v[2] = oneFrameBones[i].boneStartWorld.v[2] + t * (nextFrameBones[i].boneStartWorld.v[2] - oneFrameBones[i].boneStartWorld.v[2]);
 			
-			Vector4f q1 = MatrixToQuat(oneFrameBones[i].boneMatrixWorld);
-			Vector4f q2 = MatrixToQuat(nextFrameBones[i].boneMatrixWorld);
+			Matrix3f oneFrameBonesMatrix;
+
+			oneFrameBonesMatrix.m[0] = oneFrameBones[i].boneMatrixWorld.m[0];
+			oneFrameBonesMatrix.m[1] = oneFrameBones[i].boneMatrixWorld.m[1];
+			oneFrameBonesMatrix.m[2] = oneFrameBones[i].boneMatrixWorld.m[2];
+
+			oneFrameBonesMatrix.m[3] = oneFrameBones[i].boneMatrixWorld.m[0 + 1*4];
+			oneFrameBonesMatrix.m[4] = oneFrameBones[i].boneMatrixWorld.m[1 + 1*4];
+			oneFrameBonesMatrix.m[5] = oneFrameBones[i].boneMatrixWorld.m[2 + 1*4];
+
+			oneFrameBonesMatrix.m[6] = oneFrameBones[i].boneMatrixWorld.m[0 + 2*4];
+			oneFrameBonesMatrix.m[7] = oneFrameBones[i].boneMatrixWorld.m[1 + 2*4];
+			oneFrameBonesMatrix.m[8] = oneFrameBones[i].boneMatrixWorld.m[2 + 2*4];
+			
+			Matrix3f nextFrameBonesMatrix;
+
+			nextFrameBonesMatrix.m[0] = nextFrameBones[i].boneMatrixWorld.m[0];
+			nextFrameBonesMatrix.m[1] = nextFrameBones[i].boneMatrixWorld.m[1];
+			nextFrameBonesMatrix.m[2] = nextFrameBones[i].boneMatrixWorld.m[2];
+
+			nextFrameBonesMatrix.m[3] = nextFrameBones[i].boneMatrixWorld.m[0 + 1 * 4];
+			nextFrameBonesMatrix.m[4] = nextFrameBones[i].boneMatrixWorld.m[1 + 1 * 4];
+			nextFrameBonesMatrix.m[5] = nextFrameBones[i].boneMatrixWorld.m[2 + 1 * 4];
+
+			nextFrameBonesMatrix.m[6] = nextFrameBones[i].boneMatrixWorld.m[0 + 2 * 4];
+			nextFrameBonesMatrix.m[7] = nextFrameBones[i].boneMatrixWorld.m[1 + 2 * 4];
+			nextFrameBonesMatrix.m[8] = nextFrameBones[i].boneMatrixWorld.m[2 + 2 * 4];
+
+			Vector4f q1 = MatrixToQuat(oneFrameBonesMatrix);
+			Vector4f q2 = MatrixToQuat(nextFrameBonesMatrix);
 			Vector4f q1_norm = q1.normalized();
 			Vector4f q2_norm = q2.normalized();
 
 			Vector4f result = slerp(q1_norm, q2_norm, t);
 
-			currentBones[i].boneMatrixWorld = QuatToMatrix(result);
+			Matrix3f boneMatrixWorld3 = QuatToMatrix(result);
 
-			//skinningMatrixForEachBone[i] = MultMatrixMatrix(currentBones[i].boneMatrixWorld, InverseMatrix(animations[0].keyFrames[0].bones[i].boneMatrixWorld));
+			currentBones[i].boneMatrixWorld = MakeMatrix4x4(boneMatrixWorld3, currentBones[i].boneStartWorld);
 			
-			Matrix4f currentBoneMatrixWorld4 = MakeMatrix4x4(currentBones[i].boneMatrixWorld, currentBones[i].boneStartWorld);
-			Matrix4f startBoneMatrixWorld4 = MakeMatrix4x4(animations[0].keyFrames[0].bones[i].boneMatrixWorld, animations[0].keyFrames[0].bones[i].boneStartWorld);
+			Matrix4f currentBoneMatrixWorld4 = currentBones[i].boneMatrixWorld;
+			Matrix4f startBoneMatrixWorld4 = animations[0].keyFrames[0].bones[i].boneMatrixWorld;
+
 			Matrix4f inverstedStartBoneMatrixWorld4 = InverseMatrix(startBoneMatrixWorld4);
 
 			skinningMatrixForEachBone[i] = MultMatrixMatrix(currentBoneMatrixWorld4, inverstedStartBoneMatrixWorld4);
@@ -496,13 +545,19 @@ namespace ZL
 		{
 			currentBones[i].boneStartWorld = oneFrameBones[i].boneStartWorld;
 			currentBones[i].boneMatrixWorld = oneFrameBones[i].boneMatrixWorld;
-			Matrix4f currentBoneMatrixWorld4 = MakeMatrix4x4(currentBones[i].boneMatrixWorld, currentBones[i].boneStartWorld);
-			Matrix4f startBoneMatrixWorld4 = MakeMatrix4x4(animations[0].keyFrames[0].bones[i].boneMatrixWorld, animations[0].keyFrames[0].bones[i].boneStartWorld);
+			//Matrix4f currentBoneMatrixWorld4 = MakeMatrix4x4(currentBones[i].boneMatrixWorld, currentBones[i].boneStartWorld);
+			//Matrix4f startBoneMatrixWorld4 = MakeMatrix4x4(animations[0].keyFrames[0].bones[i].boneMatrixWorld, animations[0].keyFrames[0].bones[i].boneStartWorld);
+			Matrix4f currentBoneMatrixWorld4 = currentBones[i].boneMatrixWorld;
+			Matrix4f startBoneMatrixWorld4 = animations[0].keyFrames[0].bones[i].boneMatrixWorld;
 			Matrix4f inverstedStartBoneMatrixWorld4 = InverseMatrix(startBoneMatrixWorld4);
 			skinningMatrixForEachBone[i] = MultMatrixMatrix(currentBoneMatrixWorld4, inverstedStartBoneMatrixWorld4);
 
-		}
-		*/
+			if (i == 10)
+			{
+				std::cout << i << std::endl;
+			}
+		}*/
+		
 		for (int i = 0; i < mesh.PositionData.size(); i++)
 		{
 			Vector4f originalPos = { 

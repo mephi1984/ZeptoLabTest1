@@ -61,7 +61,6 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
 
     renderer.RotateMatrix(QuatFromRotateAroundX(Environment::cameraAlpha));
-    //renderer.RotateMatrix(QuatFromRotateAroundY(Environment::cameraPhi));
 
     //Go a little bit up to make camera at the position of Viola 
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
@@ -70,6 +69,7 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     //Viola stuff
     renderer.ScaleMatrix(10);
     renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
+    renderer.RotateMatrix(QuatFromRotateAroundZ(M_PI));
 
 
     
@@ -123,6 +123,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
 
     drawViola(gameObjects);
 
+    
     renderer.shaderManager.PushShader(hideCamShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
 

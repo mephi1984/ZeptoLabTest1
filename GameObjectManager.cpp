@@ -53,8 +53,10 @@ void GameObjectManager::initialize() {
         preloadedRoomMeshArr[0].Move(Vector3f{ 0, 93, 0 });
 
 
-        violaIdleModel.LoadFromFile("./idleviola001.txt");
-        violaWalkModel.LoadFromFile("./walkviolla001.txt");
+        //violaIdleModel.LoadFromFile("./idleviola001.txt");
+        violaIdleModel.LoadFromFile("./idleviola008.txt");
+
+        violaWalkModel.LoadFromFile("./walkviola008.txt");
         sideThreadLoadingCompleted = true;
     });
 
@@ -250,7 +252,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = true;
-                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -259,7 +261,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = true;
-                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -268,7 +270,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_UP:
             case SDLK_w:
                 Environment::upPressed = true;
-                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -277,7 +279,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = true;
-                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -451,6 +453,7 @@ void GameObjectManager::updateScene(size_t ms) {
 
     if (Environment::violaCurrentAnimation == 0) {
         Environment::violaCurrentIdleFrame += ms / 24.f;
+        //Environment::violaCurrentIdleFrame = 0;
 
         while (Environment::violaCurrentIdleFrame >= 40) {
             Environment::violaCurrentIdleFrame -= 40;
