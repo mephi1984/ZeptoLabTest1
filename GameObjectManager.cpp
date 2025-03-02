@@ -187,7 +187,7 @@ void GameObjectManager::initialize() {
 
             Room room_2;
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
-            room_2.objects.push_back(ao2);
+            room_2.objects.push_back(lampe);
             room_2.objects.push_back(carToy);
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
