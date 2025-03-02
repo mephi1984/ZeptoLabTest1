@@ -54,6 +54,7 @@ public:
     
     static const float INVENTORY_ICON_SIZE;
     static const float INVENTORY_MARGIN;
+    ActiveObjectManager aoMgr;
 
 private:
     //int animationCounter = 0;

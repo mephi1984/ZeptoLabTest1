@@ -27,9 +27,10 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./mesh001.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./mesh_first_room.txt");  // Add ZL:: namespace
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
+    textMesh.Scale(20);
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
@@ -80,6 +81,7 @@ void GameObjectManager::initialize() {
     room_1.sound_name = "Symphony No.6 (1st movement).ogg";
     room_1.roomLogic = createRoom1Logic();
     rooms.push_back(room_1);
+    aoMgr.addActiveObject(ao1);
 
     Room room_2;
     room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
@@ -136,14 +138,16 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-    for (size_t i = 0; i < activeObjects.size(); ++i) {
-        auto& ao = activeObjects[i];
-        if (ao.highlighted) {
-            AddItemToInventory(ao.name, ao.activeObjectTexturePtr);
-            activeObjects.erase(activeObjects.begin() + i);
-        // Можно выйти из цикла, если объект удален, чтобы избежать ошибок индексации.
-            break;
+      const auto highlightedObjects = aoMgr.findByHighlighted(true);
+
+    for (auto* ao : highlightedObjects) {
+        if (!ao) {
+            continue;
         }
+
+        AddItemToInventory(ao->name, ao->activeObjectTexturePtr);
+
+        aoMgr.removeByName(ao->name);
     }
 //        bx.Interpolate(animationCounter);
 //        animationCounter += 2;
@@ -362,15 +366,15 @@ void GameObjectManager::updateScene(size_t ms) {
     Environment::characterPos.v[1] = -Environment::cameraShift.v[1];
     Environment::characterPos.v[2] = -Environment::cameraShift.v[2];
 
-    for (auto& ao : activeObjects) {
+    for (auto& [key, obj] : aoMgr.activeObjectsEntities) {
         float dist = sqrtf(
-            pow(Environment::characterPos.v[0] - ao.objectPos.v[0], 2) +
-            pow(Environment::characterPos.v[1] - ao.objectPos.v[1], 2) +
-            pow(Environment::characterPos.v[2] - ao.objectPos.v[2], 2)
+            pow(Environment::characterPos.v[0] - obj.objectPos.v[0], 2) +
+            pow(Environment::characterPos.v[1] - obj.objectPos.v[1], 2) +
+            pow(Environment::characterPos.v[2] - obj.objectPos.v[2], 2)
         );
-        ao.highlighted = (dist < 50.f);
-
+        obj.highlighted = (dist < 50.f);
     }
+
 
     if (rooms[current_room_index].roomLogic) {
         rooms[current_room_index].roomLogic(*this, ms);

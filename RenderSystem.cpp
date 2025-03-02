@@ -32,7 +32,7 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     renderer.EnableVertexAttribArray(vTexCoordName);
     */
     drawWorld(gameObjects);
-    //drawUI(gameObjects);
+    drawUI(gameObjects);
 
     /*renderer.DisableVertexAttribArray(vPositionName);
     renderer.DisableVertexAttribArray(vTexCoordName);
@@ -177,58 +177,69 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
 }
 
 void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
-    renderer.PushProjectionMatrix(static_cast<float>(Environment::width), 
+    // Устанавливаем нужный шейдер для UI (например, "default")
+    renderer.shaderManager.PushShader("default");
+
+    // Если шейдер ожидает атрибуты вершин, их нужно включить
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
         static_cast<float>(Environment::height));
     renderer.PushMatrix();
     renderer.LoadIdentity();
 
-    // Draw highlighted objects UI
-    for (const auto& ao : gameObjects.activeObjects) {
-        if (ao.highlighted) {
-          if (ao.activeObjectScreenTexturePtr){
-            int screenX, screenY;
-            worldToScreenCoordinates(ao.objectPos, currentProjectionModelView, 
-                Environment::width, Environment::height, screenX, screenY);
-            renderer.PushMatrix();
-            renderer.TranslateMatrix(Vector3f{screenX + 0.f, screenY + 0.f, 0.0f});
-            glBindTexture(GL_TEXTURE_2D, ao.activeObjectScreenTexturePtr->getTexID());
-            renderer.DrawVertexRenderStruct(ao.activeObjectScreenMeshMutable);
-            renderer.PopMatrix();
-           } else {}
-        }
+    for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
+      std::cout << ao->name << std::endl;
+      std::cout << "Draw" << std::endl;
+      if (ao->activeObjectScreenTexturePtr) {
+          std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
+          int screenX, screenY;
+          worldToScreenCoordinates(ao->objectPos, currentProjectionModelView,
+                                   Environment::width, Environment::height, screenX, screenY);
+          renderer.PushMatrix();
+          // Здесь можно использовать вычисленные screenX, screenY,
+          // но для теста оставляем фиксированное значение
+          renderer.TranslateMatrix(Vector3f{screenX + 0.f, screenY + 0.f, 0.0f});
+          glBindTexture(GL_TEXTURE_2D, ao->activeObjectScreenTexturePtr->getTexID());
+          renderer.DrawVertexRenderStruct(ao->activeObjectScreenMeshMutable);
+          renderer.PopMatrix();
+      }
     }
 
-const auto& inventoryMap = ZL::ReturnInventory();
+    const auto& inventoryMap = ZL::ReturnInventory();
+    int i = 0;
+    for (const auto& [name, item] : inventoryMap) {
+        renderer.PushMatrix();
 
-// Заводим счётчик i, чтобы вычислять позицию иконки
-int i = 0;
+        float xPos = Environment::width
+                   - gameObjects.INVENTORY_MARGIN
+                   - gameObjects.INVENTORY_ICON_SIZE;
+        float yPos = gameObjects.INVENTORY_MARGIN
+                   + i * (gameObjects.INVENTORY_ICON_SIZE
+                   + gameObjects.INVENTORY_MARGIN);
 
-// Итерируемся по всем предметам,
-for (const auto& [name, item] : inventoryMap) {
-    renderer.PushMatrix();
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
 
-    float xPos = Environment::width
-               - gameObjects.INVENTORY_MARGIN
-               - gameObjects.INVENTORY_ICON_SIZE;
-    float yPos = gameObjects.INVENTORY_MARGIN
-               + i * (gameObjects.INVENTORY_ICON_SIZE
-               + gameObjects.INVENTORY_MARGIN);
-
-    renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
-
-    // item.texture->getTexID() – сам текстурный ID
-    glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
-    renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
-
-    renderer.PopMatrix();
-
-    i++;
-}
-
+        renderer.PopMatrix();
+        i++;
+    }
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
 }
+
 
 void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
     Matrix4f projectionModelView,
