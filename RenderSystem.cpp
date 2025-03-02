@@ -270,9 +270,9 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
 
         // Смещаем по оси x: начиная с левой стороны и двигаясь вправо
         float xPos = gameObjects.SELECTED_CUBE_MARGIN
-                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN);
+                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN) + 50.0f;
         // Оставляем y константным
-        float yPos = Environment::height - gameObjects.SELECTED_CUBE_MARGIN - (gameObjects.SELECTED_CUBE_ICON_SIZE * 3.0f);
+        float yPos = 500.0f;
 
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
         renderer.ScaleMatrix(Vector3f{2.8f, 2.8f, 1.0f});
