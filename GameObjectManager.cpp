@@ -266,91 +266,53 @@ void GameObjectManager::switch_room(int index){
 }
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
-    // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
-//      todo comment this action
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+        if (InventoryItem* item = GetItemSelected(true)) {
+            if (current_room_index==1) {
+                if (item->name == "carToy") {
+                    const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+                    for (auto* ao : highlightedObjects) {
+                        if (ao && ao->name == "lampe") {
+                            // Create a new lamp object with updated texture
+                            ActiveObject updatedLamp = *ao;
+                            // Change from dark to lit texture
+                            updatedLamp.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./base_Base_color_1001.bmp"));
+                            
+                            // Replace the old lamp with updated one
+                            rooms[current_room_index].removeByPtr(ao);
+                            rooms[current_room_index].objects.push_back(updatedLamp);
+                            activeObjects = rooms[current_room_index].objects;
+                            
+                            // Remove car from inventory
+                            gInventoryMap.erase(item->name);
+                            objects_in_inventory--;
 
-      if (InventoryItem* item = GetItemSelected(true)) {
-        std::cout << item->name << std::endl;
-
-        if (current_room_index==0) {
-
-            if (bearName.length() <= 3) {
-              if (item->name == "cube_T"){
-                    bearName += "T";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-                }
-              else if (item->name == "cube_O"){
-                    bearName += "O";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-                }
-              else if (item->name == "cube_M"){
-                    bearName += "M";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-              }
-            }
-            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
-              bearName = "";
-              for (const auto& cube : selectedCubes) {
-                gInventoryMap[cube.name] = cube;
-            }
-              selectedCubes.clear();
-            }
-        }
-        else if (current_room_index==1) {
-             if (InventoryItem* item = GetItemSelected(true)){
-               std::cout << item->name << std::endl;
-					if (item->name == "carToy") {
-                          std::cout << item->name << std::endl;
-                // Проверить, наведена ли мышь на лампу
-                const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
-                std::cout << highlightedObjects.size() << std::endl;
-                for (auto* ao : highlightedObjects) {
-                    if (ao && ao->name == "lampe") {
-                        ao->activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("base_Base_color_1001.bmp"));
-                        gInventoryMap.erase(item->name);
-                        objects_in_inventory--;
-                        break;
+                            // Play sound effect
+                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+                            break;
+                        }
                     }
                 }
+            }
+        }
+        else {
+            const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+            for (auto* ao : highlightedObjects) {
+                if (!ao || ao->name == "lampe") {
+                    continue;
                 }
+                
+                AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+                objects_in_inventory++;
+
+                rooms[current_room_index].removeByPtr(ao);
+                activeObjects = rooms[current_room_index].objects;
             }
         }
-      }
-      else {
-          const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
-
-        for (auto* ao : highlightedObjects) {
-            if (!ao) {
-                continue;
-            }
-
-            if (ao->name != "lampe") {
-            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
-            objects_in_inventory++;
-
-            rooms[current_room_index].removeByPtr(ao);
-            activeObjects = rooms[current_room_index].objects;
-            }
-
-
-            //aoMgr.removeByName(ao->name);
-        }
-        // bx.Interpolate(animationCounter);
-        // animationCounter += 2;
-       }
     }
-
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
