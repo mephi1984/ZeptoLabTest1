@@ -52,6 +52,7 @@ namespace ZL {
 		void RotateByMatrix(Matrix3f m);
 
 		void Scale(float scale);
+		void Move(Vector3f diff);
 		void SwapZandY();
 	};
 

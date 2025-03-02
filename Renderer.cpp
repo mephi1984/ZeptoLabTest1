@@ -286,6 +286,13 @@ namespace ZL {
 			PositionData[i] = PositionData[i] * scale;
 		}
 	}
+	void VertexDataStruct::Move(Vector3f diff)
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = PositionData[i] + diff;
+		}
+	}
 
 	void VertexDataStruct::SwapZandY()
 	{
