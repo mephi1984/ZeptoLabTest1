@@ -5,6 +5,7 @@
 
 namespace ZL {
 struct ActiveObject {
+    std::string name;
     std::shared_ptr<ZL::Texture> activeObjectTexturePtr;
     ZL::VertexDataStruct activeObjectMesh;
     ZL::VertexRenderStruct activeObjectMeshMutable;

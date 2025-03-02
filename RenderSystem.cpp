@@ -169,6 +169,7 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     // Draw highlighted objects UI
     for (const auto& ao : gameObjects.activeObjects) {
         if (ao.highlighted) {
+          if (ao.activeObjectScreenTexturePtr){
             int screenX, screenY;
             worldToScreenCoordinates(ao.objectPos, currentProjectionModelView, 
                 Environment::width, Environment::height, screenX, screenY);
@@ -177,6 +178,7 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
             glBindTexture(GL_TEXTURE_2D, ao.activeObjectScreenTexturePtr->getTexID());
             renderer.DrawVertexRenderStruct(ao.activeObjectScreenMeshMutable);
             renderer.PopMatrix();
+           } else {}
         }
     }
 

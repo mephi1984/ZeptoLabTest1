@@ -11,7 +11,7 @@ namespace ZL
         gInventory.push_back({ name, tex });
     }
 
-    void RemoveItemFromInventory(const std::string& name)
+    void RemoveItemFromInventory(const std::string name)
     {
         gInventory.erase(
             std::remove_if(gInventory.begin(), gInventory.end(),

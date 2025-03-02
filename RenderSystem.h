@@ -22,7 +22,7 @@ private:
     void drawUI(const GameObjectManager& gameObjects);
 
     void drawViola(GameObjectManager& gameObjects);
-    
+
     Renderer renderer;
     ShaderManager shaderManager;
     Matrix4f currentProjectionModelView; // Добавлено для хранения матрицы между drawWorld и drawUI
