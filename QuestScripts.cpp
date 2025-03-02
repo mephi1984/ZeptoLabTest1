@@ -10,7 +10,10 @@ namespace ZL
     {
         return [](GameObjectManager& gom, size_t ms)
         {
-
+            if (gom.bearName.compare("TOM") == 0) {
+              std::cout << gom.bearName << std::endl;
+                gom.switch_room(1);
+            }
         };
     }
 

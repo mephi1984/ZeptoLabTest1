@@ -161,6 +161,8 @@ void GameObjectManager::initialize() {
             objects_in_inventory++;
             AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
+            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            objects_in_inventory++;
 
 
             //SDL_ShowCursor(SDL_DISABLE);
@@ -207,12 +209,13 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
       if (InventoryItem* item = GetItemSelected(true)) {
         std::cout << item->name << std::endl;
-        if (current_room_index==1) {
-            if (bearName.length() < 3) {
+
+        if (current_room_index==0) {
+
+            if (bearName.length() <= 3) {
               if (item->name == "cube_T"){
                     bearName += "T";
                     selectedCubes.push_back(*item);
-                    std::cout << bearName << std::endl;
                 }
               else if (item->name == "cube_O"){
                     bearName += "O";
@@ -223,6 +226,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     selectedCubes.push_back(*item);
                 }
               }
+            }
+            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
+              bearName = "";
+              selectedCubes.clear();
             }
 
       }
