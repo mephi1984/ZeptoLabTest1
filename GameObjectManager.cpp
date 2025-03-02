@@ -94,7 +94,7 @@ void GameObjectManager::initialize() {
             ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
             ao1.activeObjectScreenMeshMutable.RefreshVBO();
-
+            ao1.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
 
 
 
@@ -132,8 +132,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
-            
-
+           
 
             ActiveObject cubeForFirstRoomM;
             cubeForFirstRoomM.name = "cubeM";
@@ -152,23 +151,19 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
 
 
-
-            /*
             ActiveObject ao2;
-            ao2.name = "superchair001";
-            ao2.activeObjectMesh = ZL::LoadFromTextFile("./superchair001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(400);
-            ao2.activeObjectMesh.SwapZandY();
+            ao2.name = "book";
+            ao2.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
+            ao2.activeObjectMesh.Scale(4);
             ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
             ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 0, 0, 0 };
-            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
-
+            ao2.objectPos = Vector3f{ 50, 0, -300 };
+            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
             ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
             ao2.activeObjectScreenMeshMutable.RefreshVBO();
-            */
+            ao2.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
 
 
 
@@ -196,6 +191,7 @@ void GameObjectManager::initialize() {
 
             Room room_2;
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
+            room_2.objects.push_back(ao2);
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
             room_2.textMesh = preloadedRoomMeshArr[1];
@@ -329,10 +325,12 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
+            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
+            activeObjects = rooms[current_room_index].objects;
+
 
             //aoMgr.removeByName(ao->name);
         }
