@@ -27,9 +27,10 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./mesh001.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./mesh_first_room.txt");  // Add ZL:: namespace
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
+    textMesh.Scale(20);
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
