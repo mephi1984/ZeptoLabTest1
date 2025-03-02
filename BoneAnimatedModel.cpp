@@ -279,7 +279,7 @@ namespace ZL
 			{
 				std::getline(f, tempLine); //Group: 'Bone', Weight: 0.9929084181785583
 				if (std::regex_search(tempLine, match, pattern_bone_weight)) {
-					// Извлекаем слово (без кавычек)
+					// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 					std::string word = match.str(1); 
 					double weight = std::stod(match.str(2)); 
 
@@ -527,12 +527,12 @@ namespace ZL
 
 			if (abs(finalPos.v[0] - originalPos.v[0]) > 1 || abs(finalPos.v[1] - originalPos.v[1]) > 1 || abs(finalPos.v[2] - originalPos.v[2]) > 1)
 			{
-				std::cout << "Hello!" << std::endl;
+//				std::cout << "Hello!" << std::endl;
 			}
 
 			if (!vMoved)
 			{
-				std::cout << "Hello!" << std::endl;
+//				std::cout << "Hello!" << std::endl;
 			}
 
 			mesh.PositionData[i].v[0] = finalPos.v[0];

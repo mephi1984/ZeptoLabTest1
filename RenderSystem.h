@@ -1,5 +1,6 @@
 #pragma once
 #include "Renderer.h"
+#include "ActiveObject.h"
 #include "GameObjectManager.h"
 #include <string>
 
