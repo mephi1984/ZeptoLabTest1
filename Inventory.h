@@ -17,7 +17,7 @@ namespace ZL
     };
 
     // Глобальное хранилище предметов
-    extern std::unordered_map<std::string, InventoryItem> gInventory;
+    extern std::unordered_map<std::string, InventoryItem> gInventoryMap;  // Changed from gInventory
 
     // Добавить предмет в инвентарь
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int hot_key);
@@ -32,4 +32,8 @@ namespace ZL
     void PrintInventory();
 
     const std::unordered_map<std::string, InventoryItem>& ReturnInventory();
+
+    // Add these new functions
+    void UnselectAllItems();
+    InventoryItem* GetItemByHotkey(int hotkey);
 }

@@ -35,12 +35,29 @@ namespace ZL
         return nullptr;
     }
 
+    InventoryItem* GetItemByHotkey(int hotkey)
+    {
+        for (auto& [_, item] : gInventoryMap) {
+            if (item.hot_key == hotkey) {
+                return &item;
+            }
+        }
+        return nullptr;
+    }
+
     void PrintInventory()
     {
         std::cout << "Inventory contents:\n";
         for (auto& [itemName, item] : gInventoryMap)
         {
             std::cout << "  - " << itemName << "\n";
+        }
+    }
+
+    void UnselectAllItems()
+    {
+        for (auto& [_, item] : gInventoryMap) {
+            item.isSelected = false;
         }
     }
 
