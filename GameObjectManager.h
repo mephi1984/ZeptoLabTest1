@@ -11,7 +11,6 @@
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
-
 #include <thread>
 #include <list>
 
@@ -32,7 +31,7 @@ public:
     void checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView); // Добавляем новый метод
 
     std::shared_ptr<ZL::Texture> testObjTexturePtr;
-    std::shared_ptr<ZL::Texture> roomTexturePtr;
+    //std::shared_ptr<ZL::Texture> roomTexturePtr;
     std::shared_ptr<ZL::Texture> coneTexturePtr;
 
     //ZL::VertexDataStruct colorCubeMesh;
@@ -47,11 +46,11 @@ public:
     ZL::BoneSystem violaWalkModel;
     ZL::VertexRenderStruct violaWalkModelMutable;
 
-    ZL::VertexDataStruct textMesh;
-    ZL::VertexRenderStruct textMeshMutable;
+    std::vector<ZL::VertexDataStruct> preloadedRoomMeshArr;
 
-    //ZL::VertexDataStruct coneMesh;
-    //ZL::VertexRenderStruct coneMeshMutable;
+
+    //ZL::VertexDataStruct coneMesh;      // Раскомментировали
+    //ZL::VertexRenderStruct coneMeshMutable;  // Раскомментировали
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
@@ -70,8 +69,6 @@ public:
     static const float SELECTED_CUBE_MARGIN;
     ActiveObjectManager aoMgr;
     int objects_in_inventory;
-    void addRectangle(int x, int y, int width, int height, int r, int g, int b, int borderWidth, int borderR, int borderG, int borderB);
-
 
 
     std::shared_ptr<ZL::Texture> loadingScreenTexturePtr;
@@ -82,18 +79,19 @@ public:
     std::list<std::function<bool()>> loadingFunctions;
     std::thread loadingThread;
     bool sideThreadLoadingCompleted = false;
-    int current_room_index;
 
+    int current_room_index;
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
+
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
-    BoundaryBox walkArea{800.0f, 800.0f}; // Изменяем размер с 400 на 800
+    BoundaryBox walkArea{800.0f, 800.0f}; // Зона для ходьбы 800x800
 };
 
 }  // namespace ZL

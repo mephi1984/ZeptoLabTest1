@@ -39,7 +39,7 @@ void GameObjectManager::initialize() {
   current_room_index = 0;
   objects_in_inventory = 0;
 
-            coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
+            //coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
             // Load models
             /*
@@ -52,8 +52,13 @@ void GameObjectManager::initialize() {
 
 
     loadingThread = std::thread([this]() {
+        
+        preloadedRoomMeshArr.resize(1);
+        preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
+        preloadedRoomMeshArr[0].Scale(10);
+        preloadedRoomMeshArr[0].Move(Vector3f{ 0, 93, 0 });
 
-        textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
+
         violaIdleModel.LoadFromFile("./idleviola001.txt");
         violaWalkModel.LoadFromFile("./walkviolla001.txt");
         sideThreadLoadingCompleted = true;
@@ -66,29 +71,6 @@ void GameObjectManager::initialize() {
 
     std::function<bool()> loadingFunction3 = [this]()
         {
-
-            /*
-            testObjMesh = LoadFromObjFile("./chair_01.obj");
-            testObjMesh.Scale(10);
-            testObjMesh.SwapZandY();
-            testObjMeshMutable.data = testObjMesh;
-            testObjMeshMutable.RefreshVBO();*/
-
-
-            textMesh.Scale(10);
-            textMesh.SwapZandY();
-            textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
-            textMesh.Move(Vector3f{ 0, 93, 0 });
-
-            //coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
-            //coneMesh.Scale(200);
-
-
-            textMeshMutable.AssignFrom(textMesh);
-            textMeshMutable.RefreshVBO();
-            //coneMeshMutable.AssignFrom(coneMesh);
-            //coneMeshMutable.RefreshVBO();
-
 
             // Create active object
 
@@ -129,6 +111,11 @@ void GameObjectManager::initialize() {
             room_1.objects.push_back(ao1);
             room_1.sound_name = "Symphony No.6 (1st movement).ogg";
             room_1.roomLogic = createRoom1Logic();
+            room_1.textMesh = preloadedRoomMeshArr[0];
+            room_1.textMeshMutable.AssignFrom(room_1.textMesh);
+            room_1.collisionMgr.setRoomBoundary(800, 800);
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
+
             rooms.push_back(room_1);
             aoMgr.addActiveObject(ao1);
 
@@ -136,6 +123,11 @@ void GameObjectManager::initialize() {
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
+            room_2.textMesh = preloadedRoomMeshArr[0];
+            room_2.textMeshMutable.AssignFrom(room_2.textMesh);
+            room_2.collisionMgr.setRoomBoundary(800, 800);
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
+
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
@@ -158,7 +150,7 @@ void GameObjectManager::initialize() {
             inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
             inventoryIconMeshMutable.RefreshVBO();
 
-            roomTexturePtr = rooms[current_room_index].roomTexture;
+            //roomTexturePtr = rooms[current_room_index].roomTexture;
 
             AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
@@ -170,6 +162,7 @@ void GameObjectManager::initialize() {
 
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
+
 
             return true;
 
@@ -183,7 +176,7 @@ void GameObjectManager::initialize() {
 void GameObjectManager::switch_room(int index){
     current_room_index = index;
 
-    roomTexturePtr = rooms[current_room_index].roomTexture;
+    //roomTexturePtr = rooms[current_room_index].roomTexture;
 
     
     //audioPlayer.reset();  // This deletes the current AudioPlayer
@@ -202,14 +195,13 @@ void GameObjectManager::switch_room(int index){
     std::cout << "Current music" << rooms[current_room_index].sound_name << std::endl;
 }
 
-
-
 void GameObjectManager::handleEvent(const SDL_Event& event) {
-//  debug room switching
+    // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
+        const auto highlightedObjects = aoMgr.findByHighlighted(true);
       if (InventoryItem* item = GetItemSelected(true)) {
         std::cout << item->name << std::endl;
 
@@ -245,21 +237,19 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
       else {
       const auto highlightedObjects = aoMgr.findByHighlighted(true);
 
-    for (auto* ao : highlightedObjects) {
-        if (!ao) {
-            continue;
+        for (auto* ao : highlightedObjects) {
+            if (!ao) {
+                continue;
+            }
+
+            AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
+            objects_in_inventory++;
+
+            aoMgr.removeByName(ao->name);
         }
-
-        AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
-        objects_in_inventory++;
-
-        aoMgr.removeByName(ao->name);
+        // bx.Interpolate(animationCounter);
+        // animationCounter += 2;
     }
-    }
-//        bx.Interpolate(animationCounter);
-//        animationCounter += 2;
-    }
-
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
@@ -271,27 +261,24 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         if (Environment::zoom < zoomstep) {
             Environment::zoom = zoomstep;
         }
-        if (Environment::zoom > 4)
-        {
+        if (Environment::zoom > 4) {
             Environment::zoom = 4;
         }
     }
     else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-        case SDLK_SPACE:
-            Environment::showMouse = !Environment::showMouse;
+            case SDLK_SPACE:
+                Environment::showMouse = !Environment::showMouse;
 
-            if (Environment::showMouse)
-            {
-                SDL_SetRelativeMouseMode(SDL_FALSE);
-            }
-            else
-            {
-                SDL_SetRelativeMouseMode(SDL_TRUE);
-                lastMouseX = 0;
-                lastMouseY = 0;
-            }
-            break;
+                if (Environment::showMouse) {
+                    SDL_SetRelativeMouseMode(SDL_FALSE);
+                }
+                else {
+                    SDL_SetRelativeMouseMode(SDL_TRUE);
+                    lastMouseX = 0;
+                    lastMouseY = 0;
+                }
+                break;
 
             case SDLK_ESCAPE:
             case SDLK_q:
@@ -305,13 +292,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = true;
-                /*if (audioPlayer) {
-                    audioPlayer->playSound("walk.ogg");
-                }*/
-                audioPlayerAsync.playSoundAsync("walk.ogg");
-
-                if (Environment::violaCurrentAnimation == 0)
-                {
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
                 }
@@ -319,12 +301,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = true;
-                /*if (audioPlayer) {
-                    audioPlayer->playSound("walk.ogg");
-                }*/
-                audioPlayerAsync.playSoundAsync("walk.ogg");
-                if (Environment::violaCurrentAnimation == 0)
-                {
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
                 }
@@ -332,12 +310,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_UP:
             case SDLK_w:
                 Environment::upPressed = true;
-                /*if (audioPlayer) {
-                    audioPlayer->playSound("walk.ogg");
-                }*/
-                audioPlayerAsync.playSoundAsync("walk.ogg");
-                if (Environment::violaCurrentAnimation == 0)
-                {
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
                 }
@@ -345,36 +319,22 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = true;
-                /*if (audioPlayer) {
-                    audioPlayer->playSound("walk.ogg");
-                }*/
-                audioPlayerAsync.playSoundAsync("walk.ogg");
-                if (Environment::violaCurrentAnimation == 0)
-                {
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
+                if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
                 }
                 break;
-
             case SDLK_1:
             case SDLK_2:
-            case SDLK_3:
-            case SDLK_4:
-            case SDLK_5:
-            case SDLK_6:
-            case SDLK_7:
-            case SDLK_8:
-            case SDLK_9:
-                {
-
+            {
+                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
+                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
                     item->isSelected = true;
                 }
             }
-
             break;
-
             // ...handle other keys...
         }
     }
@@ -383,10 +343,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = false;
-                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
-                {
-                    if (Environment::violaCurrentAnimation == 1)
-                    {
+                if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
+                    if (Environment::violaCurrentAnimation == 1) {
                         Environment::violaCurrentAnimation = 0;
                         Environment::violaCurrentIdleFrame = -1;
                     }
@@ -395,10 +353,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = false;
-                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
-                {
-                    if (Environment::violaCurrentAnimation == 1)
-                    {
+                if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
+                    if (Environment::violaCurrentAnimation == 1) {
                         Environment::violaCurrentAnimation = 0;
                         Environment::violaCurrentIdleFrame = -1;
                     }
@@ -407,10 +363,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_UP:
             case SDLK_w:
                 Environment::upPressed = false;
-                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
-                {
-                    if (Environment::violaCurrentAnimation == 1)
-                    {
+                if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
+                    if (Environment::violaCurrentAnimation == 1) {
                         Environment::violaCurrentAnimation = 0;
                         Environment::violaCurrentIdleFrame = -1;
                     }
@@ -419,10 +373,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = false;
-                if (Environment::leftPressed == false && Environment::rightPressed == false && Environment::upPressed == false && Environment::downPressed == false)
-                {
-                    if (Environment::violaCurrentAnimation == 1)
-                    {
+                if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
+                    if (Environment::violaCurrentAnimation == 1) {
                         Environment::violaCurrentAnimation = 0;
                         Environment::violaCurrentIdleFrame = -1;
                     }
@@ -431,49 +383,39 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
     }
     if (event.type == SDL_MOUSEMOTION) {
-        
-        if (Environment::showMouse == false)
-        {
+        if (!Environment::showMouse) {
             int mouseX, mouseY;
             SDL_GetRelativeMouseState(&mouseX, &mouseY);
 
             float diffX = 0.01f * mouseX;
-
             float diffY = 0.01f * mouseY;
 
             Environment::cameraPhi += diffX;
 
-            if (Environment::settings_inverseVertical)
-            {
+            if (Environment::settings_inverseVertical) {
                 Environment::cameraAlpha -= diffY;
             }
-            else
-            {
+            else {
                 Environment::cameraAlpha += diffY;
             }
-            if (Environment::cameraAlpha < 0.1 * M_PI / 2.0)
-            {
+            if (Environment::cameraAlpha < 0.1 * M_PI / 2.0) {
                 Environment::cameraAlpha = 0.1 * M_PI / 2.0;
             }
-            else if (Environment::cameraAlpha > 0.9 * M_PI / 2.0)
-            {
+            else if (Environment::cameraAlpha > 0.9 * M_PI / 2.0) {
                 Environment::cameraAlpha = 0.9 * M_PI / 2.0;
             }
-
         }
-        else
-        {
+        else {
             lastMouseX = event.motion.x;
             lastMouseY = event.motion.y;
         }
     }
 }
 
-
 void GameObjectManager::updateScene(size_t ms) {
     const float SPEED = 0.1f;
 
-    Vector2f directionVector = { 0.f, SPEED }; //x and z
+    Vector2f directionVector = { 0.f, SPEED }; // x and z
 
     // Вычисляем новые координаты вектора
     float x_new = directionVector.v[0] * cos(Environment::cameraPhi) - directionVector.v[1] * sin(Environment::cameraPhi);
@@ -483,7 +425,7 @@ void GameObjectManager::updateScene(size_t ms) {
     directionVector.v[0] = x_new;
     directionVector.v[1] = y_new;
 
-    //Only forward is allowed
+    // Only forward is allowed
     /*
     if (Environment::leftPressed) {
         Environment::cameraShift.v[0] += SPEED * ms;
@@ -496,7 +438,8 @@ void GameObjectManager::updateScene(size_t ms) {
     }
     if (Environment::downPressed) {
         Environment::cameraShift.v[2] -= SPEED * ms;
-    }*/
+    }
+    */
 
     Vector3f newPosition = Environment::cameraShift;
     if (Environment::upPressed) {
@@ -516,11 +459,23 @@ void GameObjectManager::updateScene(size_t ms) {
         newPosition.v[0] += directionVector.v[1] * ms;
     }
 
+
     Vector3f characterNewPos{-newPosition.v[0], -newPosition.v[1], -newPosition.v[2]};
-    // Проверяем, что новая позиция внутри разрешенной зоны
-    if (walkArea.isInside(characterNewPos)) {
+
+    std::cout << "Player position: x=" << characterNewPos.v[0]
+        << ", y=" << characterNewPos.v[1]
+        << ", z=" << characterNewPos.v[2] << "\r";
+    std::cout.flush();
+
+    // Заменяем проверку walkArea.isInside() на проверку через collisionMgr
+    if (rooms[current_room_index].collisionMgr.checkCollision(characterNewPos) == false) {
         Environment::cameraShift = newPosition;
         Environment::characterPos = characterNewPos;
+        /*
+        std::cout << "Player position: x=" << characterNewPos.v[0]
+                  << ", y=" << characterNewPos.v[1]
+                  << ", z=" << characterNewPos.v[2] << "\r";
+        std::cout.flush(); // Чтобы обновлялось в той же строке*/
     }
 
     for (auto& [key, obj] : aoMgr.activeObjectsEntities) {
@@ -532,38 +487,30 @@ void GameObjectManager::updateScene(size_t ms) {
         obj.highlighted = (dist < 50.f);
     }
 
-
     if (rooms[current_room_index].roomLogic) {
         rooms[current_room_index].roomLogic(*this, ms);
     }
 
-    if (Environment::violaCurrentAnimation == 0)
-    {
-
+    if (Environment::violaCurrentAnimation == 0) {
         Environment::violaCurrentIdleFrame += ms / 24.f;
 
-        while (Environment::violaCurrentIdleFrame >= 40)
-        {
+        while (Environment::violaCurrentIdleFrame >= 40) {
             Environment::violaCurrentIdleFrame -= 40;
         }
 
-        if (int(Environment::violaCurrentIdleFrame) != Environment::violaLastIdleFrame)
-        {
+        if (int(Environment::violaCurrentIdleFrame) != Environment::violaLastIdleFrame) {
             violaIdleModel.Interpolate(int(Environment::violaCurrentIdleFrame));
             Environment::violaLastIdleFrame = int(Environment::violaCurrentIdleFrame);
         }
     }
-    else if (Environment::violaCurrentAnimation == 1)
-    {
+    else if (Environment::violaCurrentAnimation == 1) {
         Environment::violaCurrentWalkFrame += ms / 24.f;
 
-        while (Environment::violaCurrentWalkFrame >= 30)
-        {
+        while (Environment::violaCurrentWalkFrame >= 30) {
             Environment::violaCurrentWalkFrame -= 30;
         }
 
-        if (int(Environment::violaCurrentWalkFrame) != Environment::violaLastWalkFrame)
-        {
+        if (int(Environment::violaCurrentWalkFrame) != Environment::violaLastWalkFrame) {
             violaWalkModel.Interpolate(int(Environment::violaCurrentWalkFrame));
             Environment::violaLastWalkFrame = int(Environment::violaCurrentWalkFrame);
         }
@@ -571,14 +518,12 @@ void GameObjectManager::updateScene(size_t ms) {
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
-    const int baseObjectSize = 32; // Base half-size
-    const float scale = 1.0f; // Get scale from item if needed
-    const int scaledObjectSize = static_cast<int>(baseObjectSize * scale);
-
-    return (screenX >= objectScreenX - scaledObjectSize &&
-            screenX <= objectScreenX + scaledObjectSize &&
-            screenY >= objectScreenY - scaledObjectSize &&
-            screenY <= objectScreenY + scaledObjectSize);
+    // Простая проверка попадания точки в квадрат 64x64 вокруг центра объекта
+    const int objectSize = 32; // Половина размера области выделения
+    return (screenX >= objectScreenX - objectSize &&
+            screenX <= objectScreenX + objectSize &&
+            screenY >= objectScreenY - objectSize &&
+            screenY <= objectScreenY + objectSize);
 }
 
 void GameObjectManager::checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView) {
@@ -604,7 +549,7 @@ void GameObjectManager::worldToScreenCoordinates(Vector3f objectPos,
     int screenWidth, int screenHeight,
     int& screenX, int& screenY) {
 
-    Vector4f inx = { objectPos.v[0], objectPos.v[1], objectPos.v[2], 1.0f};
+    Vector4f inx = { objectPos.v[0], objectPos.v[1], objectPos.v[2], 1.0f };
     Vector4f clipCoords = MultMatrixVector(projectionModelView, inx);
 
     float ndcX = clipCoords.v[0] / clipCoords.v[3];

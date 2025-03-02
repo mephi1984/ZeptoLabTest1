@@ -171,9 +171,8 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     }
 
     // Draw room
-    glBindTexture(GL_TEXTURE_2D, gameObjects.roomTexturePtr->getTexID());
-    renderer.DrawVertexRenderStruct(gameObjects.textMeshMutable);
-
+    glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.rooms[gameObjects.current_room_index].textMeshMutable);
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
     
