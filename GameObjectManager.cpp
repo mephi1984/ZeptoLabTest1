@@ -7,12 +7,13 @@
 
 namespace ZL {
 
-const float GameObjectManager::INVENTORY_ICON_SIZE = 32.0f;
+const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
 void GameObjectManager::initialize() {
 
   current_room_index = 0;
+  objects_in_inventory = 0;
 
     coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
@@ -27,10 +28,15 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh.Scale(10);
+    textMesh.SwapZandY();
+    textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+    textMesh.Move(Vector3f{0, 93, 0});
+
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
-    textMesh.Scale(20);
+
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
@@ -99,7 +105,7 @@ void GameObjectManager::initialize() {
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
-        {0.0f, 0.0f},
+        {0.0f, 40.0f},
         {INVENTORY_ICON_SIZE/2, INVENTORY_ICON_SIZE/2},
         0.5f
     );
@@ -107,6 +113,12 @@ void GameObjectManager::initialize() {
     inventoryIconMeshMutable.RefreshVBO();
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
+
+    AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
+    objects_in_inventory++;
+    AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
+    objects_in_inventory++;
+
 
     //SDL_ShowCursor(SDL_DISABLE);
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -145,7 +157,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             continue;
         }
 
-        AddItemToInventory(ao->name, ao->activeObjectTexturePtr);
+        AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
+        objects_in_inventory++;
 
         aoMgr.removeByName(ao->name);
     }
@@ -234,6 +247,17 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     Environment::violaLastWalkFrame = -1;
                 }
                 break;
+
+            case SDLK_1:
+            case SDLK_2:
+            {
+                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+                UnselectAllItems();
+                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                    item->isSelected = true;
+                }
+            }
+            break;
             // ...handle other keys...
         }
     }

@@ -1,6 +1,5 @@
 #include "Renderer.h"
-
-
+#include <cmath>
 
 namespace ZL {
 
@@ -287,6 +286,13 @@ namespace ZL {
 			PositionData[i] = PositionData[i] * scale;
 		}
 	}
+	void VertexDataStruct::Move(Vector3f diff)
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = PositionData[i] + diff;
+		}
+	}
 
 	void VertexDataStruct::SwapZandY()
 	{
@@ -297,6 +303,7 @@ namespace ZL {
 			PositionData[i].v[2] = value;
 		}
 	}
+	
 
 	void VertexDataStruct::RotateByMatrix(Matrix3f m)
 	{

@@ -12,13 +12,15 @@ namespace ZL
     {
         std::string name;
         std::shared_ptr<Texture> texture;
+        bool isSelected = false;
+        int hot_key;
     };
 
     // Глобальное хранилище предметов
-    extern std::unordered_map<std::string, InventoryItem> gInventory;
+    extern std::unordered_map<std::string, InventoryItem> gInventoryMap;  // Changed from gInventory
 
     // Добавить предмет в инвентарь
-    void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex);
+    void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int hot_key);
 
     // Удалить предмет из инвентаря
     void RemoveItemFromInventory(const std::string& name);
@@ -30,4 +32,8 @@ namespace ZL
     void PrintInventory();
 
     const std::unordered_map<std::string, InventoryItem>& ReturnInventory();
+
+    // Add these new functions
+    void UnselectAllItems();
+    InventoryItem* GetItemByHotkey(int hotkey);
 }
