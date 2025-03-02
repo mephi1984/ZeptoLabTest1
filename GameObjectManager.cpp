@@ -222,7 +222,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     bearName += "M";
                     selectedCubes.push_back(*item);
                     gInventoryMap.erase(item->name);
-                }
+
               }
             }
             else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
@@ -232,7 +232,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             }
               selectedCubes.clear();
             }
-
+        }
       }
       else {
       const auto highlightedObjects = aoMgr.findByHighlighted(true);
@@ -249,7 +249,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
         // bx.Interpolate(animationCounter);
         // animationCounter += 2;
+       }
     }
+
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
@@ -327,10 +329,17 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_1:
             case SDLK_2:
-            {
-                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+            case SDLK_3:
+            case SDLK_4:
+            case SDLK_5:
+            case SDLK_6:
+            case SDLK_7:
+            case SDLK_8:
+            case SDLK_9:
+                {
+
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
                 }
             }

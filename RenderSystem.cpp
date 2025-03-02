@@ -269,7 +269,7 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
 
         // Смещаем по оси x: начиная с левой стороны и двигаясь вправо
         float xPos = gameObjects.SELECTED_CUBE_MARGIN
-                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN) + 50.0f;
+                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN) + 300.0f;
         // Оставляем y константным
         float yPos = 500.0f;
 
