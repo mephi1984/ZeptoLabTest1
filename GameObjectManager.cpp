@@ -134,10 +134,10 @@ void GameObjectManager::initialize() {
             ActiveObject ao2;
             ao2.name = "book";
             ao2.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(0);
+            ao2.activeObjectMesh.Scale(4);
             ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
             ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 50, 0, -300 };
+            ao2.objectPos = Vector3f{ 85, 0, 43 };
             ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
             ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
@@ -150,7 +150,7 @@ void GameObjectManager::initialize() {
             ActiveObject carToy;
             carToy.name = "carToy";
             carToy.activeObjectMesh = ZL::LoadFromTextFile("./car.txt");  // Add ZL:: namespace
-            carToy.activeObjectMesh.Scale(10);
+            carToy.activeObjectMesh.Scale(13);
             carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
             carToy.activeObjectMeshMutable.RefreshVBO();
             carToy.objectPos = Vector3f{ 291, 0, 315 };
@@ -197,7 +197,7 @@ void GameObjectManager::initialize() {
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
-            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 305 }, Vector3f{ 305, 0, 340 }));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
