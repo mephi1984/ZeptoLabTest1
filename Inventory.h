@@ -8,25 +8,31 @@
 
 namespace ZL
 {
+    static const int MAX_INVENTORY_SLOTS = 9;
+    static const float SELECTED_ITEM_SCALE = 1.2f; // Scale factor for selected items
+
     struct InventoryItem
     {
         std::string name;
         std::shared_ptr<Texture> texture;
         bool isSelected = false;
         int hot_key;
+        float scale = 1.0f; // Add scale property
     };
 
     // Глобальное хранилище предметов
-    extern std::unordered_map<std::string, InventoryItem> gInventoryMap;  // Changed from gInventory
+    extern std::unordered_map<std::string, InventoryItem> gInventoryMap;  // Changed key type from string to int
 
     // Добавить предмет в инвентарь
-    void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int hot_key);
+    void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int slot_index);
 
     // Удалить предмет из инвентаря
-    void RemoveItemFromInventory(const std::string& name);
+    void RemoveItemFromInventory(int slot_index);
 
-    // Поиск предмета по имени (возвращает указатель или nullptr)
-    InventoryItem* GetItemByName(const std::string& name);
+    // Поиск предмета по индексу (возвращает указатель или nullptr)
+    InventoryItem* GetItemByHotkey(int hot_key);
+    InventoryItem* GetItemSelected(bool isSelected);
+    InventoryItem* GetItemByName(std::string name);
 
     // Вывести весь инвентарь в консоль
     void PrintInventory();
@@ -35,5 +41,4 @@ namespace ZL
 
     // Add these new functions
     void UnselectAllItems();
-    InventoryItem* GetItemByHotkey(int hotkey);
 }

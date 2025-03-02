@@ -28,7 +28,7 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
@@ -92,7 +92,7 @@ void GameObjectManager::initialize() {
     Room room_2;
     room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
     room_2.sound_name = "Symphony No.6 (1st movement).ogg";
-    room_2.roomLogic = createRoom1Logic();
+    room_2.roomLogic = createRoom2Logic();
     rooms.push_back(room_2);
 
     activeObjects = rooms[current_room_index].objects;
@@ -150,6 +150,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
+      if (InventoryItem* item = GetItemSelected(true)) {
+
+      }
+      else {
       const auto highlightedObjects = aoMgr.findByHighlighted(true);
 
     for (auto* ao : highlightedObjects) {
@@ -161,6 +165,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         objects_in_inventory++;
 
         aoMgr.removeByName(ao->name);
+    }
     }
 //        bx.Interpolate(animationCounter);
 //        animationCounter += 2;
@@ -254,14 +259,23 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             case SDLK_1:
             case SDLK_2:
-            {
-                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+            case SDLK_3:
+            case SDLK_4:
+            case SDLK_5:
+            case SDLK_6:
+            case SDLK_7:
+            case SDLK_8:
+            case SDLK_9:
+                {
+
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
                 }
             }
+
             break;
+
             // ...handle other keys...
         }
     }
@@ -454,12 +468,14 @@ void GameObjectManager::updateScene(size_t ms) {
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
-    // Простая проверка попадания точки в квадрат 64x64 вокруг центра объекта
-    const int objectSize = 32; // Половина размера области выделения
-    return (screenX >= objectScreenX - objectSize && 
-            screenX <= objectScreenX + objectSize &&
-            screenY >= objectScreenY - objectSize && 
-            screenY <= objectScreenY + objectSize);
+    const int baseObjectSize = 32; // Base half-size
+    const float scale = 1.0f; // Get scale from item if needed
+    const int scaledObjectSize = static_cast<int>(baseObjectSize * scale);
+
+    return (screenX >= objectScreenX - scaledObjectSize &&
+            screenX <= objectScreenX + scaledObjectSize &&
+            screenY >= objectScreenY - scaledObjectSize &&
+            screenY <= objectScreenY + scaledObjectSize);
 }
 
 void GameObjectManager::checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView) {
