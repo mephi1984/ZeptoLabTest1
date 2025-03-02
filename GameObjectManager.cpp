@@ -92,7 +92,7 @@ void GameObjectManager::initialize() {
     Room room_2;
     room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
     room_2.sound_name = "Symphony No.6 (1st movement).ogg";
-    room_2.roomLogic = createRoom1Logic();
+    room_2.roomLogic = createRoom2Logic();
     rooms.push_back(room_2);
 
     activeObjects = rooms[current_room_index].objects;
