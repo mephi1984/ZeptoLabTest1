@@ -214,15 +214,29 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     for (const auto& [name, item] : inventoryMap) {
         renderer.PushMatrix();
 
+        if (item.isSelected) {
+                  float xPos = Environment::width
+                   - gameObjects.INVENTORY_MARGIN
+                   - gameObjects.INVENTORY_ICON_SIZE+25;
+        float yPos = gameObjects.INVENTORY_MARGIN
+                   + i * (gameObjects.INVENTORY_ICON_SIZE+25
+                   + gameObjects.INVENTORY_MARGIN);
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
+        }
+        else {
+
         float xPos = Environment::width
                    - gameObjects.INVENTORY_MARGIN
                    - gameObjects.INVENTORY_ICON_SIZE;
         float yPos = gameObjects.INVENTORY_MARGIN
                    + i * (gameObjects.INVENTORY_ICON_SIZE
                    + gameObjects.INVENTORY_MARGIN);
-
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
         glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
+		}
+
+
         renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
 
         renderer.PopMatrix();
