@@ -399,26 +399,30 @@ void GameObjectManager::updateScene(size_t ms) {
         Environment::cameraShift.v[2] -= SPEED * ms;
     }*/
 
+    Vector3f newPosition = Environment::cameraShift;
     if (Environment::upPressed) {
-        Environment::cameraShift.v[0] += directionVector.v[0] * ms;
-        Environment::cameraShift.v[2] += directionVector.v[1] * ms;
+        newPosition.v[0] += directionVector.v[0] * ms;
+        newPosition.v[2] += directionVector.v[1] * ms;
     }
     if (Environment::downPressed) {
-        Environment::cameraShift.v[0] -= directionVector.v[0] * ms;
-        Environment::cameraShift.v[2] -= directionVector.v[1] * ms;
+        newPosition.v[0] -= directionVector.v[0] * ms;
+        newPosition.v[2] -= directionVector.v[1] * ms;
     }
     if (Environment::rightPressed) {
-        Environment::cameraShift.v[2] += directionVector.v[0] * ms;
-        Environment::cameraShift.v[0] -= directionVector.v[1] * ms;
+        newPosition.v[2] += directionVector.v[0] * ms;
+        newPosition.v[0] -= directionVector.v[1] * ms;
     }
     if (Environment::leftPressed) {
-        Environment::cameraShift.v[2] -= directionVector.v[0] * ms;
-        Environment::cameraShift.v[0] += directionVector.v[1] * ms;
+        newPosition.v[2] -= directionVector.v[0] * ms;
+        newPosition.v[0] += directionVector.v[1] * ms;
     }
 
-    Environment::characterPos.v[0] = -Environment::cameraShift.v[0];
-    Environment::characterPos.v[1] = -Environment::cameraShift.v[1];
-    Environment::characterPos.v[2] = -Environment::cameraShift.v[2];
+    Vector3f characterNewPos{-newPosition.v[0], -newPosition.v[1], -newPosition.v[2]};
+    // Проверяем, что новая позиция внутри разрешенной зоны
+    if (walkArea.isInside(characterNewPos)) {
+        Environment::cameraShift = newPosition;
+        Environment::characterPos = characterNewPos;
+    }
 
     for (auto& [key, obj] : aoMgr.activeObjectsEntities) {
         float dist = sqrtf(
