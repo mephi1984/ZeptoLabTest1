@@ -28,7 +28,8 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");  // Add ZL:: namespace
+    //textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
+    textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
@@ -79,7 +80,7 @@ void GameObjectManager::initialize() {
     */
 
     Room room_1;
-    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
+    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
     room_1.objects.push_back(ao1);
     room_1.sound_name = "Symphony No.6 (1st movement).ogg";
     room_1.roomLogic = createRoom1Logic();
@@ -95,10 +96,13 @@ void GameObjectManager::initialize() {
     activeObjects = rooms[current_room_index].objects;
 
     // Initialize audio
+    /*
     audioPlayer = std::make_unique<AudioPlayer>();
     if (audioPlayer) {
         audioPlayer->playMusic(rooms[current_room_index].sound_name);
-    }
+    }*/
+    audioPlayerAsync.resetAsync();
+    audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
 
     // Initialize inventory
     inventoryIconMesh = CreateRect2D(
@@ -180,13 +184,17 @@ void GameObjectManager::switch_room(int index){
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
 
-    audioPlayer.reset();  // This deletes the current AudioPlayer
+    
+    //audioPlayer.reset();  // This deletes the current AudioPlayer
 
     // Reinitialize it
-    audioPlayer = std::make_unique<AudioPlayer>();
+    /*audioPlayer = std::make_unique<AudioPlayer>();
     if (audioPlayer) {
         audioPlayer->playMusic(rooms[current_room_index].sound_name);
-    }
+    }*/
+    audioPlayerAsync.stopAsync();
+    audioPlayerAsync.resetAsync();
+    audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
 
     activeObjects = rooms[current_room_index].objects;
 
@@ -251,9 +259,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_LEFT:
             case SDLK_a:
                 Environment::leftPressed = true;
-                if (audioPlayer) {
-                    audioPlayer->playSound("Звук-Идут-по-земле.ogg");
-                }
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -262,9 +268,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_RIGHT:
             case SDLK_d:
                 Environment::rightPressed = true;
-                if (audioPlayer) {
-                    audioPlayer->playSound("Звук-Идут-по-земле.ogg");
-                }
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -273,9 +277,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_UP:
             case SDLK_w:
                 Environment::upPressed = true;
-                if (audioPlayer) {
-                    audioPlayer->playSound("Звук-Идут-по-земле.ogg");
-                }
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -284,9 +286,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_DOWN:
             case SDLK_s:
                 Environment::downPressed = true;
-                if (audioPlayer) {
-                    audioPlayer->playSound("Звук-Идут-по-земле.ogg");
-                }
+                audioPlayerAsync.playSoundAsync("Звук-Идут-по-земле.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
