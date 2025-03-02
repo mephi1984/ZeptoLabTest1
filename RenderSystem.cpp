@@ -237,11 +237,12 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         if (item.isSelected) {
                   float xPos = Environment::width
                    - gameObjects.INVENTORY_MARGIN
-                   - gameObjects.INVENTORY_ICON_SIZE+25;
+                   - gameObjects.INVENTORY_ICON_SIZE;
         float yPos = gameObjects.INVENTORY_MARGIN
-                   + i * (gameObjects.INVENTORY_ICON_SIZE+25
+                   + i * (gameObjects.INVENTORY_ICON_SIZE
                    + gameObjects.INVENTORY_MARGIN);
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f});
         glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
         }
         else {

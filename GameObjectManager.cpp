@@ -7,8 +7,8 @@
 
 namespace ZL {
 
-const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
-const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
+const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
+const float GameObjectManager::INVENTORY_MARGIN = 20.0f;
 
 void GameObjectManager::initialize() {
 
@@ -509,6 +509,37 @@ void GameObjectManager::worldToScreenCoordinates(Vector3f objectPos,
 
     screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
     screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
+}
+
+void GameObjectManager::addRectangle(int x, int y, int width, int height, int r, int g, int b, int borderWidth, int borderR, int borderG, int borderB) {
+    // Преобразование RGB в диапазон [0,1] для OpenGL
+    float rf = r / 255.0f;
+    float gf = g / 255.0f;
+    float bf = b / 255.0f;
+    float borderRf = borderR / 255.0f;
+    float borderGf = borderG / 255.0f;
+    float borderBf = borderB / 255.0f;
+
+    // Отрисовка заполненного прямоугольника
+    glColor3f(rf, gf, bf);
+    glBegin(GL_QUADS);
+        glVertex2f(x, y);
+        glVertex2f(x + width, y);
+        glVertex2f(x + width, y + height);
+        glVertex2f(x, y + height);
+    glEnd();
+
+    // Отрисовка рамки
+    if (borderWidth > 0) {
+        glColor3f(borderRf, borderGf, borderBf);
+        glLineWidth(borderWidth);
+        glBegin(GL_LINE_LOOP);
+            glVertex2f(x, y);
+            glVertex2f(x + width, y);
+            glVertex2f(x + width, y + height);
+            glVertex2f(x, y + height);
+        glEnd();
+    }
 }
 
 }  // namespace ZL
