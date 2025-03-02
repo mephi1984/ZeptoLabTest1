@@ -98,20 +98,58 @@ void GameObjectManager::initialize() {
 
 
 
-            ActiveObject cubeForFirstRoom;
-            cubeForFirstRoom.name = "cube";
-            cubeForFirstRoom.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
-            cubeForFirstRoom.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
-            cubeForFirstRoom.activeObjectMesh.Scale(30);
-            cubeForFirstRoom.activeObjectMeshMutable.AssignFrom(cubeForFirstRoom.activeObjectMesh);
-            cubeForFirstRoom.activeObjectMeshMutable.RefreshVBO();
-            cubeForFirstRoom.objectPos = Vector3f{ 0,50 , 0 };
-            cubeForFirstRoom.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
-            cubeForFirstRoom.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            cubeForFirstRoom.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            cubeForFirstRoom.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoom.activeObjectScreenMesh);
-            cubeForFirstRoom.activeObjectScreenMeshMutable.RefreshVBO();
+            ActiveObject cubeForFirstRoomT;
+            cubeForFirstRoomT.name = "cubeT";
+            cubeForFirstRoomT.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomT.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomT.activeObjectMesh.Scale(10);
+            cubeForFirstRoomT.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectMesh);
+            cubeForFirstRoomT.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomT.objectPos = Vector3f{ -190, 90 , 280 };
+            cubeForFirstRoomT.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
+            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomT.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
+            cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
+
+
+
+
+
+
+
+            ActiveObject cubeForFirstRoomO;
+            cubeForFirstRoomO.name = "cubeO";
+            cubeForFirstRoomO.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 1.5)));
+            cubeForFirstRoomO.activeObjectMesh.Scale(10);
+            cubeForFirstRoomO.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectMesh);
+            cubeForFirstRoomO.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomO.objectPos = Vector3f{ 185, 90 , -365 };
+            cubeForFirstRoomO.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_3.bmp"));
+            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
+            cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
             
+
+
+            ActiveObject cubeForFirstRoomM;
+            cubeForFirstRoomM.name = "cubeM";
+            cubeForFirstRoomM.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI)));
+
+            cubeForFirstRoomM.activeObjectMesh.Scale(10);
+            cubeForFirstRoomM.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectMesh);
+            cubeForFirstRoomM.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomM.objectPos = Vector3f{ 280, 95 , 235 };
+            cubeForFirstRoomM.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001_4.bmp"));
+            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomM.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomM.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
+            cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
 
 
 
@@ -137,7 +175,9 @@ void GameObjectManager::initialize() {
             Room room_1;
             room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
             room_1.objects.push_back(ao1);
-            room_1.objects.push_back(cubeForFirstRoom);
+            room_1.objects.push_back(cubeForFirstRoomT);
+            room_1.objects.push_back(cubeForFirstRoomO);
+            room_1.objects.push_back(cubeForFirstRoomM);
             room_1.sound_name = "Symphony No.6 (1st movement).ogg";
             room_1.roomLogic = createRoom1Logic();
             room_1.textMesh = preloadedRoomMeshArr[0];
