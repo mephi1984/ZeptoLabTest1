@@ -182,6 +182,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         if (Environment::zoom < zoomstep) {
             Environment::zoom = zoomstep;
         }
+        if (Environment::zoom > 4)
+        {
+            Environment::zoom = 4;
+        }
     }
     else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
@@ -390,6 +394,18 @@ void GameObjectManager::updateScene(size_t ms) {
     if (Environment::upPressed) {
         Environment::cameraShift.v[0] += directionVector.v[0] * ms;
         Environment::cameraShift.v[2] += directionVector.v[1] * ms;
+    }
+    if (Environment::downPressed) {
+        Environment::cameraShift.v[0] -= directionVector.v[0] * ms;
+        Environment::cameraShift.v[2] -= directionVector.v[1] * ms;
+    }
+    if (Environment::rightPressed) {
+        Environment::cameraShift.v[2] += directionVector.v[0] * ms;
+        Environment::cameraShift.v[0] -= directionVector.v[1] * ms;
+    }
+    if (Environment::leftPressed) {
+        Environment::cameraShift.v[2] -= directionVector.v[0] * ms;
+        Environment::cameraShift.v[0] += directionVector.v[1] * ms;
     }
 
     Environment::characterPos.v[0] = -Environment::cameraShift.v[0];

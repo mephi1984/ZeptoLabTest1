@@ -9,9 +9,11 @@
 namespace ZL {
 
 void RenderSystem::initialize() {
+    /*
     renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
     renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-    renderer.InitOpenGL();
+    renderer.InitOpenGL();*/
 }
 
 void RenderSystem::drawScene(GameObjectManager& gameObjects) {
@@ -100,11 +102,14 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
 void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     static const std::string defaultShaderName = "default";
     static const std::string colorShaderName = "defaultColor";
+    static const std::string hideCamShaderName = "defaultHideCam";
 
     static const std::string vPositionName = "vPosition";
     static const std::string vTexCoordName = "vTexCoord";
     static const std::string vColorName = "vColor";
     static const std::string textureUniformName = "Texture";
+
+    //static const std::string modelViewMatrixName = "modelView";
 
     /*
     renderer.shaderManager.PushShader(defaultShaderName);
@@ -122,8 +127,23 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
 
     drawViola(gameObjects);
 
-    renderer.shaderManager.PushShader(defaultShaderName);
+    renderer.shaderManager.PushShader(hideCamShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
+
+    Vector3f totalCameraTargetPos = Environment::characterPos - Vector3f{ 0, Environment::cameraDefaultVerticalShift, 0 };
+
+    renderer.RenderUniform3fv("targetPos", &totalCameraTargetPos.v[0]);
+
+    Vector3f cameraPos = Vector3f{ 0,0, 100 * Environment::zoom };
+
+    cameraPos = MultVectorMatrix(cameraPos, QuatToMatrix(QuatFromRotateAroundX(Environment::cameraAlpha)));
+    cameraPos = MultVectorMatrix(cameraPos, QuatToMatrix(QuatFromRotateAroundY(Environment::cameraPhi)));
+
+    cameraPos = cameraPos + totalCameraTargetPos;
+    renderer.RenderUniform3fv("eyePos", &cameraPos.v[0]);
+    //renderer.RenderUniform3fv("eyePos", &testVec2.v[0]);
+
+
 
     renderer.EnableVertexAttribArray(vPositionName);
     renderer.EnableVertexAttribArray(vTexCoordName);

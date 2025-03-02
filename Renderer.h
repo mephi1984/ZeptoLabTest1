@@ -118,6 +118,8 @@ namespace ZL {
 
 		void RenderUniformMatrix4fv(const std::string& uniformName, bool transpose, const float* value);
 		void RenderUniform1i(const std::string& uniformName, const int value);
+		void RenderUniform3fv(const std::string& uniformName, const float* value);
+
 
 		void VertexAttribPointer2fv(const std::string& attribName, int stride, const char* pointer);
 

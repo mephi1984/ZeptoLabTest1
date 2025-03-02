@@ -53,6 +53,7 @@ void Game::setup() {
     // Initialize renderer
     renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
     renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
 
     // Initialize game objects
     std::cout << "Hello 2" << std::endl;
