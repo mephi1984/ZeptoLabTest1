@@ -45,6 +45,16 @@ namespace ZL
         return nullptr;
     }
 
+    InventoryItem* GetItemSelected(bool selected)
+    {
+        for (auto& [_, item] : gInventoryMap) {
+            if (item.isSelected == selected) {
+                return &item;
+            }
+        }
+        return nullptr;
+    }
+
     void PrintInventory()
     {
         std::cout << "Inventory contents:\n";

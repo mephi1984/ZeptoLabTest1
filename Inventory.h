@@ -36,4 +36,5 @@ namespace ZL
     // Add these new functions
     void UnselectAllItems();
     InventoryItem* GetItemByHotkey(int hotkey);
+    InventoryItem* GetItemSelected(bool isSelected);
 }

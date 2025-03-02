@@ -150,6 +150,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
+      if (InventoryItem* item = GetItemSelected(true)) {
+
+      }
+      else {
       const auto highlightedObjects = aoMgr.findByHighlighted(true);
 
     for (auto* ao : highlightedObjects) {
@@ -161,6 +165,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         objects_in_inventory++;
 
         aoMgr.removeByName(ao->name);
+    }
     }
 //        bx.Interpolate(animationCounter);
 //        animationCounter += 2;
@@ -255,6 +260,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 UnselectAllItems();
                 if (InventoryItem* item = GetItemByHotkey(hot_key)) {
                     item->isSelected = true;
+                    std:: cout << item->name << std::endl;
                 }
             }
             break;
