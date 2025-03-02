@@ -17,6 +17,8 @@ public:
 
     static Vector3f cameraShift;
     static Vector3f characterPos;
+
+    static float violaCurrentIdleFrame;
 };
 
 } // namespace ZL

@@ -37,7 +37,8 @@ void GameObjectManager::initialize() {
     coneMeshMutable.RefreshVBO();
 
     // Load bone animations
-    bx.LoadFromFile("mesh_armature_and_animation_data.txt");
+    //bx.LoadFromFile("./violetta001.txt");
+    bx.LoadFromFile("./idleviola001.txt");
 
     // Create active object
     ActiveObject ao1;
@@ -230,6 +231,16 @@ void GameObjectManager::updateScene(size_t ms) {
     if (rooms[current_room_index].roomLogic) {
         rooms[current_room_index].roomLogic(*this, ms);
     }
+
+    Environment::violaCurrentIdleFrame += ms / 24.f;
+
+    while (Environment::violaCurrentIdleFrame > 40)
+    {
+        Environment::violaCurrentIdleFrame -= 40;
+    }
+
+    bx.Interpolate(int(Environment::violaCurrentIdleFrame));
+
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {

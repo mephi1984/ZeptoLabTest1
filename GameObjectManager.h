@@ -6,7 +6,9 @@
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#ifdef __linux__
 #include <SDL2/SDL.h>
+#endif
 #include "OpenGlExtensions.h"
 
 namespace ZL {
@@ -51,7 +53,7 @@ public:
     static const float INVENTORY_MARGIN;
 
 private:
-    int animationCounter = 0;
+    //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
     int current_room_index;
