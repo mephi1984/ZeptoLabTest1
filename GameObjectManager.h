@@ -4,14 +4,18 @@
 #include "AudioPlayerAsync.h"
 #include <memory>
 #include <vector>
-#include <list>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "Inventory.h"
 #ifdef __linux__
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
 #include <thread>
+#include <list>
+
+#include "BoundaryBox.h" // Добавляем новый include
+
 
 namespace ZL {
 
@@ -50,7 +54,10 @@ public:
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
-    
+    std::vector<InventoryItem> selectedCubes;
+
+    std::string bearName;
+
     AudioPlayerAsync audioPlayerAsync;
 
     ZL::VertexDataStruct inventoryIconMesh;
@@ -58,6 +65,8 @@ public:
     
     static const float INVENTORY_ICON_SIZE;
     static const float INVENTORY_MARGIN;
+    static const float SELECTED_CUBE_ICON_SIZE;
+    static const float SELECTED_CUBE_MARGIN;
     ActiveObjectManager aoMgr;
     int objects_in_inventory;
 
@@ -73,11 +82,10 @@ public:
 
     int current_room_index;
 private:
-
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
-    
+
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
