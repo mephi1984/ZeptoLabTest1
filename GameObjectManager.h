@@ -71,6 +71,9 @@ public:
     //ActiveObjectManager aoMgr;
     int objects_in_inventory;
 
+    std::shared_ptr<Texture> dialog;
+    bool isDialogActive = true;
+
 
     std::shared_ptr<ZL::Texture> loadingScreenTexturePtr;
 

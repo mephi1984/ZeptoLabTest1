@@ -268,8 +268,7 @@ void GameObjectManager::switch_room(int index){
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
-//      todo comment this action
-        switch_room(1);
+
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
@@ -317,7 +316,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 std::cout << highlightedObjects.size() << std::endl;
                 for (auto* ao : highlightedObjects) {
                     if (ao && ao->name == "lampe") {
-                        ao->activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("base_Base_color_1001.bmp"));
+//                        ao->activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("base_Base_color_1001.bmp"));
                         gInventoryMap.erase(item->name);
                         objects_in_inventory--;
                         break;

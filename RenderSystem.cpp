@@ -401,4 +401,8 @@ void RenderSystem::drawObjects(GameObjectManager& gameObjects){
     }
 }
 
+void RenderSystem::drawDialog(GameObjectManager& gameObjects){
+
+}
+
 } // namespace ZL
