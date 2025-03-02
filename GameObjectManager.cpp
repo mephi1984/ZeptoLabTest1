@@ -174,6 +174,15 @@ void GameObjectManager::initialize() {
             objects_in_inventory++;
 
 
+            monsterTexturePtr1 = std::make_shared<Texture>(CreateTextureDataFromBmp32("./monster001.bmp32"));
+            monsterTexturePtr2 = std::make_shared<Texture>(CreateTextureDataFromBmp32("./monster002.bmp32"));
+
+
+            monsterScreenMesh = CreateRect2D({ 0.f, 0.f }, { 300.f, 300.f }, 0.5);
+            monsterScreenMeshMutable.AssignFrom(monsterScreenMesh);
+            monsterScreenMeshMutable.RefreshVBO();
+
+
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -555,6 +564,30 @@ void GameObjectManager::updateScene(size_t ms) {
             Environment::violaLastWalkFrame = int(Environment::violaCurrentWalkFrame);
         }
     }
+
+    if (Environment::monsterState == 0)
+    {
+        Environment::monsterTimer += ms;
+
+        if (Environment::monsterTimer > 500)
+        {
+            Environment::monsterTimer = 0;
+            Environment::monsterState = 1;
+        }
+    }
+    else
+    {
+        Environment::monsterTimer += ms;
+
+        if (Environment::monsterTimer > 500)
+        {
+            Environment::monsterTimer = 0;
+            Environment::monsterState = 0;
+        }
+    }
+
+    //float Environment::monsterTimer = 0.0;
+    //int Environment::monsterState = 1;
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
