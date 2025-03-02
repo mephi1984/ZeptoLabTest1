@@ -170,7 +170,7 @@ void GameObjectManager::initialize() {
             objects_in_inventory++;
             AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
             objects_in_inventory++;
-            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
+            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32")), objects_in_inventory + 1);
             objects_in_inventory++;
 
 
