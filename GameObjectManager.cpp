@@ -8,10 +8,10 @@
 namespace ZL {
 
 const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
-const float GameObjectManager::INVENTORY_MARGIN = 20.0f;
+const float GameObjectManager::INVENTORY_MARGIN = 44.0f;
 
-const float GameObjectManager::SELECTED_CUBE_ICON_SIZE = 44.0f;
-const float GameObjectManager::SELECTED_CUBE_MARGIN = 20.0f;
+const float GameObjectManager::SELECTED_CUBE_ICON_SIZE = 244.0f;
+const float GameObjectManager::SELECTED_CUBE_MARGIN = 50.0f;
 
 void GameObjectManager::initializeLoadingScreen()
 {

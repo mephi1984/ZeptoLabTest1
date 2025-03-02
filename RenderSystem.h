@@ -9,6 +9,7 @@ namespace ZL {
 class RenderSystem {
 public:
     RenderSystem() = default;
+    Renderer renderer;
     void initialize();
     void drawScene(GameObjectManager& gameObjects);
     Renderer& getRenderer() { return renderer; }
@@ -26,7 +27,6 @@ private:
 
     void drawLoadingScreen(const GameObjectManager& gameObjects);
 
-    Renderer renderer;
     ShaderManager shaderManager;
     Matrix4f currentProjectionModelView; // Добавлено для хранения матрицы между drawWorld и drawUI
     int lastMouseX = 0;

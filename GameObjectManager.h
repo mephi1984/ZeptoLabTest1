@@ -66,6 +66,8 @@ public:
     
     static const float INVENTORY_ICON_SIZE;
     static const float INVENTORY_MARGIN;
+    static const float SELECTED_CUBE_ICON_SIZE;
+    static const float SELECTED_CUBE_MARGIN;
     ActiveObjectManager aoMgr;
     int objects_in_inventory;
     void addRectangle(int x, int y, int width, int height, int r, int g, int b, int borderWidth, int borderR, int borderG, int borderB);
@@ -80,12 +82,12 @@ public:
     std::list<std::function<bool()>> loadingFunctions;
     std::thread loadingThread;
     bool sideThreadLoadingCompleted = false;
+    int current_room_index;
 
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
-    int current_room_index;
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
