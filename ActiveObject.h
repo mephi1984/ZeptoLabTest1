@@ -1,6 +1,8 @@
 #pragma once
 #include "TextureManager.h"
 #include "Math.h"
+#include <unordered_map>
+
 #include <memory>
 
 namespace ZL {
@@ -20,15 +22,17 @@ struct ActiveObject {
 
 class ActiveObjectManager {
     public:
+        std::unordered_map<std::string, ActiveObject> activeObjectsEntities;
+
         // Добавить или обновить объект в контейнере
         void addActiveObject(const ActiveObject& object) {
-            activeObjects[object.name] = object;
+            activeObjectsEntities[object.name] = object;
         }
 
         // Найти объект по имени (возвращает указатель, nullptr — если не найден)
         ActiveObject* findByName(const std::string& name) {
-            auto it = activeObjects.find(name);
-            if (it != activeObjects.end()) {
+            auto it = activeObjectsEntities.find(name);
+            if (it != activeObjectsEntities.end()) {
                 return &it->second;
             }
             return nullptr;
@@ -36,10 +40,11 @@ class ActiveObjectManager {
 
         // Найти все объекты с нужным значением highlighted
         // (возвращает список указателей на найденные объекты)
-        std::vector<ActiveObject*> findByHighlighted(bool highlighted) {
-            std::vector<ActiveObject*> result;
-            result.reserve(activeObjects.size());
-            for (auto& [key, object] : activeObjects) {
+    // ActiveObject.h
+    std::vector<const ActiveObject*> findByHighlighted(bool highlighted) const {
+            std::vector<const ActiveObject*> result;
+            result.reserve(activeObjectsEntities.size());
+            for (const auto& [key, object] : activeObjectsEntities) {  // const auto&
                 if (object.highlighted == highlighted) {
                     result.push_back(&object);
                 }
@@ -47,9 +52,10 @@ class ActiveObjectManager {
             return result;
         }
 
-    private:
-        // Хранение объектов по ключу name
-        std::unordered_map<std::string, ActiveObject> activeObjects;
-    };
 
+
+        void removeByName(const std::string& name) {
+                activeObjectsEntities.erase(name);
+        }
+    };
 }
