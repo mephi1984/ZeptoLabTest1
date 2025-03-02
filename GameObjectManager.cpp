@@ -7,8 +7,11 @@
 
 namespace ZL {
 
-const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
-const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
+const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
+const float GameObjectManager::INVENTORY_MARGIN = 44.0f;
+
+const float GameObjectManager::SELECTED_CUBE_ICON_SIZE = 244.0f;
+const float GameObjectManager::SELECTED_CUBE_MARGIN = 50.0f;
 
 void GameObjectManager::initializeLoadingScreen()
 {
@@ -26,12 +29,15 @@ void GameObjectManager::initializeLoadingScreen()
 void GameObjectManager::initialize() {
 
     initializeLoadingScreen();
-    
+
     std::function<bool()> loadingFunction1 = [this]()
         {
 
             current_room_index = 0;
             objects_in_inventory = 0;
+	bearName = "";
+  current_room_index = 0;
+  objects_in_inventory = 0;
 
             //coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
@@ -152,16 +158,18 @@ void GameObjectManager::initialize() {
 
             //roomTexturePtr = rooms[current_room_index].roomTexture;
 
-            AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
-            AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            objects_in_inventory++;
+            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
 
 
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
 
-            
+
             return true;
 
         };
@@ -200,6 +208,40 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = aoMgr.findByHighlighted(true);
+      if (InventoryItem* item = GetItemSelected(true)) {
+        std::cout << item->name << std::endl;
+
+        if (current_room_index==0) {
+
+            if (bearName.length() <= 3) {
+              if (item->name == "cube_T"){
+                    bearName += "T";
+                    selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
+                }
+              else if (item->name == "cube_O"){
+                    bearName += "O";
+                    selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
+                }
+              else if (item->name == "cube_M"){
+                    bearName += "M";
+                    selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
+
+              }
+            }
+            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
+              bearName = "";
+              for (const auto& cube : selectedCubes) {
+                gInventoryMap[cube.name] = cube;
+            }
+              selectedCubes.clear();
+            }
+        }
+      }
+      else {
+      const auto highlightedObjects = aoMgr.findByHighlighted(true);
 
         for (auto* ao : highlightedObjects) {
             if (!ao) {
@@ -213,7 +255,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
         // bx.Interpolate(animationCounter);
         // animationCounter += 2;
+       }
     }
+
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
@@ -291,10 +335,17 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_1:
             case SDLK_2:
-            {
-                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+            case SDLK_3:
+            case SDLK_4:
+            case SDLK_5:
+            case SDLK_6:
+            case SDLK_7:
+            case SDLK_8:
+            case SDLK_9:
+                {
+
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
                 }
             }
@@ -423,7 +474,7 @@ void GameObjectManager::updateScene(size_t ms) {
         newPosition.v[0] += directionVector.v[1] * ms;
     }
 
-    
+
     Vector3f characterNewPos{-newPosition.v[0], -newPosition.v[1], -newPosition.v[2]};
 
     std::cout << "Player position: x=" << characterNewPos.v[0]

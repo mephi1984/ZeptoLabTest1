@@ -2,6 +2,9 @@
 #include "GameObjectManager.h"
 #include "Inventory.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
+
 
 namespace ZL
 {
@@ -9,15 +12,15 @@ namespace ZL
     std::function<void(GameObjectManager&, size_t)> createRoom1Logic()
     {
         return [](GameObjectManager& gom, size_t ms)
-//      Simple test logic
         {
-            if (GetItemByName("book")) {
-                std::cout << "[Room 1] Игрок поднял книгу!\n";
-
-                 gom.switch_room(1);
+            if (gom.bearName.compare("TOM") == 0) {
+                gInventoryMap.clear();
+//                std::this_thread::sleep_for(std::chrono::seconds(1));
+                gom.switch_room(1);
             }
         };
     }
+
 
     std::function<void(GameObjectManager&, size_t)> createRoom2Logic()
     {

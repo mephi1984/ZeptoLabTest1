@@ -235,11 +235,12 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         if (item.isSelected) {
                   float xPos = Environment::width
                    - gameObjects.INVENTORY_MARGIN
-                   - gameObjects.INVENTORY_ICON_SIZE+25;
+                   - gameObjects.INVENTORY_ICON_SIZE;
         float yPos = gameObjects.INVENTORY_MARGIN
-                   + i * (gameObjects.INVENTORY_ICON_SIZE+25
+                   + i * (gameObjects.INVENTORY_ICON_SIZE
                    + gameObjects.INVENTORY_MARGIN);
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f});
         glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
         }
         else {
@@ -260,6 +261,29 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         renderer.PopMatrix();
         i++;
     }
+
+    //    Отрисовка кубиков
+            if (gameObjects.current_room_index == 0){
+    for (const auto& cube : gameObjects.selectedCubes) {
+        renderer.PushMatrix();
+
+        // Смещаем по оси x: начиная с левой стороны и двигаясь вправо
+        float xPos = gameObjects.SELECTED_CUBE_MARGIN
+                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN) + 300.0f;
+        // Оставляем y константным
+        float yPos = 500.0f;
+
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{2.8f, 2.8f, 1.0f});
+        glBindTexture(GL_TEXTURE_2D, cube.texture->getTexID());
+
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
+
+        renderer.PopMatrix();
+        i++;
+    }
+}
+
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
