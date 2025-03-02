@@ -16,6 +16,8 @@ struct ActiveObject {
     ZL::VertexDataStruct activeObjectScreenMesh;
     ZL::VertexRenderStruct activeObjectScreenMeshMutable;
 
+    std::shared_ptr<ZL::Texture> inventoryItemTexturePtr;
+
     ZL::Vector3f objectPos;
     bool highlighted = false;
 };
