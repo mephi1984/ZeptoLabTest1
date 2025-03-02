@@ -9,7 +9,7 @@ class RenderSystem {
 public:
     RenderSystem() = default;
     void initialize();
-    void drawScene(const GameObjectManager& gameObjects);
+    void drawScene(GameObjectManager& gameObjects);
     Renderer& getRenderer() { return renderer; }
     
     void worldToScreenCoordinates(Vector3f objectPos,
@@ -18,8 +18,10 @@ public:
         int& screenX, int& screenY);
 
 private:
-    void drawWorld(const GameObjectManager& gameObjects);
+    void drawWorld(GameObjectManager& gameObjects);
     void drawUI(const GameObjectManager& gameObjects);
+
+    void drawViola(GameObjectManager& gameObjects);
     
     Renderer renderer;
     ShaderManager shaderManager;

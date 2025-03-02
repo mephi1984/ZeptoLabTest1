@@ -15,4 +15,7 @@ bool Environment::downPressed = false;
 Vector3f Environment::cameraShift = {0, 0, 0};
 Vector3f Environment::characterPos = {0, 0, 0};
 
+
+float Environment::violaCurrentIdleFrame = 0.f;
+
 } // namespace ZL

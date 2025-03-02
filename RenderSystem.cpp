@@ -4,6 +4,8 @@
 #include "Inventory.h"
 #include <GL/gl.h>
 
+
+
 namespace ZL {
 
 void RenderSystem::initialize() {
@@ -12,7 +14,7 @@ void RenderSystem::initialize() {
     renderer.InitOpenGL();
 }
 
-void RenderSystem::drawScene(const GameObjectManager& gameObjects) {
+void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     static const std::string defaultShaderName = "default";
     static const std::string vPositionName = "vPosition";
     static const std::string vTexCoordName = "vTexCoord";
@@ -22,6 +24,90 @@ void RenderSystem::drawScene(const GameObjectManager& gameObjects) {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glViewport(0, 0, Environment::width, Environment::height);
+    /*
+    renderer.shaderManager.PushShader(defaultShaderName);
+    renderer.RenderUniform1i(textureUniformName, 0);
+
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+    */
+    drawWorld(gameObjects);
+    //drawUI(gameObjects);
+
+    /*renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+    renderer.shaderManager.PopShader();*/
+    
+    CheckGlError();
+}
+
+void RenderSystem::drawViola(GameObjectManager& gameObjects)
+{
+    static const std::string defaultShaderName = "default";
+    static const std::string colorShaderName = "defaultColor";
+
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    static const std::string vColorName = "vColor";
+    static const std::string textureUniformName = "Texture";
+
+    renderer.shaderManager.PushShader(colorShaderName);
+    
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5,
+        static_cast<float>(Environment::width) / static_cast<float>(Environment::height),
+        50, 10000);
+    renderer.PushMatrix();
+
+    renderer.LoadIdentity();
+    renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
+
+    float t = 0.3;
+    renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
+    renderer.ScaleMatrix(10);
+
+    renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
+    //float t = 0.3;
+
+    //renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
+
+    
+    gameObjects.bxMutable.AssignFrom(gameObjects.bx.mesh);
+    gameObjects.bxMutable.RefreshVBO();
+    renderer.DrawVertexRenderStruct(gameObjects.bxMutable);
+    
+    
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+    renderer.DisableVertexAttribArray(vPositionName);
+
+    renderer.shaderManager.PopShader();
+}
+
+void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
+    static const std::string defaultShaderName = "default";
+    static const std::string colorShaderName = "defaultColor";
+
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    static const std::string vColorName = "vColor";
+    static const std::string textureUniformName = "Texture";
+
+    /*
+    renderer.shaderManager.PushShader(defaultShaderName);
+    renderer.RenderUniform1i(textureUniformName, 0);
+
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+    */
+
+
+
+    // Draw cone
+    //glBindTexture(GL_TEXTURE_2D, gameObjects.coneTexturePtr->getTexID());
+    //renderer.DrawVertexRenderStruct(gameObjects.coneMeshMutable);
+
+    drawViola(gameObjects);
 
     renderer.shaderManager.PushShader(defaultShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
@@ -29,32 +115,17 @@ void RenderSystem::drawScene(const GameObjectManager& gameObjects) {
     renderer.EnableVertexAttribArray(vPositionName);
     renderer.EnableVertexAttribArray(vTexCoordName);
 
-    drawWorld(gameObjects);
-    drawUI(gameObjects);
 
-    renderer.DisableVertexAttribArray(vPositionName);
-    renderer.DisableVertexAttribArray(vTexCoordName);
-    renderer.shaderManager.PopShader();
-    
-    CheckGlError();
-}
-
-void RenderSystem::drawWorld(const GameObjectManager& gameObjects) {
-    renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5, 
-        static_cast<float>(Environment::width) / static_cast<float>(Environment::height), 
+    renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5,
+        static_cast<float>(Environment::width) / static_cast<float>(Environment::height),
         50, 10000);
     renderer.PushMatrix();
 
     renderer.LoadIdentity();
     renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
-    
+
     float t = 0.3;
     renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
-
-
-    // Draw cone
-    glBindTexture(GL_TEXTURE_2D, gameObjects.coneTexturePtr->getTexID());
-    renderer.DrawVertexRenderStruct(gameObjects.coneMeshMutable);
 
     renderer.TranslateMatrix(Environment::cameraShift);
 
@@ -80,6 +151,10 @@ void RenderSystem::drawWorld(const GameObjectManager& gameObjects) {
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
+
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+    renderer.shaderManager.PopShader();
     
     // Store matrix for UI rendering
     currentProjectionModelView = latestProjectionModelView;

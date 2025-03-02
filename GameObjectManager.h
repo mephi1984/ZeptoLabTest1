@@ -46,7 +46,7 @@ public:
     static const float INVENTORY_MARGIN;
 
 private:
-    int animationCounter = 0;
+    //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;

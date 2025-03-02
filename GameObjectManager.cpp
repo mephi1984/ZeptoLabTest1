@@ -47,7 +47,8 @@ void GameObjectManager::initialize() {
 
 
     // Load bone animations
-    bx.LoadFromFile("mesh_armature_and_animation_data.txt");
+    //bx.LoadFromFile("./violetta001.txt");
+    bx.LoadFromFile("./idleviola001.txt");
 
     // Create active object
     ActiveObject ao1;
@@ -102,8 +103,7 @@ void GameObjectManager::initialize() {
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     if (event.type == SDL_MOUSEBUTTONDOWN) {
-        bx.Interpolate(animationCounter);
-        animationCounter += 2;
+
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
 
@@ -212,6 +212,16 @@ void GameObjectManager::updateScene(size_t ms) {
         ao.highlighted = (dist < 50.f);
 
     }
+
+    Environment::violaCurrentIdleFrame += ms / 24.f;
+
+    while (Environment::violaCurrentIdleFrame > 40)
+    {
+        Environment::violaCurrentIdleFrame -= 40;
+    }
+
+    bx.Interpolate(int(Environment::violaCurrentIdleFrame));
+
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
