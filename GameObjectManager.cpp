@@ -177,7 +177,7 @@ void GameObjectManager::initialize() {
             room_1.roomLogic = createRoom1Logic();
             room_1.textMesh = preloadedRoomMeshArr[0];
             room_1.textMeshMutable.AssignFrom(room_1.textMesh);
-            room_1.collisionMgr.setRoomBoundary(800, 800);
+            room_1.collisionMgr.setRoomBoundary(790, 790);
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -220, 0, 165 }, Vector3f{ -143, 0, 230 }));
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -400, 0, 125 }, Vector3f{ -121, 0, 400 }));
@@ -196,9 +196,9 @@ void GameObjectManager::initialize() {
             room_2.roomLogic = createRoom2Logic();
             room_2.textMesh = preloadedRoomMeshArr[1];
             room_2.textMeshMutable.AssignFrom(room_2.textMesh);
-            room_2.collisionMgr.setRoomBoundary(800, 800);
-            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
-
+            room_2.collisionMgr.setRoomBoundary(790, 790);
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
