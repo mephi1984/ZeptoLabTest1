@@ -1,6 +1,5 @@
 #include "Renderer.h"
-
-
+#include <cmath>
 
 namespace ZL {
 
@@ -297,6 +296,7 @@ namespace ZL {
 			PositionData[i].v[2] = value;
 		}
 	}
+	
 
 	void VertexDataStruct::RotateByMatrix(Matrix3f m)
 	{

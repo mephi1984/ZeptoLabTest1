@@ -28,9 +28,14 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.RefreshVBO();
 
     textMesh = ZL::LoadFromTextFile("./mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh.Scale(17);
+    textMesh.SwapZandY();
+    textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+    
+
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
-    textMesh.Scale(20);
+
 
     textMeshMutable.AssignFrom(textMesh);
     textMeshMutable.RefreshVBO();
