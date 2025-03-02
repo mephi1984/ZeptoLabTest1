@@ -121,6 +121,8 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     //glBindTexture(GL_TEXTURE_2D, gameObjects.coneTexturePtr->getTexID());
     //renderer.DrawVertexRenderStruct(gameObjects.coneMeshMutable);
 
+    //drawMonster(gameObjects);
+    //glClear(GL_DEPTH_BUFFER_BIT);
     drawViola(gameObjects);
 
     
@@ -174,6 +176,13 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     // Draw room
     glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
     renderer.DrawVertexRenderStruct(gameObjects.rooms[gameObjects.current_room_index].textMeshMutable);
+
+    if (gameObjects.current_room_index == 1)
+    {
+        drawMonster(gameObjects);
+    }
+    drawViola(gameObjects);
+
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
     
@@ -324,6 +333,55 @@ void RenderSystem::drawLoadingScreen(const GameObjectManager& gameObjects)
     // Снимаем шейдер, тем самым балансируя стек
     renderer.shaderManager.PopShader();
 
+}
+
+void RenderSystem::drawMonster(const GameObjectManager& gameObjects)
+{
+    renderer.shaderManager.PushShader("default");
+
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
+        static_cast<float>(Environment::height), -10, 10);
+    renderer.PushMatrix();
+    renderer.LoadIdentity();
+
+
+    std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
+    int screenX, screenY;
+
+    Vector3f objectPosPlusShift = Vector3f{ -300, 50, -70 };
+    worldToScreenCoordinates(objectPosPlusShift, currentProjectionModelView,
+        Environment::width, Environment::height, screenX, screenY);
+    renderer.PushMatrix();
+    // Здесь можно использовать вычисленные screenX, screenY,
+    // но для теста оставляем фиксированное значение
+    renderer.TranslateMatrix(Vector3f{ screenX + 0.f, screenY + 0.f, 0.0f });
+
+    if (Environment::monsterState == 0)
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.monsterTexturePtr1->getTexID());
+    }
+    else
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.monsterTexturePtr2->getTexID());
+    }
+    renderer.DrawVertexRenderStruct(gameObjects.monsterScreenMeshMutable);
+    renderer.PopMatrix();
+
+
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
 }
 
 void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,

@@ -46,6 +46,9 @@ public:
 
     static bool gameIsLoading;
 
+    static float monsterTimer;
+    static int monsterState;
+
 
 };
 

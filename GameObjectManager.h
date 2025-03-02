@@ -81,6 +81,12 @@ public:
     bool sideThreadLoadingCompleted = false;
 
     int current_room_index;
+
+    std::shared_ptr<ZL::Texture> monsterTexturePtr1;
+    std::shared_ptr<ZL::Texture> monsterTexturePtr2;
+    ZL::VertexDataStruct monsterScreenMesh;
+    ZL::VertexRenderStruct monsterScreenMeshMutable;
+
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
