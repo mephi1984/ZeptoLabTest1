@@ -1,5 +1,10 @@
 #include "Environment.h"
 
+#include "RenderSystem.h"
+#include "Utils.h"
+#include "Inventory.h"
+#include <GL/gl.h>
+
 namespace ZL {
 
 int Environment::windowHeaderHeight = 0;
@@ -15,6 +20,8 @@ bool Environment::downPressed = false;
 Vector3f Environment::cameraShift = {0, 0, 0};
 Vector3f Environment::characterPos = {0, 0, 0};
 
+float Environment::cameraPhi = 0.f;
+float Environment::cameraAlpha = 0.3*M_PI / 2.0;
 
 float Environment::violaCurrentIdleFrame = 0.f;
 int Environment::violaLastIdleFrame = -1;
@@ -23,5 +30,14 @@ int Environment::violaLastWalkFrame = 0;
 
 int Environment::violaCurrentAnimation = 0;
 float Environment::violaAngleAroundY = 0.f;
+
+bool Environment::settings_inverseVertical = true;
+
+SDL_Window* Environment::window = nullptr;
+
+float Environment::cameraDefaultVerticalShift = -150.f;
+bool Environment::showMouse = false;
+
+bool Environment::exitGameLoop = false;
 
 } // namespace ZL
