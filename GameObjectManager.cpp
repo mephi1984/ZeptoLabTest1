@@ -131,26 +131,26 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
             cubeForFirstRoomM.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32"));
 
-            ActiveObject ao2;
-            ao2.name = "book";
-            ao2.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(0);
-            ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
-            ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 50, 0, -300 };
-            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-            ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
-            ao2.activeObjectScreenMeshMutable.RefreshVBO();
-            ao2.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            ActiveObject lampe;
+            lampe.name = "lampe";
+            lampe.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
+            lampe.activeObjectMesh.Scale(4);
+            lampe.activeObjectMeshMutable.AssignFrom(lampe.activeObjectMesh);
+            lampe.activeObjectMeshMutable.RefreshVBO();
+            lampe.objectPos = Vector3f{ 51, 0, 315 };
+            lampe.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lampe.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            lampe.activeObjectScreenMeshMutable.AssignFrom(lampe.activeObjectScreenMesh);
+            lampe.activeObjectScreenMeshMutable.RefreshVBO();
+            lampe.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
             
 
 
             ActiveObject carToy;
             carToy.name = "carToy";
             carToy.activeObjectMesh = ZL::LoadFromTextFile("./car.txt");  // Add ZL:: namespace
-            carToy.activeObjectMesh.Scale(10);
+            carToy.activeObjectMesh.Scale(15);
             carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
             carToy.activeObjectMeshMutable.RefreshVBO();
             carToy.objectPos = Vector3f{ 291, 0, 315 };
