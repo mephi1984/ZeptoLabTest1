@@ -207,7 +207,8 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     renderer.PushMatrix();
     renderer.LoadIdentity();
 
-    for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
+    //for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
+    for (auto& ao : gameObjects.rooms[gameObjects.current_room_index].findByHighlighted(true)) {
       std::cout << ao->name << std::endl;
       std::cout << "Draw" << std::endl;
       if (ao->activeObjectScreenTexturePtr) {

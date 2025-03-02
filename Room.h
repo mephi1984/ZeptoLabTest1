@@ -23,6 +23,31 @@ struct Room{
 
   Room()
   {
+      objects.reserve(30);
+  }
+
+  std::vector<const ActiveObject*> findByHighlighted(bool highlighted) const {
+      std::vector<const ActiveObject*> result;
+
+      for (auto& o : objects)
+      {
+          if (o.highlighted == highlighted) {
+              result.push_back(&o);
+          }
+      }
+      return result;
+  }
+
+  void removeByPtr(const ActiveObject* ptr) {
+
+      for (int i = 0; i < objects.size(); i++)
+      {
+          if (ptr == &objects[i])
+          {
+              objects.erase(objects.begin() + i);
+              return;
+          }
+      }
   }
 
 };

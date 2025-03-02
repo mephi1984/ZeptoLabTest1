@@ -53,10 +53,16 @@ void GameObjectManager::initialize() {
 
     loadingThread = std::thread([this]() {
         
-        preloadedRoomMeshArr.resize(1);
+        preloadedRoomMeshArr.resize(2);
+
         preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
         preloadedRoomMeshArr[0].Scale(10);
         preloadedRoomMeshArr[0].Move(Vector3f{ 0, 93, 0 });
+
+        preloadedRoomMeshArr[1] = ZL::LoadFromTextFile("./secondroom001.txt");
+        preloadedRoomMeshArr[1].Scale(10);
+        preloadedRoomMeshArr[1].Move(Vector3f{ 0, 93, 0 });
+
 
 
         //violaIdleModel.LoadFromFile("./idleviola001.txt");
@@ -125,13 +131,13 @@ void GameObjectManager::initialize() {
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 156, 0, -400 }, Vector3f{ 380, 0, -360 }));
         
             rooms.push_back(room_1);
-            aoMgr.addActiveObject(ao1);
+            //aoMgr.addActiveObject(ao1);
 
             Room room_2;
-            room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
+            room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
-            room_2.textMesh = preloadedRoomMeshArr[0];
+            room_2.textMesh = preloadedRoomMeshArr[1];
             room_2.textMeshMutable.AssignFrom(room_2.textMesh);
             room_2.collisionMgr.setRoomBoundary(800, 800);
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
@@ -209,7 +215,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch_room(1);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        const auto highlightedObjects = aoMgr.findByHighlighted(true);
+        const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+
       if (InventoryItem* item = GetItemSelected(true)) {
         std::cout << item->name << std::endl;
 
@@ -245,7 +252,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
       }
       else {
-      const auto highlightedObjects = aoMgr.findByHighlighted(true);
+          const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
 
         for (auto* ao : highlightedObjects) {
             if (!ao) {
@@ -255,7 +262,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
             objects_in_inventory++;
 
-            aoMgr.removeByName(ao->name);
+            rooms[current_room_index].removeByPtr(ao);
+
+            //aoMgr.removeByName(ao->name);
         }
         // bx.Interpolate(animationCounter);
         // animationCounter += 2;
@@ -497,7 +506,8 @@ void GameObjectManager::updateScene(size_t ms) {
         std::cout.flush(); // Чтобы обновлялось в той же строке*/
     }
 
-    for (auto& [key, obj] : aoMgr.activeObjectsEntities) {
+    for (auto& obj : rooms[current_room_index].objects)
+    {
         float dist = sqrtf(
             pow(Environment::characterPos.v[0] - obj.objectPos.v[0], 2) +
             pow(Environment::characterPos.v[1] - obj.objectPos.v[1], 2) +
@@ -505,6 +515,16 @@ void GameObjectManager::updateScene(size_t ms) {
         );
         obj.highlighted = (dist < 50.f);
     }
+
+    /*
+    for (auto& [key, obj] : aoMgr.activeObjectsEntities) {
+        float dist = sqrtf(
+            pow(Environment::characterPos.v[0] - obj.objectPos.v[0], 2) +
+            pow(Environment::characterPos.v[1] - obj.objectPos.v[1], 2) +
+            pow(Environment::characterPos.v[2] - obj.objectPos.v[2], 2)
+        );
+        obj.highlighted = (dist < 50.f);
+    }*/
 
     if (rooms[current_room_index].roomLogic) {
         rooms[current_room_index].roomLogic(*this, ms);

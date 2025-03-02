@@ -41,16 +41,7 @@ class ActiveObjectManager {
         // Найти все объекты с нужным значением highlighted
         // (возвращает список указателей на найденные объекты)
     // ActiveObject.h
-    std::vector<const ActiveObject*> findByHighlighted(bool highlighted) const {
-            std::vector<const ActiveObject*> result;
-            result.reserve(activeObjectsEntities.size());
-            for (const auto& [key, object] : activeObjectsEntities) {  // const auto&
-                if (object.highlighted == highlighted) {
-                    result.push_back(&object);
-                }
-            }
-            return result;
-        }
+
 
 
 

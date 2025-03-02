@@ -67,7 +67,7 @@ public:
     static const float INVENTORY_MARGIN;
     static const float SELECTED_CUBE_ICON_SIZE;
     static const float SELECTED_CUBE_MARGIN;
-    ActiveObjectManager aoMgr;
+    //ActiveObjectManager aoMgr;
     int objects_in_inventory;
 
 
