@@ -94,7 +94,7 @@ void GameObjectManager::initialize() {
             ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
             ao1.activeObjectScreenMeshMutable.RefreshVBO();
-            ao1.inventoryItemTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            ao1.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
 
             /*
             ActiveObject ao2;
@@ -260,7 +260,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            AddItemToInventory(ao->name, ao->inventoryItemTexturePtr, objects_in_inventory+1);
+            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
