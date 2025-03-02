@@ -31,7 +31,7 @@ void GameObjectManager::initialize() {
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
-    textMesh.Move(Vector3f{0, 70, 0});
+    textMesh.Move(Vector3f{0, 93, 0});
 
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
