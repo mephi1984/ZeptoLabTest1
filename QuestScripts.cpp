@@ -21,12 +21,14 @@ namespace ZL
                 }
             } else if (gom.selectedCubes.size() >= 3 && gom.bearName.compare("TOM") != 0) {
               std::cout << "Else" << std::endl;
+                elapsedTime += ms;
                 if (elapsedTime >= 2000) {
                     gom.bearName = "";
                     for (const auto& cube : gom.selectedCubes) {
                         gInventoryMap[cube.name] = cube;
                     }
                     gom.selectedCubes.clear();
+                    elapsedTime = 0;
                 }
             }
         };
