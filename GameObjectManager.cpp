@@ -191,7 +191,7 @@ void GameObjectManager::initialize() {
             room_1.objects.push_back(cubeForFirstRoomT);
             room_1.objects.push_back(cubeForFirstRoomO);
             room_1.objects.push_back(cubeForFirstRoomM);
-            room_1.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_1.sound_name = "lullaby-music-vol20-186394--online-audio-convert.com.ogg";
             room_1.roomLogic = createRoom1Logic();
             room_1.textMesh = preloadedRoomMeshArr[0];
             room_1.textMeshMutable.AssignFrom(room_1.textMesh);
@@ -211,7 +211,7 @@ void GameObjectManager::initialize() {
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
             room_2.objects.push_back(ao2);
             room_2.objects.push_back(carToy);
-            room_2.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_2.sound_name = "unholy-choir-1-279337--online-audio-convert.com.ogg";
             room_2.roomLogic = createRoom2Logic();
             room_2.textMesh = preloadedRoomMeshArr[1];
             room_2.textMeshMutable.AssignFrom(room_2.textMesh);
