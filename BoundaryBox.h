@@ -15,6 +15,10 @@ public:
 // Прямоугольная граница комнаты
 class BoundaryBox {
 public:
+    BoundaryBox()
+    {
+    }
+
     BoundaryBox(float width, float height) 
         : halfWidth(width/2)
         , halfHeight(height/2) {}
@@ -25,8 +29,8 @@ public:
     }
 
 private:
-    float halfWidth;
-    float halfHeight;
+    float halfWidth = 0;
+    float halfHeight = 0;
 };
 
 // Круглая коллизия для объектов
@@ -70,8 +74,13 @@ private:
 // Менеджер коллизий
 class CollisionManager {
 public:
+    CollisionManager()
+    {
+
+    }
+
     void setRoomBoundary(float width, float height) {
-        roomBoundary = std::make_unique<BoundaryBox>(width, height);
+        roomBoundary = BoundaryBox(width, height);
     }
 
     void addCollider(std::shared_ptr<Collidable> collider) {
@@ -80,7 +89,7 @@ public:
 
     bool checkCollision(const Vector3f& position) const {
         // Проверяем границы комнаты
-        if (roomBoundary && !roomBoundary->isInside(position)) {
+        if (!roomBoundary.isInside(position)) {
             return true;
         }
 
@@ -94,7 +103,7 @@ public:
     }
 
 private:
-    std::unique_ptr<BoundaryBox> roomBoundary;
+    BoundaryBox roomBoundary;
     std::vector<std::shared_ptr<Collidable>> colliders;
 };
 

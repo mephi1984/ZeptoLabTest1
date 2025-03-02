@@ -33,7 +33,7 @@ void GameObjectManager::initialize() {
             current_room_index = 0;
             objects_in_inventory = 0;
 
-            coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
+            //coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
             // Load models
             /*
@@ -47,7 +47,12 @@ void GameObjectManager::initialize() {
 
     loadingThread = std::thread([this]() {
         
-        textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
+        preloadedRoomMeshArr.resize(1);
+        preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
+        preloadedRoomMeshArr[0].Scale(10);
+        preloadedRoomMeshArr[0].Move(Vector3f{ 0, 93, 0 });
+
+
         violaIdleModel.LoadFromFile("./idleviola001.txt");
         violaWalkModel.LoadFromFile("./walkviolla001.txt");
         sideThreadLoadingCompleted = true;
@@ -60,29 +65,6 @@ void GameObjectManager::initialize() {
 
     std::function<bool()> loadingFunction3 = [this]()
         {
-
-            /*
-            testObjMesh = LoadFromObjFile("./chair_01.obj");
-            testObjMesh.Scale(10);
-            testObjMesh.SwapZandY();
-            testObjMeshMutable.data = testObjMesh;
-            testObjMeshMutable.RefreshVBO();*/
-
-
-            textMesh.Scale(10);
-            //textMesh.SwapZandY();
-            //textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
-            textMesh.Move(Vector3f{ 0, 93, 0 });
-
-    //coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
-    //coneMesh.Scale(200);
-
-
-            textMeshMutable.AssignFrom(textMesh);
-            textMeshMutable.RefreshVBO();
-            //coneMeshMutable.AssignFrom(coneMesh);
-            //coneMeshMutable.RefreshVBO();
-
 
             // Create active object
 
@@ -123,6 +105,11 @@ void GameObjectManager::initialize() {
             room_1.objects.push_back(ao1);
             room_1.sound_name = "Symphony No.6 (1st movement).ogg";
             room_1.roomLogic = createRoom1Logic();
+            room_1.textMesh = preloadedRoomMeshArr[0];
+            room_1.textMeshMutable.AssignFrom(room_1.textMesh);
+            room_1.collisionMgr.setRoomBoundary(800, 800);
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
+
             rooms.push_back(room_1);
             aoMgr.addActiveObject(ao1);
 
@@ -130,6 +117,11 @@ void GameObjectManager::initialize() {
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
             room_2.sound_name = "Symphony No.6 (1st movement).ogg";
             room_2.roomLogic = createRoom2Logic();
+            room_2.textMesh = preloadedRoomMeshArr[0];
+            room_2.textMeshMutable.AssignFrom(room_2.textMesh);
+            room_2.collisionMgr.setRoomBoundary(800, 800);
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
+
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
@@ -152,7 +144,7 @@ void GameObjectManager::initialize() {
             inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
             inventoryIconMeshMutable.RefreshVBO();
 
-            roomTexturePtr = rooms[current_room_index].roomTexture;
+            //roomTexturePtr = rooms[current_room_index].roomTexture;
 
             AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
@@ -163,9 +155,7 @@ void GameObjectManager::initialize() {
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
 
-            collisionMgr.setRoomBoundary(800, 800);
-            collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{80, 0, 200}, Vector3f{400, 0, 400}));
-
+            
             return true;
 
         };
@@ -178,7 +168,7 @@ void GameObjectManager::initialize() {
 void GameObjectManager::switch_room(int index){
     current_room_index = index;
 
-    roomTexturePtr = rooms[current_room_index].roomTexture;
+    //roomTexturePtr = rooms[current_room_index].roomTexture;
 
     
     //audioPlayer.reset();  // This deletes the current AudioPlayer
@@ -436,7 +426,7 @@ void GameObjectManager::updateScene(size_t ms) {
     std::cout.flush();
 
     // Заменяем проверку walkArea.isInside() на проверку через collisionMgr
-    if (collisionMgr.checkCollision(characterNewPos) == false) {
+    if (rooms[current_room_index].collisionMgr.checkCollision(characterNewPos) == false) {
         Environment::cameraShift = newPosition;
         Environment::characterPos = characterNewPos;
         /*
