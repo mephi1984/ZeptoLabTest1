@@ -10,6 +10,9 @@ namespace ZL {
 const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 20.0f;
 
+const float GameObjectManager::SELECTED_CUBE_ICON_SIZE = 44.0f;
+const float GameObjectManager::SELECTED_CUBE_MARGIN = 20.0f;
+
 void GameObjectManager::initializeLoadingScreen()
 {
     loadingScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./loading.bmp"));
@@ -216,19 +219,25 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
               if (item->name == "cube_T"){
                     bearName += "T";
                     selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
                 }
               else if (item->name == "cube_O"){
                     bearName += "O";
                     selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
                 }
               else if (item->name == "cube_M"){
                     bearName += "M";
                     selectedCubes.push_back(*item);
+                    gInventoryMap.erase(item->name);
                 }
               }
             }
             else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
               bearName = "";
+              for (const auto& cube : selectedCubes) {
+                gInventoryMap[cube.name] = cube;
+            }
               selectedCubes.clear();
             }
 
