@@ -16,6 +16,7 @@ void AudioPlayerAsync::resetAsync() {
     std::unique_lock<std::mutex> lock(mtx);
     taskQueue.push([this]() {
         //audioPlayerMutex.lock();
+        audioPlayer.reset();
         audioPlayer = std::make_unique<AudioPlayer>();
         //audioPlayerMutex.unlock();
         });

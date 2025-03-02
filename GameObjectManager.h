@@ -10,7 +10,11 @@
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
+
 #include <thread>
+
+#include "BoundaryBox.h" // Добавляем новый include
+
 
 namespace ZL {
 
@@ -71,6 +75,7 @@ private:
         Matrix4f projectionModelView,
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
+    BoundaryBox walkArea{800.0f, 800.0f}; // Изменяем размер с 400 на 800
 };
 
 }  // namespace ZL
