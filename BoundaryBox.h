@@ -1,7 +1,18 @@
 #pragma once
 #include "Math.h"
+#include <vector>
+#include <memory>
 
 namespace ZL {
+
+// Базовый класс для всех коллизий
+class Collidable {
+public:
+    virtual bool checkCollision(const Vector3f& position) const = 0;
+    virtual ~Collidable() = default;
+};
+
+// Прямоугольная граница комнаты
 class BoundaryBox {
 public:
     BoundaryBox(float width, float height) 
@@ -17,4 +28,74 @@ private:
     float halfWidth;
     float halfHeight;
 };
-}
+
+// Круглая коллизия для объектов
+class CircleCollider : public Collidable {
+public:
+    CircleCollider(const Vector3f& center, float radius)
+        : center(center)
+        , radius(radius) {}
+
+    bool checkCollision(const Vector3f& position) const override {
+        float dx = position.v[0] - center.v[0];
+        float dz = position.v[2] - center.v[2];
+        return (dx * dx + dz * dz) <= (radius * radius);
+    }
+
+    void setPosition(const Vector3f& newPos) { center = newPos; }
+    void setRadius(float newRadius) { radius = newRadius; }
+
+private:
+    Vector3f center;
+    float radius;
+};
+
+// Прямоугольная коллизия для объектов
+class RectangleCollider : public Collidable {
+public:
+    RectangleCollider(const Vector3f& min, const Vector3f& max)
+        : minPoint(min)
+        , maxPoint(max) {}
+
+    bool checkCollision(const Vector3f& position) const override {
+        return (position.v[0] >= minPoint.v[0] && position.v[0] <= maxPoint.v[0] &&
+                position.v[2] >= minPoint.v[2] && position.v[2] <= maxPoint.v[2]);
+    }
+
+private:
+    Vector3f minPoint;
+    Vector3f maxPoint;
+};
+
+// Менеджер коллизий
+class CollisionManager {
+public:
+    void setRoomBoundary(float width, float height) {
+        roomBoundary = std::make_unique<BoundaryBox>(width, height);
+    }
+
+    void addCollider(std::shared_ptr<Collidable> collider) {
+        colliders.push_back(collider);
+    }
+
+    bool checkCollision(const Vector3f& position) const {
+        // Проверяем границы комнаты
+        if (roomBoundary && !roomBoundary->isInside(position)) {
+            return true;
+        }
+
+        // Проверяем коллизии с объектами
+        for (const auto& collider : colliders) {
+            if (collider->checkCollision(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+private:
+    std::unique_ptr<BoundaryBox> roomBoundary;
+    std::vector<std::shared_ptr<Collidable>> colliders;
+};
+
+} // namespace ZL

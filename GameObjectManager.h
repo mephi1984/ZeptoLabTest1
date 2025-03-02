@@ -6,11 +6,11 @@
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "BoundaryBox.h"  // Добавляем включение
 #ifdef __linux__
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
-#include "BoundaryBox.h" // Добавляем новый include
 
 namespace ZL {
 
@@ -68,7 +68,8 @@ private:
         Matrix4f projectionModelView,
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
-    BoundaryBox walkArea{800.0f, 800.0f}; // Изменяем размер с 400 на 800
+    BoundaryBox walkArea{800.0f, 800.0f}; // Зона для ходьбы 800x800
+    CollisionManager collisionMgr;  // Добавляем менеджер коллизий
 };
 
 }  // namespace ZL
