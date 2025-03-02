@@ -173,8 +173,8 @@ void GameObjectManager::initialize() {
             carToy.activeObjectMesh.Scale(10);
             carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
             carToy.activeObjectMeshMutable.RefreshVBO();
-            carToy.objectPos = Vector3f{ 50, 0, -300 };
-            carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+            carToy.objectPos = Vector3f{ 291, 0, 315 };
+            carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
             carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
@@ -219,6 +219,7 @@ void GameObjectManager::initialize() {
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 305 }, Vector3f{ 305, 0, 340 }));
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
