@@ -80,6 +80,7 @@ public:
 
     bool checkCollision(const Vector3f& position) const {
         // Проверяем границы комнаты
+        std::cout << "checkCollision" << std::endl;
         if (roomBoundary && !roomBoundary->isInside(position)) {
             return true;
         }

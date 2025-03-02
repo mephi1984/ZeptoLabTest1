@@ -370,7 +370,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 Environment::cameraAlpha = 0.9 * M_PI / 2.0;
             }
         }
-        else {
+        else {checkCollision
             lastMouseX = event.motion.x;
             lastMouseY = event.motion.y;
         }

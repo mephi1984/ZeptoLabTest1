@@ -4,6 +4,7 @@
 #include "AudioPlayerAsync.h"
 #include <memory>
 #include <vector>
+#include <list>     // Добавляем include для std::list
 #include "ActiveObject.h"
 #include "Room.h"
 #include "BoundaryBox.h"  // Добавляем включение
@@ -45,8 +46,8 @@ public:
     ZL::VertexDataStruct textMesh;
     ZL::VertexRenderStruct textMeshMutable;
 
-    //ZL::VertexDataStruct coneMesh;
-    //ZL::VertexRenderStruct coneMeshMutable;
+    ZL::VertexDataStruct coneMesh;      // Раскомментировали
+    ZL::VertexRenderStruct coneMeshMutable;  // Раскомментировали
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
