@@ -56,7 +56,7 @@ void GameObjectManager::initialize() {
     Room room_1;
     room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp"));
     room_1.objects.push_back(ao1);
-    room_1.sound_name = "file_example_OOG_5MG.ogg";
+    room_1.sound_name = "Symphony No.6 (1st movement).ogg";
     room_1.roomLogic = createRoom1Logic();
     rooms.push_back(room_1);
 
