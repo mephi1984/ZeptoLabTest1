@@ -131,19 +131,19 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
             cubeForFirstRoomM.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32"));
 
-            ActiveObject ao2;
-            ao2.name = "lampe";
-            ao2.activeObjectMesh = ZL::LoadFromTextFile("./lighter.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(7);
-            ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
-            ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 85, 30, 43 };
-            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
-            ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
-            ao2.activeObjectScreenMeshMutable.RefreshVBO();
-            ao2.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            ActiveObject lampe;
+            lampe.name = "lampe";
+            lampe.activeObjectMesh = ZL::LoadFromTextFile("./lighter.txt");  // Add ZL:: namespace
+            lampe.activeObjectMesh.Scale(7);
+            lampe.activeObjectMeshMutable.AssignFrom(lampe.activeObjectMesh);
+            lampe.activeObjectMeshMutable.RefreshVBO();
+            lampe.objectPos = Vector3f{ 85, 30, 43 };
+            lampe.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
+            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lampe.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            lampe.activeObjectScreenMeshMutable.AssignFrom(lampe.activeObjectScreenMesh);
+            lampe.activeObjectScreenMeshMutable.RefreshVBO();
+            lampe.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
             
 
 
@@ -159,12 +159,7 @@ void GameObjectManager::initialize() {
             carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
             carToy.activeObjectScreenMeshMutable.RefreshVBO();
-            carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
-            
-
-
-
-
+            carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
 
 
             Room room_1;
@@ -190,7 +185,7 @@ void GameObjectManager::initialize() {
 
             Room room_2;
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
-            room_2.objects.push_back(ao2);
+            room_2.objects.push_back(lampe);
             room_2.objects.push_back(carToy);
             room_2.sound_name = "unholy-choir-1-279337--online-audio-convert.com.ogg";
             room_2.roomLogic = createRoom2Logic();
@@ -322,10 +317,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 std::cout << highlightedObjects.size() << std::endl;
                 for (auto* ao : highlightedObjects) {
                     if (ao && ao->name == "lampe") {
-                        std::cout << "Battery added to the lamp!" << std::endl;
-                        // Здесь можно реализовать включение лампы или другую логику
-
-                        // Убираем батарейку из инвентаря
+                        ao->activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("base_Base_color_1001.bmp"));
                         gInventoryMap.erase(item->name);
                         objects_in_inventory--;
                         break;
