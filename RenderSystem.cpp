@@ -130,18 +130,16 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.shaderManager.PushShader(hideCamShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
 
-    Vector3f testVec1{ 0,0,0 };
+    Vector3f totalCameraTargetPos = Environment::characterPos - Vector3f{ 0, Environment::cameraDefaultVerticalShift, 0 };
 
-    Vector3f testVec2{ 0,400,-600 };
-    renderer.RenderUniform3fv("targetPos", &Environment::characterPos.v[0]);
-    //renderer.RenderUniform3fv("targetPos", &testVec1.v[0]);
+    renderer.RenderUniform3fv("targetPos", &totalCameraTargetPos.v[0]);
 
     Vector3f cameraPos = Vector3f{ 0,0, 100 * Environment::zoom };
 
     cameraPos = MultVectorMatrix(cameraPos, QuatToMatrix(QuatFromRotateAroundX(Environment::cameraAlpha)));
     cameraPos = MultVectorMatrix(cameraPos, QuatToMatrix(QuatFromRotateAroundY(Environment::cameraPhi)));
 
-    cameraPos = cameraPos + Environment::characterPos;
+    cameraPos = cameraPos + totalCameraTargetPos;
     renderer.RenderUniform3fv("eyePos", &cameraPos.v[0]);
     //renderer.RenderUniform3fv("eyePos", &testVec2.v[0]);
 

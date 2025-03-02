@@ -10,7 +10,7 @@ namespace ZL {
 int Environment::windowHeaderHeight = 0;
 int Environment::width = 0;
 int Environment::height = 0;
-float Environment::zoom = 10.0f;
+float Environment::zoom = 3.f;
 
 bool Environment::leftPressed = false;
 bool Environment::rightPressed = false;

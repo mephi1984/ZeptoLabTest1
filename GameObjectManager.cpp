@@ -177,6 +177,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         if (Environment::zoom < zoomstep) {
             Environment::zoom = zoomstep;
         }
+        if (Environment::zoom > 4)
+        {
+            Environment::zoom = 4;
+        }
     }
     else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
