@@ -28,7 +28,8 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
+    textMesh.NormalData  // Add ZL:: namespace
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
@@ -114,11 +115,23 @@ void GameObjectManager::initialize() {
 
     roomTexturePtr = rooms[current_room_index].roomTexture;
 
-    AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
-    objects_in_inventory++;
-    AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
-    objects_in_inventory++;
+    // Добавляем тестовые предметы с правильными hot_key
+    if (objects_in_inventory < MAX_INVENTORY_SLOTS) {
+        AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), 1);
+        objects_in_inventory++;
+        std::cout << "Added item with hotkey 1" << std::endl;
+    }
+    
+    if (objects_in_inventory < MAX_INVENTORY_SLOTS) {
+        AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), 2);
+        objects_in_inventory++;
+        std::cout << "Added item with hotkey 2" << std::endl;
+    }
 
+    // Test inventory items
+    AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), 1);
+    AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), 2);
+    objects_in_inventory = 2;
 
     //SDL_ShowCursor(SDL_DISABLE);
     SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -250,14 +263,35 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             case SDLK_1:
             case SDLK_2:
+            case SDLK_3:
+            case SDLK_4:
+            case SDLK_5:
+            case SDLK_6:
+            case SDLK_7:
+            case SDLK_8:
+            case SDLK_9:
             {
-                int hot_key = (event.key.keysym.sym == SDLK_1) ? 1 : 2;
+                int slot_index = event.key.keysym.sym - SDLK_1 + 1;
+                std::cout << "Selected slot: " << slot_index << std::endl;
+                
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
+                
+                if (auto* item = GetItemByIndex(slot_index)) {
+                    std::cout << "Found item in slot " << slot_index << std::endl;
                     item->isSelected = true;
+                    item->scale = SELECTED_ITEM_SCALE;
+                    
+                    inventoryIconMesh = CreateRect2D(
+                        {0.0f, 40.0f},
+                        {INVENTORY_ICON_SIZE/2 * item->scale, INVENTORY_ICON_SIZE/2 * item->scale},
+                        0.5f
+                    );
+                    inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
+                    inventoryIconMeshMutable.RefreshVBO();
                 }
             }
             break;
+
             // ...handle other keys...
         }
     }
@@ -438,12 +472,14 @@ void GameObjectManager::updateScene(size_t ms) {
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
-    // Простая проверка попадания точки в квадрат 64x64 вокруг центра объекта
-    const int objectSize = 32; // Половина размера области выделения
-    return (screenX >= objectScreenX - objectSize && 
-            screenX <= objectScreenX + objectSize &&
-            screenY >= objectScreenY - objectSize && 
-            screenY <= objectScreenY + objectSize);
+    const int baseObjectSize = 32; // Base half-size
+    const float scale = 1.0f; // Get scale from item if needed
+    const int scaledObjectSize = static_cast<int>(baseObjectSize * scale);
+    
+    return (screenX >= objectScreenX - scaledObjectSize && 
+            screenX <= objectScreenX + scaledObjectSize &&
+            screenY >= objectScreenY - scaledObjectSize && 
+            screenY <= objectScreenY + scaledObjectSize);
 }
 
 void GameObjectManager::checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView) {
