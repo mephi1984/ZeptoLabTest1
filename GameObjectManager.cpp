@@ -109,7 +109,13 @@ void GameObjectManager::initialize() {
             room_1.textMeshMutable.AssignFrom(room_1.textMesh);
             room_1.collisionMgr.setRoomBoundary(800, 800);
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
-
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -220, 0, 165 }, Vector3f{ -143, 0, 230 }));
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -400, 0, 125 }, Vector3f{ -121, 0, 400 }));
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -380, 0, -92 }, Vector3f{ -240, 0, 100 }));
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -399, 0, -390 }, Vector3f{ -236, 0, -100 }));
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -220, 0, -400 }, Vector3f{ -150, 0, -230 }));
+            room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 156, 0, -400 }, Vector3f{ 380, 0, -360 }));
+        
             rooms.push_back(room_1);
             aoMgr.addActiveObject(ao1);
 
