@@ -26,20 +26,16 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glViewport(0, 0, Environment::width, Environment::height);
-    /*
-    renderer.shaderManager.PushShader(defaultShaderName);
-    renderer.RenderUniform1i(textureUniformName, 0);
 
-    renderer.EnableVertexAttribArray(vPositionName);
-    renderer.EnableVertexAttribArray(vTexCoordName);
-    */
-    drawWorld(gameObjects);
-    drawUI(gameObjects);
-
-    /*renderer.DisableVertexAttribArray(vPositionName);
-    renderer.DisableVertexAttribArray(vTexCoordName);
-    renderer.shaderManager.PopShader();*/
-    
+    if (Environment::gameIsLoading)
+    {
+        drawLoadingScreen(gameObjects);
+    }
+    else
+    {
+        drawWorld(gameObjects);
+        drawUI(gameObjects);
+    }
     CheckGlError();
 }
 
@@ -277,6 +273,35 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     renderer.shaderManager.PopShader();
 }
 
+void RenderSystem::drawLoadingScreen(const GameObjectManager& gameObjects)
+{
+    renderer.shaderManager.PushShader("default");
+
+    // Если шейдер ожидает атрибуты вершин, их нужно включить
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
+        static_cast<float>(Environment::height));
+    renderer.PushMatrix();
+    renderer.LoadIdentity();
+
+    glBindTexture(GL_TEXTURE_2D, gameObjects.loadingScreenTexturePtr->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.loadingScreenMeshMutable);
+
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
+
+}
 
 void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
     Matrix4f projectionModelView,

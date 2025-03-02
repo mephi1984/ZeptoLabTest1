@@ -10,173 +10,166 @@ namespace ZL {
 const float GameObjectManager::INVENTORY_ICON_SIZE = 64.0f;
 const float GameObjectManager::INVENTORY_MARGIN = 10.0f;
 
+void GameObjectManager::initializeLoadingScreen()
+{
+    loadingScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./loading.bmp"));
+
+    loadingScreenMesh = CreateRect2D(
+        { Environment::width / 2.f, Environment::height / 2.f },
+        { Environment::width / 2.f, Environment::height / 2.f },
+        0.5f
+    );
+    loadingScreenMeshMutable.AssignFrom(loadingScreenMesh);
+    loadingScreenMeshMutable.RefreshVBO();
+}
+
 void GameObjectManager::initialize() {
 
-    current_room_index = 0;
-    objects_in_inventory = 0;
+    initializeLoadingScreen();
+    
+    std::function<bool()> loadingFunction1 = [this]()
+        {
 
-    coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
+            current_room_index = 0;
+            objects_in_inventory = 0;
 
-    // Load models
-    colorCubeMesh = CreateCube3D(5.0);
-    colorCubeMeshMutable.data = CreateCube3D(5.0);
-    colorCubeMeshMutable.RefreshVBO();
+            coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
-    testObjMesh = LoadFromObjFile("./chair_01.obj");
-    testObjMesh.Scale(10);
-    testObjMesh.SwapZandY();
-    testObjMeshMutable.data = testObjMesh;
-    testObjMeshMutable.RefreshVBO();
+            // Load models
+            /*
+            colorCubeMesh = CreateCube3D(5.0);
+            colorCubeMeshMutable.data = CreateCube3D(5.0);
+            colorCubeMeshMutable.RefreshVBO();
+            */
+            return true;
+        };
 
-    //textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
-    textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
-    textMesh.Scale(10);
-    textMesh.SwapZandY();
-    textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
-    textMesh.Move(Vector3f{0, 93, 0});
+
+    loadingThread = std::thread([this]() {
+        
+        textMesh = ZL::LoadFromTextFile("./oneroom001.txt");
+        violaIdleModel.LoadFromFile("./idleviola001.txt");
+        violaWalkModel.LoadFromFile("./walkviolla001.txt");
+        sideThreadLoadingCompleted = true;
+    });
+
+    std::function<bool()> loadingFunction2 = [this]()
+        {
+            return sideThreadLoadingCompleted;
+        };
+
+    std::function<bool()> loadingFunction3 = [this]()
+        {
+
+            /*
+            testObjMesh = LoadFromObjFile("./chair_01.obj");
+            testObjMesh.Scale(10);
+            testObjMesh.SwapZandY();
+            testObjMeshMutable.data = testObjMesh;
+            testObjMeshMutable.RefreshVBO();*/
+
+
+            textMesh.Scale(10);
+            textMesh.SwapZandY();
+            textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            textMesh.Move(Vector3f{ 0, 93, 0 });
 
     coneMesh = ZL::LoadFromTextFile("./cone001.txt");  // Add ZL:: namespace
     coneMesh.Scale(200);
 
-    textMeshMutable.AssignFrom(textMesh);
-    textMeshMutable.RefreshVBO();
-    coneMeshMutable.AssignFrom(coneMesh);
-    coneMeshMutable.RefreshVBO();
 
-    // Load bone animations
-    //bx.LoadFromFile("./violetta001.txt");
-    violaIdleModel.LoadFromFile("./idleviola001.txt");
-    violaWalkModel.LoadFromFile("./walkviolla001.txt");
+            textMeshMutable.AssignFrom(textMesh);
+            textMeshMutable.RefreshVBO();
+            //coneMeshMutable.AssignFrom(coneMesh);
+            //coneMeshMutable.RefreshVBO();
 
-    // Create active object
-    ActiveObject ao1;
-    ao1.name = "book";
-    ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-    ao1.activeObjectMesh.Scale(4);
-    ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
-    ao1.activeObjectMeshMutable.RefreshVBO();
-    ao1.objectPos = Vector3f{50, 0, -300};
-    ao1.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-    ao1.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-    ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-    ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
-    ao1.activeObjectScreenMeshMutable.RefreshVBO();
 
-    /*
-    ActiveObject ao2;
-    ao2.name = "superchair001";
-    ao2.activeObjectMesh = ZL::LoadFromTextFile("./superchair001.txt");  // Add ZL:: namespace
-    ao2.activeObjectMesh.Scale(400);
-    ao2.activeObjectMesh.SwapZandY();
-    ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
-    ao2.activeObjectMeshMutable.RefreshVBO();
-    ao2.objectPos = Vector3f{ 0, 0, 0 };
-    ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
+            // Create active object
 
-    ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-    ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-    ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
-    ao2.activeObjectScreenMeshMutable.RefreshVBO();
-    */
+            ActiveObject ao1;
+            ao1.name = "book";
+            ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
+            ao1.activeObjectMesh.Scale(4);
+            ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
+            ao1.activeObjectMeshMutable.RefreshVBO();
+            ao1.objectPos = Vector3f{ 50, 0, -300 };
+            ao1.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+            ao1.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
+            ao1.activeObjectScreenMeshMutable.RefreshVBO();
 
-    Room room_1;
-    room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
-    room_1.objects.push_back(ao1);
-    room_1.sound_name = "Symphony No.6 (1st movement).ogg";
-    room_1.roomLogic = createRoom1Logic();
-    rooms.push_back(room_1);
-    aoMgr.addActiveObject(ao1);
+            /*
+            ActiveObject ao2;
+            ao2.name = "superchair001";
+            ao2.activeObjectMesh = ZL::LoadFromTextFile("./superchair001.txt");  // Add ZL:: namespace
+            ao2.activeObjectMesh.Scale(400);
+            ao2.activeObjectMesh.SwapZandY();
+            ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
+            ao2.activeObjectMeshMutable.RefreshVBO();
+            ao2.objectPos = Vector3f{ 0, 0, 0 };
+            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
 
-    Room room_2;
-    room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
-    room_2.sound_name = "Symphony No.6 (1st movement).ogg";
-    room_2.roomLogic = createRoom1Logic();
-    rooms.push_back(room_2);
+            ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
+            ao2.activeObjectScreenMeshMutable.RefreshVBO();
+            */
 
-    activeObjects = rooms[current_room_index].objects;
 
-    // Initialize audio
-    /*
-    audioPlayer = std::make_unique<AudioPlayer>();
-    if (audioPlayer) {
-        audioPlayer->playMusic(rooms[current_room_index].sound_name);
-    }*/
-    audioPlayerAsync.resetAsync();
-    audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
 
-    // Initialize inventory
-    inventoryIconMesh = CreateRect2D(
-        {0.0f, 40.0f},
-        {INVENTORY_ICON_SIZE/2, INVENTORY_ICON_SIZE/2},
-        0.5f
-    );
-    inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
-    inventoryIconMeshMutable.RefreshVBO();
+            Room room_1;
+            room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
+            room_1.objects.push_back(ao1);
+            room_1.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_1.roomLogic = createRoom1Logic();
+            rooms.push_back(room_1);
+            aoMgr.addActiveObject(ao1);
 
-    roomTexturePtr = rooms[current_room_index].roomTexture;
+            Room room_2;
+            room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./background.bmp"));
+            room_2.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_2.roomLogic = createRoom2Logic();
+            rooms.push_back(room_2);
 
-    AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
-    objects_in_inventory++;
-    AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory+1);
-    objects_in_inventory++;
+            activeObjects = rooms[current_room_index].objects;
 
-    //SDL_ShowCursor(SDL_DISABLE);
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+            // Initialize audio
+            /*
+            audioPlayer = std::make_unique<AudioPlayer>();
+            if (audioPlayer) {
+                audioPlayer->playMusic(rooms[current_room_index].sound_name);
+            }*/
+            audioPlayerAsync.resetAsync();
+            audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
 
-    // Устанавливаем границы комнаты 800x800
-    collisionMgr.setRoomBoundary(800.0f, 800.0f);
+            // Initialize inventory
+            inventoryIconMesh = CreateRect2D(
+                { 0.0f, 40.0f },
+                { INVENTORY_ICON_SIZE / 2, INVENTORY_ICON_SIZE / 2 },
+                0.5f
+            );
+            inventoryIconMeshMutable.AssignFrom(inventoryIconMesh);
+            inventoryIconMeshMutable.RefreshVBO();
 
-    // Создаем стены комнаты (толстые коллизии вдоль границ)
-    auto wallNorth = std::make_shared<CircleCollider>(Vector3f{0, 0, -350}, 50.0f);
-    auto wallSouth = std::make_shared<CircleCollider>(Vector3f{0, 0, 350}, 50.0f);
-    auto wallEast = std::make_shared<CircleCollider>(Vector3f{350, 0, 0}, 50.0f);
-    auto wallWest = std::make_shared<CircleCollider>(Vector3f{-350, 0, 0}, 50.0f);
+            roomTexturePtr = rooms[current_room_index].roomTexture;
 
-    collisionMgr.addCollider(wallNorth);
-    collisionMgr.addCollider(wallSouth);
-    collisionMgr.addCollider(wallEast);
-    collisionMgr.addCollider(wallWest);
+            AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            objects_in_inventory++;
+            AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            objects_in_inventory++;
 
-    // Создаем точки коллизии
-    auto point1 = std::make_shared<CircleCollider>(Vector3f{125.0f, 0.0f, -214.0f}, 30.0f);
-    auto point2 = std::make_shared<CircleCollider>(Vector3f{380.0f, 0.0f, -206.0f}, 30.0f);
-    auto point3 = std::make_shared<CircleCollider>(Vector3f{385.0f, 0.0f, -377.0f}, 30.0f);
-    auto point4 = std::make_shared<CircleCollider>(Vector3f{112.0f, 0.0f, -377.0f}, 30.0f);
 
-    collisionMgr.addCollider(point1);
-    collisionMgr.addCollider(point2);
-    collisionMgr.addCollider(point3);
-    collisionMgr.addCollider(point4);
+            //SDL_ShowCursor(SDL_DISABLE);
+            SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    // Создаем коллизию для кровати как прямоугольник
-    // Используем точки как границы прямоугольника
-    // Vector3f bedMin{112.0f, 0.0f, -377.0f};  // Минимальные координаты
-    // Vector3f bedMax{385.0f, 0.0f, 390.0f};   // Максимальные координаты
-    // auto bedCollider = std::make_shared<RectangleCollider>(bedMin, bedMax);
-    // collisionMgr.addCollider(bedCollider);
+            return true;
 
-    // Создаем линию коллизии по X (горизонтальная)
-    const float step = 20.0f; // Расстояние между точками коллизии
-    for(float x = 98.0f; x < 400.0f; x += step) {
-        auto point = std::make_shared<CircleCollider>(Vector3f{x, 0.0f, -200.0f}, 10.0f);
-        collisionMgr.addCollider(point);
-    }
+        };
 
-    // Создаем линию коллизии по Z (вертикальная)
-    for(float z = -200.0f; z > -400.0f; z -= step) {
-        auto point = std::make_shared<CircleCollider>(Vector3f{400.0f, 0.0f, z}, 10.0f);
-        collisionMgr.addCollider(point);
-    }
-
-    // Добавляем линию коллизии от (105, 0, -235) до (105, 0, -350)
-    const float lineStartZ = -235.0f;
-    const float lineEndZ   = -350.0f;
-    const float stepLine   = 5.0f;     // Шаг между коллайдерами
-    const float colliderRadius = 5.0f; // Радиус каждого коллайдера
-    for (float z = lineStartZ; z >= lineEndZ; z -= stepLine) {
-        auto lineCollider = std::make_shared<CircleCollider>(Vector3f{105.0f, 0.0f, z}, colliderRadius);
-        collisionMgr.addCollider(lineCollider);
-    }
+        loadingFunctions.push_back(loadingFunction1);
+        loadingFunctions.push_back(loadingFunction2);
+        loadingFunctions.push_back(loadingFunction3);
 }
 
 void GameObjectManager::switch_room(int index){
@@ -254,6 +247,11 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             case SDLK_ESCAPE:
             case SDLK_q:
+                if (loadingThread.joinable())
+                {
+                    loadingThread.join();
+                }
+                audioPlayerAsync.exit();
                 Environment::exitGameLoop = true;
                 break;
             case SDLK_LEFT:
