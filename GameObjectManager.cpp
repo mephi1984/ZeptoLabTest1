@@ -132,13 +132,13 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32"));
 
             ActiveObject ao2;
-            ao2.name = "book";
-            ao2.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(4);
+            ao2.name = "lighter";
+            ao2.activeObjectMesh = ZL::LoadFromTextFile("./lighter.txt");  // Add ZL:: namespace
+            ao2.activeObjectMesh.Scale(7);
             ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
             ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 85, 0, 43 };
-            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
+            ao2.objectPos = Vector3f{ 85, 30, 43 };
+            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
             ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
@@ -150,16 +150,19 @@ void GameObjectManager::initialize() {
             ActiveObject carToy;
             carToy.name = "carToy";
             carToy.activeObjectMesh = ZL::LoadFromTextFile("./car.txt");  // Add ZL:: namespace
-            carToy.activeObjectMesh.Scale(13);
+            carToy.activeObjectMesh.Scale(12);
             carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
             carToy.activeObjectMeshMutable.RefreshVBO();
-            carToy.objectPos = Vector3f{ 291, 0, 315 };
+            carToy.objectPos = Vector3f{ 300, 0, 315 };
             carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
             carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
             carToy.activeObjectScreenMeshMutable.RefreshVBO();
             carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            
+
+            
             
 
 
