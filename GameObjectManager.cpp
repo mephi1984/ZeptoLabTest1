@@ -28,7 +28,7 @@ void GameObjectManager::initialize() {
     testObjMeshMutable.data = testObjMesh;
     testObjMeshMutable.RefreshVBO();
 
-    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");  // Add ZL:: namespace
+    textMesh = ZL::LoadFromTextFile("./textures/mesh_first_room.txt");
     textMesh.Scale(10);
     textMesh.SwapZandY();
     textMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
@@ -269,13 +269,13 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 {
 
                 UnselectAllItems();
-                if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
+                if (InventoryItem* item = GetItemByHotkey(hot_key)) {
                     item->isSelected = true;
-                    std:: cout << item->name << std::endl;
                 }
             }
 
             break;
+
             // ...handle other keys...
         }
     }
@@ -468,12 +468,14 @@ void GameObjectManager::updateScene(size_t ms) {
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {
-    // Простая проверка попадания точки в квадрат 64x64 вокруг центра объекта
-    const int objectSize = 32; // Половина размера области выделения
-    return (screenX >= objectScreenX - objectSize && 
-            screenX <= objectScreenX + objectSize &&
-            screenY >= objectScreenY - objectSize && 
-            screenY <= objectScreenY + objectSize);
+    const int baseObjectSize = 32; // Base half-size
+    const float scale = 1.0f; // Get scale from item if needed
+    const int scaledObjectSize = static_cast<int>(baseObjectSize * scale);
+
+    return (screenX >= objectScreenX - scaledObjectSize &&
+            screenX <= objectScreenX + scaledObjectSize &&
+            screenY >= objectScreenY - scaledObjectSize &&
+            screenY <= objectScreenY + scaledObjectSize);
 }
 
 void GameObjectManager::checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView) {
