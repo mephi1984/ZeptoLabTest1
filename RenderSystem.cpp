@@ -67,14 +67,20 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     renderer.ScaleMatrix(10);
 
     renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
-    //float t = 0.3;
 
-    //renderer.RotateMatrix(QuatFromRotateAroundX(t * M_PI / 2.0));
 
-    
-    gameObjects.bxMutable.AssignFrom(gameObjects.bx.mesh);
-    gameObjects.bxMutable.RefreshVBO();
-    renderer.DrawVertexRenderStruct(gameObjects.bxMutable);
+    if (Environment::violaCurrentAnimation == 0)
+    {
+        gameObjects.violaIdleModelMutable.AssignFrom(gameObjects.violaIdleModel.mesh);
+        gameObjects.violaIdleModelMutable.RefreshVBO();
+        renderer.DrawVertexRenderStruct(gameObjects.violaIdleModelMutable);
+    }
+    else
+    {
+        gameObjects.violaWalkModelMutable.AssignFrom(gameObjects.violaWalkModel.mesh);
+        gameObjects.violaWalkModelMutable.RefreshVBO();
+        renderer.DrawVertexRenderStruct(gameObjects.violaWalkModelMutable);
+    }
     
     
     renderer.PopMatrix();

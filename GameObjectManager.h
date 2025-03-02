@@ -33,8 +33,11 @@ public:
     ZL::VertexDataStruct testObjMesh;
     ZL::VertexRenderStruct testObjMeshMutable;
 
-    ZL::BoneSystem bx;
-    ZL::VertexRenderStruct bxMutable;
+    ZL::BoneSystem violaIdleModel;
+    ZL::VertexRenderStruct violaIdleModelMutable;
+
+    ZL::BoneSystem violaWalkModel;
+    ZL::VertexRenderStruct violaWalkModelMutable;
 
     ZL::VertexDataStruct textMesh;
     ZL::VertexRenderStruct textMeshMutable;

@@ -527,12 +527,13 @@ namespace ZL
 
 			if (abs(finalPos.v[0] - originalPos.v[0]) > 1 || abs(finalPos.v[1] - originalPos.v[1]) > 1 || abs(finalPos.v[2] - originalPos.v[2]) > 1)
 			{
-				std::cout << "Hello!" << std::endl;
+				//std::cout << "Hello!" << std::endl;
 			}
 
 			if (!vMoved)
 			{
-				std::cout << "Hello!" << std::endl;
+				//std::cout << "Hello!" << std::endl;
+				finalPos = originalPos;
 			}
 
 			mesh.PositionData[i].v[0] = finalPos.v[0];
