@@ -272,6 +272,8 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
+            activeObjects = rooms[current_room_index].objects;
+
 
             //aoMgr.removeByName(ao->name);
         }

@@ -6,6 +6,7 @@
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "RenderSystem.h"
 #include "Inventory.h"
 #ifdef __linux__
 #include <SDL2/SDL.h>

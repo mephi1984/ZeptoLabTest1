@@ -165,13 +165,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
 
     // Draw active objects
-    for (const auto& ao : gameObjects.activeObjects) {
-        renderer.PushMatrix();
-        renderer.TranslateMatrix(ao.objectPos);
-        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
-        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
-        renderer.PopMatrix();
-    }
+    drawObjects(gameObjects);
 
     // Draw room
     glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
@@ -292,8 +286,6 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     }
 }
 
-
-
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
 
@@ -397,6 +389,16 @@ void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
 
     screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
     screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
+}
+
+void RenderSystem::drawObjects(GameObjectManager& gameObjects){
+  for (const auto& ao : gameObjects.activeObjects) {
+        renderer.PushMatrix();
+        renderer.TranslateMatrix(ao.objectPos);
+        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
+        renderer.PopMatrix();
+    }
 }
 
 } // namespace ZL
