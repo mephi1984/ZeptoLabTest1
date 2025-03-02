@@ -158,11 +158,11 @@ void GameObjectManager::initialize() {
 
             //roomTexturePtr = rooms[current_room_index].roomTexture;
 
-            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32")), objects_in_inventory + 1);
             objects_in_inventory++;
-            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
             objects_in_inventory++;
-            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
             objects_in_inventory++;
 
 
@@ -218,17 +218,19 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     bearName += "T";
                     selectedCubes.push_back(*item);
                     gInventoryMap.erase(item->name);
+                    objects_in_inventory--;
                 }
               else if (item->name == "cube_O"){
                     bearName += "O";
                     selectedCubes.push_back(*item);
                     gInventoryMap.erase(item->name);
+                    objects_in_inventory--;
                 }
               else if (item->name == "cube_M"){
                     bearName += "M";
                     selectedCubes.push_back(*item);
                     gInventoryMap.erase(item->name);
-
+                    objects_in_inventory--;
               }
             }
             else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {

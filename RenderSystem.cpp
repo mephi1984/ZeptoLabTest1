@@ -263,14 +263,13 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     }
 
     //    Отрисовка кубиков
-            if (gameObjects.current_room_index == 0){
-    for (const auto& cube : gameObjects.selectedCubes) {
+            if (gameObjects.current_room_index == 0) {
+    for (int j = gameObjects.selectedCubes.size() - 1; j >= 0; j--) {
+        auto& cube = gameObjects.selectedCubes[j];
         renderer.PushMatrix();
 
-        // Смещаем по оси x: начиная с левой стороны и двигаясь вправо
-        float xPos = gameObjects.SELECTED_CUBE_MARGIN
-                   + i * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN) + 300.0f;
-        // Оставляем y константным
+        float xPos = (gameObjects.SELECTED_CUBE_MARGIN + 300.0f)
+                   + j * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN);
         float yPos = 500.0f;
 
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
@@ -278,11 +277,10 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         glBindTexture(GL_TEXTURE_2D, cube.texture->getTexID());
 
         renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
-
         renderer.PopMatrix();
-        i++;
     }
 }
+
 
 
     renderer.PopMatrix();
