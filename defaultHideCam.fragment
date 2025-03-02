@@ -20,7 +20,7 @@ void main()
 	
 	//float distanceToCamera = length(vWorldPos - targetPos);
 	
-	if ((dotProduct > 0.1) && vWorldPos.y > 30.0)
+	if ((distanceX > 380.0 || distanceZ > 380.0) && (dotProduct > 0.0) && vWorldPos.y > 10.0)
 	{
 		//color.rgba = vec4(1,0,0,1);
 		discard;

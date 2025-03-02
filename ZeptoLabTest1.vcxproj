@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioPlayerAsync.cpp" />
     <ClCompile Include="BoneAnimatedModel.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -170,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="ActiveObject.h" />
     <ClInclude Include="AnimatedModel.h" />
+    <ClInclude Include="AudioPlayerAsync.h" />
     <ClInclude Include="BoneAnimatedModel.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Game.h" />

@@ -217,7 +217,10 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
       if (ao->activeObjectScreenTexturePtr) {
           std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
           int screenX, screenY;
-          worldToScreenCoordinates(ao->objectPos, currentProjectionModelView,
+
+          Vector3f objectPosPlusShift = ao->objectPos + Vector3f{ 0, -Environment::cameraDefaultVerticalShift, 0 };
+
+          worldToScreenCoordinates(objectPosPlusShift, currentProjectionModelView,
                                    Environment::width, Environment::height, screenX, screenY);
           renderer.PushMatrix();
           // Здесь можно использовать вычисленные screenX, screenY,

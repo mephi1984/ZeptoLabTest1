@@ -1,7 +1,7 @@
 #pragma once
 #include "TextureManager.h"
 #include "BoneAnimatedModel.h"
-#include "cmakeaudioplayer/include/AudioPlayer.hpp"
+#include "AudioPlayerAsync.h"
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
@@ -10,6 +10,11 @@
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
+
+#include <thread>
+
+#include "BoundaryBox.h" // Добавляем новый include
+
 
 namespace ZL {
 
@@ -47,7 +52,8 @@ public:
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
-    std::unique_ptr<AudioPlayer> audioPlayer;
+    
+    AudioPlayerAsync audioPlayerAsync;
 
     ZL::VertexDataStruct inventoryIconMesh;
     ZL::VertexRenderStruct inventoryIconMeshMutable;
@@ -59,6 +65,8 @@ public:
     void addRectangle(int x, int y, int width, int height, int r, int g, int b, int borderWidth, int borderR, int borderG, int borderB);
 
 
+    
+
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
@@ -69,6 +77,7 @@ private:
         Matrix4f projectionModelView,
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
+    BoundaryBox walkArea{800.0f, 800.0f}; // Изменяем размер с 400 на 800
 };
 
 }  // namespace ZL
