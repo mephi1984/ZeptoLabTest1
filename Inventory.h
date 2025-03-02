@@ -2,21 +2,20 @@
 
 #include <string>
 #include <memory>
-#include <vector>
+#include <unordered_map>
 #include <iostream>
 #include "TextureManager.h"
 
 namespace ZL
 {
-    // Структура, описывающая элемент инвентаря
     struct InventoryItem
     {
         std::string name;
         std::shared_ptr<Texture> texture;
     };
 
-    // Глобальный список инвентаря
-    extern std::vector<InventoryItem> gInventory;
+    // Глобальное хранилище предметов
+    extern std::unordered_map<std::string, InventoryItem> gInventory;
 
     // Добавить предмет в инвентарь
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex);
@@ -24,9 +23,11 @@ namespace ZL
     // Удалить предмет из инвентаря
     void RemoveItemFromInventory(const std::string& name);
 
-    // Вывести все предметы в инвентаре
+    // Поиск предмета по имени (возвращает указатель или nullptr)
+    InventoryItem* GetItemByName(const std::string& name);
+
+    // Вывести весь инвентарь в консоль
     void PrintInventory();
 
-    // Получить список предметов инвентаря
-    const std::vector<InventoryItem>& ReturnInventory();
+    const std::unordered_map<std::string, InventoryItem>& ReturnInventory();
 }
