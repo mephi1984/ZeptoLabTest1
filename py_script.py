@@ -1,0 +1,1 @@
+/home/albert/Downloads/Telegram Desktop/plain_obj_script.py
