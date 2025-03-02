@@ -13,6 +13,7 @@
 #include "OpenGlExtensions.h"
 
 #include <thread>
+#include <list>
 
 #include "BoundaryBox.h" // Добавляем новый include
 

@@ -157,9 +157,9 @@ void GameObjectManager::initialize() {
 
             roomTexturePtr = rooms[current_room_index].roomTexture;
 
-            AddItemToInventory("book1", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
-            AddItemToInventory("book2", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
+            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp24("./Kitchen_ceramics.bmp")), objects_in_inventory + 1);
             objects_in_inventory++;
 
 
@@ -206,7 +206,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
       if (InventoryItem* item = GetItemSelected(true)) {
-		      if (InventoryItem* item = GetItemSelected(true)) {
+        std::cout << item->name << std::endl;
         if (current_room_index==1) {
             if (bearName.length() < 3) {
               if (item->name == "cube_T"){
@@ -224,7 +224,6 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 }
               }
             }
-        }
 
       }
       else {
