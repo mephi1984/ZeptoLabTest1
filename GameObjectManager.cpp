@@ -69,7 +69,7 @@ void GameObjectManager::initialize() {
         preloadedRoomMeshArr[1].Move(Vector3f{ 0, 93, 0 });
 
 
-        preloadedRoomMeshArr[2] = ZL::LoadFromTextFile("./thirdroom.txt");
+        preloadedRoomMeshArr[2] = ZL::LoadFromTextFile("./thirdroom1.txt");
         preloadedRoomMeshArr[2].Scale(10);
         preloadedRoomMeshArr[2].Move(Vector3f{ 0, 93, 0 });
 
@@ -252,11 +252,11 @@ void GameObjectManager::initialize() {
 
 
             Room room_3;
-            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
+            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./photo_2025-03-03_07-51-53.bmp"));
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
-            room_3.roomLogic = null;
+            room_3.roomLogic = createRoom1Logic();
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
