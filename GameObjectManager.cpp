@@ -30,6 +30,11 @@ void GameObjectManager::initialize() {
 
     initializeLoadingScreen();
 
+    if (!dialogTextures.empty()) { // Проверяем, есть ли диалоги
+        dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
+        isDialogActive = true;
+    }
+
     std::function<bool()> loadingFunction1 = [this]()
         {
 
@@ -268,7 +273,14 @@ void GameObjectManager::switch_room(int index){
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
-
+        if (isDialogActive) {
+            dialogIndex++;
+            if (dialogIndex < dialogTextures.size()) {
+                dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
+            } else {
+                isDialogActive = false;
+            }
+        }
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
