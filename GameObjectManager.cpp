@@ -173,6 +173,43 @@ void GameObjectManager::initialize() {
             carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
 
 
+
+            ActiveObject lock;
+            lock.name = "lock";
+            lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
+            lock.activeObjectMesh.Scale(2);
+            lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
+            lock.activeObjectMeshMutable.RefreshVBO();
+            lock.objectPos = Vector3f{ 101, 100, 255 };
+            lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lock.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            lock.activeObjectScreenMeshMutable.AssignFrom(lock.activeObjectScreenMesh);
+            lock.activeObjectScreenMeshMutable.RefreshVBO();
+            lock.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
+
+
+
+            ActiveObject door;
+            door.name = "door";
+            door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
+            door.activeObjectMesh.Scale(60);
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(M_PI * 1.5)));
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            door.activeObjectMeshMutable.AssignFrom(door.activeObjectMesh);
+            door.activeObjectMeshMutable.RefreshVBO();
+            door.objectPos = Vector3f{ -372, 10, 80 };
+            door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            door.activeObjectScreenMeshMutable.AssignFrom(door.activeObjectScreenMesh);
+            door.activeObjectScreenMeshMutable.RefreshVBO();
+            door.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
+
+
+
+
             Room room_1;
             room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
             room_1.objects.push_back(cubeForFirstRoomT);
@@ -217,14 +254,12 @@ void GameObjectManager::initialize() {
             Room room_3;
             room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
-            room_3.roomLogic = createRoom2Logic();
+            room_3.objects.push_back(lock);
+            room_3.objects.push_back(door);
+            room_3.roomLogic = null;
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
-            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
-            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
-            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
-            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
             rooms.push_back(room_3);
 
             activeObjects = rooms[current_room_index].objects;
