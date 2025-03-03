@@ -40,4 +40,9 @@ bool Environment::showMouse = false;
 
 bool Environment::exitGameLoop = false;
 
+bool Environment::gameIsLoading = true;
+
+float Environment::monsterTimer = 0.0;
+int Environment::monsterState = 1;
+
 } // namespace ZL

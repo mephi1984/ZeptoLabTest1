@@ -27,7 +27,7 @@ namespace ZL
     }
 
 
-    InventoryItem* GetItemByName(const std::string name)
+    InventoryItem* GetItemByName(const std::string& name)
     {
         // Пытаемся найти элемент по ключу
         auto it = gInventoryMap.find(name);

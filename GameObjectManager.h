@@ -1,20 +1,28 @@
 #pragma once
 #include "TextureManager.h"
 #include "BoneAnimatedModel.h"
-#include "cmakeaudioplayer/include/AudioPlayer.hpp"
+#include "AudioPlayerAsync.h"
 #include <memory>
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "RenderSystem.h"
+#include "Inventory.h"
 #ifdef __linux__
 #include <SDL2/SDL.h>
 #endif
 #include "OpenGlExtensions.h"
+#include <thread>
+#include <list>
+
+#include "BoundaryBox.h" // Добавляем новый include
+
 
 namespace ZL {
 
 class GameObjectManager {
 public:
+    void initializeLoadingScreen();
     void initialize();
 
     void switch_room(int index);
@@ -24,14 +32,14 @@ public:
     void checkMouseIntersection(int mouseX, int mouseY, const Matrix4f& projectionModelView); // Добавляем новый метод
 
     std::shared_ptr<ZL::Texture> testObjTexturePtr;
-    std::shared_ptr<ZL::Texture> roomTexturePtr;
+    //std::shared_ptr<ZL::Texture> roomTexturePtr;
     std::shared_ptr<ZL::Texture> coneTexturePtr;
 
-    ZL::VertexDataStruct colorCubeMesh;
-    ZL::VertexRenderStruct colorCubeMeshMutable;
+    //ZL::VertexDataStruct colorCubeMesh;
+    //ZL::VertexRenderStruct colorCubeMeshMutable;
 
-    ZL::VertexDataStruct testObjMesh;
-    ZL::VertexRenderStruct testObjMeshMutable;
+    //ZL::VertexDataStruct testObjMesh;
+    //ZL::VertexRenderStruct testObjMeshMutable;
 
     ZL::BoneSystem violaIdleModel;
     ZL::VertexRenderStruct violaIdleModelMutable;
@@ -39,34 +47,65 @@ public:
     ZL::BoneSystem violaWalkModel;
     ZL::VertexRenderStruct violaWalkModelMutable;
 
-    ZL::VertexDataStruct textMesh;
-    ZL::VertexRenderStruct textMeshMutable;
+    std::vector<ZL::VertexDataStruct> preloadedRoomMeshArr;
 
-    ZL::VertexDataStruct coneMesh;
-    ZL::VertexRenderStruct coneMeshMutable;
+
+    //ZL::VertexDataStruct coneMesh;      // Раскомментировали
+    //ZL::VertexRenderStruct coneMeshMutable;  // Раскомментировали
 
     std::vector<ZL::ActiveObject> activeObjects;
     std::vector<ZL::Room> rooms;
-    std::unique_ptr<AudioPlayer> audioPlayer;
+    std::vector<InventoryItem> selectedCubes;
+
+    std::string bearName;
+
+    AudioPlayerAsync audioPlayerAsync;
 
     ZL::VertexDataStruct inventoryIconMesh;
     ZL::VertexRenderStruct inventoryIconMeshMutable;
     
     static const float INVENTORY_ICON_SIZE;
     static const float INVENTORY_MARGIN;
-    ActiveObjectManager aoMgr;
+    static const float SELECTED_CUBE_ICON_SIZE;
+    static const float SELECTED_CUBE_MARGIN;
+    //ActiveObjectManager aoMgr;
     int objects_in_inventory;
+
+    std::shared_ptr<ZL::Texture> loadingScreenTexturePtr;
+
+    ZL::VertexDataStruct loadingScreenMesh;
+    ZL::VertexRenderStruct loadingScreenMeshMutable;
+
+    std::list<std::function<bool()>> loadingFunctions;
+    std::thread loadingThread;
+    bool sideThreadLoadingCompleted = false;
+
+    int current_room_index;
+
+    std::shared_ptr<ZL::Texture> monsterTexturePtr1;
+    std::shared_ptr<ZL::Texture> monsterTexturePtr2;
+    ZL::VertexDataStruct monsterScreenMesh;
+    ZL::VertexRenderStruct monsterScreenMeshMutable;
+
+    std::vector<std::string> dialogTextures = { // Список диалогов
+        "./start_dialog.bmp",
+        "./next_dialog.bmp",
+    };
+    int dialogIndex = 0; // Текущий индекс диалога
+    std::shared_ptr<Texture> dialogTexturePtr; // Активная текстура диалога
+    bool isDialogActive = false; // Флаг активности диалога
 
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши
     int lastMouseY = 0;
-    int current_room_index;
+
     bool isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const;
     void worldToScreenCoordinates(Vector3f objectPos,  // Добавляем метод
         Matrix4f projectionModelView,
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
+    BoundaryBox walkArea{800.0f, 800.0f}; // Зона для ходьбы 800x800
 };
 
 }  // namespace ZL

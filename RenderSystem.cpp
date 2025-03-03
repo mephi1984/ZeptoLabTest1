@@ -26,20 +26,16 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glViewport(0, 0, Environment::width, Environment::height);
-    /*
-    renderer.shaderManager.PushShader(defaultShaderName);
-    renderer.RenderUniform1i(textureUniformName, 0);
 
-    renderer.EnableVertexAttribArray(vPositionName);
-    renderer.EnableVertexAttribArray(vTexCoordName);
-    */
-    drawWorld(gameObjects);
-    drawUI(gameObjects);
-
-    /*renderer.DisableVertexAttribArray(vPositionName);
-    renderer.DisableVertexAttribArray(vTexCoordName);
-    renderer.shaderManager.PopShader();*/
-    
+    if (Environment::gameIsLoading)
+    {
+        drawLoadingScreen(gameObjects);
+    }
+    else
+    {
+        drawWorld(gameObjects);
+        drawUI(gameObjects);
+    }
     CheckGlError();
 }
 
@@ -65,7 +61,6 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     renderer.TranslateMatrix({ 0,0, -100 * Environment::zoom });
 
     renderer.RotateMatrix(QuatFromRotateAroundX(Environment::cameraAlpha));
-    //renderer.RotateMatrix(QuatFromRotateAroundY(Environment::cameraPhi));
 
     //Go a little bit up to make camera at the position of Viola 
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
@@ -74,6 +69,7 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     //Viola stuff
     renderer.ScaleMatrix(10);
     renderer.RotateMatrix(QuatFromRotateAroundX(-M_PI / 2.0));
+    renderer.RotateMatrix(QuatFromRotateAroundZ(M_PI));
 
 
     
@@ -125,8 +121,11 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     //glBindTexture(GL_TEXTURE_2D, gameObjects.coneTexturePtr->getTexID());
     //renderer.DrawVertexRenderStruct(gameObjects.coneMeshMutable);
 
+    //drawMonster(gameObjects);
+    //glClear(GL_DEPTH_BUFFER_BIT);
     drawViola(gameObjects);
 
+    
     renderer.shaderManager.PushShader(hideCamShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
 
@@ -166,17 +165,17 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
 
     // Draw active objects
-    for (const auto& ao : gameObjects.activeObjects) {
-        renderer.PushMatrix();
-        renderer.TranslateMatrix(ao.objectPos);
-        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
-        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
-        renderer.PopMatrix();
-    }
+    drawObjects(gameObjects);
 
     // Draw room
-    glBindTexture(GL_TEXTURE_2D, gameObjects.roomTexturePtr->getTexID());
-    renderer.DrawVertexRenderStruct(gameObjects.textMeshMutable);
+    glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.rooms[gameObjects.current_room_index].textMeshMutable);
+
+    if (gameObjects.current_room_index == 1)
+    {
+        drawMonster(gameObjects);
+    }
+    drawViola(gameObjects);
 
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();
@@ -211,13 +210,29 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     renderer.PushMatrix();
     renderer.LoadIdentity();
 
-    for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
+    // Отрисовка диалогового окна, если оно активно
+    if (gameObjects.isDialogActive && gameObjects.dialogTexturePtr) {
+        renderer.PushMatrix();
+        float xPos = Environment::width / 2.0f - 250;  // Центрируем
+        float yPos = Environment::height / 2.0f - 125; // Центрируем
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f}); // Увеличиваем размер
+        glBindTexture(GL_TEXTURE_2D, gameObjects.dialogTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
+        renderer.PopMatrix();
+    }
+
+    //for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
+    for (auto& ao : gameObjects.rooms[gameObjects.current_room_index].findByHighlighted(true)) {
       std::cout << ao->name << std::endl;
       std::cout << "Draw" << std::endl;
       if (ao->activeObjectScreenTexturePtr) {
           std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
           int screenX, screenY;
-          worldToScreenCoordinates(ao->objectPos, currentProjectionModelView,
+
+          Vector3f objectPosPlusShift = ao->objectPos + Vector3f{ 0, -Environment::cameraDefaultVerticalShift, 0 };
+
+          worldToScreenCoordinates(objectPosPlusShift, currentProjectionModelView,
                                    Environment::width, Environment::height, screenX, screenY);
           renderer.PushMatrix();
           // Здесь можно использовать вычисленные screenX, screenY,
@@ -237,11 +252,12 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         if (item.isSelected) {
                   float xPos = Environment::width
                    - gameObjects.INVENTORY_MARGIN
-                   - gameObjects.INVENTORY_ICON_SIZE+25;
+                   - gameObjects.INVENTORY_ICON_SIZE;
         float yPos = gameObjects.INVENTORY_MARGIN
-                   + i * (gameObjects.INVENTORY_ICON_SIZE+25
+                   + i * (gameObjects.INVENTORY_ICON_SIZE
                    + gameObjects.INVENTORY_MARGIN);
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f});
         glBindTexture(GL_TEXTURE_2D, item.texture->getTexID());
         }
         else {
@@ -263,6 +279,25 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         i++;
     }
 
+    //    Отрисовка кубиков
+            if (gameObjects.current_room_index == 0) {
+    for (int j = gameObjects.selectedCubes.size() - 1; j >= 0; j--) {
+        auto& cube = gameObjects.selectedCubes[j];
+        renderer.PushMatrix();
+
+        float xPos = (gameObjects.SELECTED_CUBE_MARGIN + 300.0f)
+                   + j * (gameObjects.SELECTED_CUBE_ICON_SIZE + gameObjects.SELECTED_CUBE_MARGIN);
+        float yPos = 500.0f;
+
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{2.8f, 2.8f, 1.0f});
+        glBindTexture(GL_TEXTURE_2D, cube.texture->getTexID());
+
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable);
+        renderer.PopMatrix();
+    }
+}
+
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
 
@@ -274,6 +309,84 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
     renderer.shaderManager.PopShader();
 }
 
+void RenderSystem::drawLoadingScreen(const GameObjectManager& gameObjects)
+{
+    renderer.shaderManager.PushShader("default");
+
+    // Если шейдер ожидает атрибуты вершин, их нужно включить
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
+        static_cast<float>(Environment::height));
+    renderer.PushMatrix();
+    renderer.LoadIdentity();
+
+    glBindTexture(GL_TEXTURE_2D, gameObjects.loadingScreenTexturePtr->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.loadingScreenMeshMutable);
+
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
+
+}
+
+void RenderSystem::drawMonster(const GameObjectManager& gameObjects)
+{
+    renderer.shaderManager.PushShader("default");
+
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
+        static_cast<float>(Environment::height), -10, 10);
+    renderer.PushMatrix();
+    renderer.LoadIdentity();
+
+
+    std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
+    int screenX, screenY;
+
+    Vector3f objectPosPlusShift = Vector3f{ -300, 50, -70 };
+    worldToScreenCoordinates(objectPosPlusShift, currentProjectionModelView,
+        Environment::width, Environment::height, screenX, screenY);
+    renderer.PushMatrix();
+    // Здесь можно использовать вычисленные screenX, screenY,
+    // но для теста оставляем фиксированное значение
+    renderer.TranslateMatrix(Vector3f{ screenX + 0.f, screenY + 0.f, 0.0f });
+
+    if (Environment::monsterState == 0)
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.monsterTexturePtr1->getTexID());
+    }
+    else
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.monsterTexturePtr2->getTexID());
+    }
+    renderer.DrawVertexRenderStruct(gameObjects.monsterScreenMeshMutable);
+    renderer.PopMatrix();
+
+
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
+}
 
 void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
     Matrix4f projectionModelView,
@@ -288,6 +401,16 @@ void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
 
     screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
     screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
+}
+
+void RenderSystem::drawObjects(GameObjectManager& gameObjects){
+  for (const auto& ao : gameObjects.activeObjects) {
+        renderer.PushMatrix();
+        renderer.TranslateMatrix(ao.objectPos);
+        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
+        renderer.PopMatrix();
+    }
 }
 
 } // namespace ZL

@@ -44,6 +44,11 @@ public:
     static bool showMouse;
     static bool exitGameLoop;
 
+    static bool gameIsLoading;
+
+    static float monsterTimer;
+    static int monsterState;
+
 
 };
 

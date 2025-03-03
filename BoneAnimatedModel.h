@@ -11,7 +11,7 @@ namespace ZL
 	{
 		Vector3f boneStartWorld;
 		float boneLength;
-		Matrix3f boneMatrixWorld;
+		Matrix4f boneMatrixWorld;
 		// boneVector = boneLength * (0, 1, 0) в осях блендера
 		// Then multiply by boneMatrixWorld и вы получите конечную точку
 
