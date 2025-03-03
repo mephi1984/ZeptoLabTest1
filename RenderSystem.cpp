@@ -49,9 +49,12 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     static const std::string vColorName = "vColor";
     static const std::string textureUniformName = "Texture";
 
-    renderer.shaderManager.PushShader(colorShaderName);
-    
+    renderer.shaderManager.PushShader(defaultShaderName);
+    renderer.RenderUniform1i(textureUniformName, 0);
+
     renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+    
     renderer.PushPerspectiveProjectionMatrix(1.0 / 1.5,
         static_cast<float>(Environment::width) / static_cast<float>(Environment::height),
         50, 10000);
@@ -78,12 +81,14 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     {
         gameObjects.violaIdleModelMutable.AssignFrom(gameObjects.violaIdleModel.mesh);
         gameObjects.violaIdleModelMutable.RefreshVBO();
+        glBindTexture(GL_TEXTURE_2D, gameObjects.violaTexturePtr->getTexID());
         renderer.DrawVertexRenderStruct(gameObjects.violaIdleModelMutable);
     }
     else
     {
         gameObjects.violaWalkModelMutable.AssignFrom(gameObjects.violaWalkModel.mesh);
         gameObjects.violaWalkModelMutable.RefreshVBO();
+        glBindTexture(GL_TEXTURE_2D, gameObjects.violaTexturePtr->getTexID());
         renderer.DrawVertexRenderStruct(gameObjects.violaWalkModelMutable);
     }
     
@@ -91,6 +96,7 @@ void RenderSystem::drawViola(GameObjectManager& gameObjects)
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
     renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
 
     renderer.shaderManager.PopShader();
 }

@@ -70,10 +70,8 @@ void GameObjectManager::initialize() {
 
 
 
-        //violaIdleModel.LoadFromFile("./idleviola001.txt");
-        violaIdleModel.LoadFromFile("./idleviola008.txt");
-
-        violaWalkModel.LoadFromFile("./walkviola008.txt");
+        violaIdleModel.LoadFromFile("./idleviola_uv009.txt");
+        violaWalkModel.LoadFromFile("./walkviola_uv009.txt");
         sideThreadLoadingCompleted = true;
     });
 
@@ -233,6 +231,9 @@ void GameObjectManager::initialize() {
             monsterScreenMesh = CreateRect2D({ 0.f, 0.f }, { 300.f, 300.f }, 0.5);
             monsterScreenMeshMutable.AssignFrom(monsterScreenMesh);
             monsterScreenMeshMutable.RefreshVBO();
+
+
+            violaTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./viola.bmp"));
 
 
             //SDL_ShowCursor(SDL_DISABLE);

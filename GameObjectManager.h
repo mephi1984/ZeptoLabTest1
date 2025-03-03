@@ -33,7 +33,7 @@ public:
 
     std::shared_ptr<ZL::Texture> testObjTexturePtr;
     //std::shared_ptr<ZL::Texture> roomTexturePtr;
-    std::shared_ptr<ZL::Texture> coneTexturePtr;
+    //std::shared_ptr<ZL::Texture> coneTexturePtr;
 
     //ZL::VertexDataStruct colorCubeMesh;
     //ZL::VertexRenderStruct colorCubeMeshMutable;
@@ -43,9 +43,11 @@ public:
 
     ZL::BoneSystem violaIdleModel;
     ZL::VertexRenderStruct violaIdleModelMutable;
-
+    
     ZL::BoneSystem violaWalkModel;
     ZL::VertexRenderStruct violaWalkModelMutable;
+
+    std::shared_ptr<ZL::Texture> violaTexturePtr;
 
     std::vector<ZL::VertexDataStruct> preloadedRoomMeshArr;
 
