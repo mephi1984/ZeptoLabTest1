@@ -103,6 +103,9 @@ public:
     std::shared_ptr<Texture> batteryDialogTexturePtr; // Активная текстура диалога
     bool isBatteryDialogActive = false; // Флаг активности диалога
 
+    bool hasChoisedFriendship = false;
+    bool hasMadeChoise = false;
+
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши

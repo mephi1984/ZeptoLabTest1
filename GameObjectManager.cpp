@@ -342,13 +342,6 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     objects_in_inventory--;
               }
             }
-            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
-              bearName = "";
-              for (const auto& cube : selectedCubes) {
-                gInventoryMap[cube.name] = cube;
-            }
-              selectedCubes.clear();
-            }
         }
         else if (current_room_index==1) {
              if (InventoryItem* item = GetItemSelected(true)){
@@ -389,7 +382,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
         else if (current_room_index==2) {
           if (InventoryItem* item = GetItemSelected(true)){
-
+            if (item->name == "lockFriend"){}
           }
         }
       }
@@ -401,13 +394,27 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            if (ao->name != "lampe") {
+            if (ao->name != "lampe" && ao->name != "doorGlory" && ao->name != "lockFriend" ) {
             AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
 
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
             activeObjects = rooms[current_room_index].objects;
+            }
+            else if (ao->name != "doorGlory"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = false;
+
+//              debug switching
+              switch_room(0);
+            }
+            else if (ao->name != "lockFriend"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = true;
+
+              //              debug switching
+              switch_room(0);
             }
 
 
