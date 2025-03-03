@@ -225,8 +225,106 @@ namespace ZL
 			vertices[i] = Vector3f{floatValues[0], floatValues[1], floatValues[2]};
 		}
 
+
+		//==== process uv and normals begin
+
+		std::cout << "Hello x1" << std::endl;
+
+		std::getline(f, tempLine); //===UV Coordinates:
+
 		std::getline(f, tempLine); //triangle count
 		int numberTriangles;
+
+		if (std::regex_search(tempLine, match, pattern_count)) {
+			std::string number_str = match.str();
+			numberTriangles = std::stoi(number_str);
+		}
+		else {
+			throw std::runtime_error("No number found in the input string.");
+		}
+
+
+		// Now process UVs
+		std::vector<std::array<Vector2f, 3>> uvCoords;
+
+		uvCoords.resize(numberTriangles);
+
+		for (int i = 0; i < numberTriangles; i++)
+		{
+			std::getline(f, tempLine); //Face 0
+
+			int uvCount;
+			std::getline(f, tempLine);
+			if (std::regex_search(tempLine, match, pattern_count)) {
+				std::string number_str = match.str();
+				uvCount = std::stoi(number_str);
+			}
+			else {
+				throw std::runtime_error("No number found in the input string.");
+			}
+
+			if (uvCount != 3)
+			{
+				throw std::runtime_error("more than 3 uvs");
+			}
+
+			std::vector<float> floatValues;
+
+			for (int j = 0; j < 3; j++)
+			{
+				std::getline(f, tempLine); //UV <Vector (-0.3661, -1.1665)>
+
+				auto b = tempLine.cbegin();
+				auto e = tempLine.cend();
+				floatValues.clear();
+				while (std::regex_search(b, e, match, pattern_float)) {
+					floatValues.push_back(std::stof(match.str()));
+					b = match.suffix().first;
+				}
+
+				if (floatValues.size() != 2)
+				{
+					throw std::runtime_error("more than 2 uvs---");
+				}
+
+				uvCoords[i][j] = Vector2f{ floatValues[0],floatValues[1] };
+			}
+
+
+
+
+
+
+		}
+
+		std::cout << "Hello eee" << std::endl;
+
+		std::getline(f, tempLine); //===Normals:
+
+
+		std::vector<Vector3f> normals;
+
+		normals.resize(numberVertices);
+		for (int i = 0; i < numberVertices; i++)
+		{
+			std::getline(f, tempLine);
+
+			std::vector<float> floatValues;
+
+			auto b = tempLine.cbegin();
+			auto e = tempLine.cend();
+			while (std::regex_search(b, e, match, pattern_float)) {
+				floatValues.push_back(std::stof(match.str()));
+				b = match.suffix().first;
+			}
+
+			normals[i] = Vector3f{ floatValues[0], floatValues[1], floatValues[2] };
+		}
+
+		//==== process uv and normals end
+
+		std::getline(f, tempLine); //triangle count. 
+		//numberTriangles; //Need to check if new value is the same as was read before
 
 		if (std::regex_search(tempLine, match, pattern_count)) {
 			std::string number_str = match.str();
@@ -447,6 +545,10 @@ namespace ZL
 			verticesBoneWeight.push_back(localVerticesBoneWeight[triangles[i][0]]);
 			verticesBoneWeight.push_back(localVerticesBoneWeight[triangles[i][1]]);
 			verticesBoneWeight.push_back(localVerticesBoneWeight[triangles[i][2]]);
+
+			mesh.TexCoordData.push_back(uvCoords[i][0]);
+			mesh.TexCoordData.push_back(uvCoords[i][1]);
+			mesh.TexCoordData.push_back(uvCoords[i][2]);
 		}
 
 		startMesh = mesh;

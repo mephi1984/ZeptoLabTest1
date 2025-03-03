@@ -76,10 +76,8 @@ void GameObjectManager::initialize() {
 
 
 
-        //violaIdleModel.LoadFromFile("./idleviola001.txt");
-        violaIdleModel.LoadFromFile("./idleviola008.txt");
-
-        violaWalkModel.LoadFromFile("./walkviola008.txt");
+        violaIdleModel.LoadFromFile("./idleviola_uv009.txt");
+        violaWalkModel.LoadFromFile("./walkviola_uv009.txt");
         sideThreadLoadingCompleted = true;
     });
 
@@ -175,14 +173,14 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject lock;
-            lock.name = "lock";
+            lock.name = "lockFriend";
             lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
             lock.activeObjectMesh.Scale(2);
             lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
             lock.activeObjectMeshMutable.RefreshVBO();
             lock.objectPos = Vector3f{ 101, 100, 255 };
             lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             lock.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             lock.activeObjectScreenMeshMutable.AssignFrom(lock.activeObjectScreenMesh);
             lock.activeObjectScreenMeshMutable.RefreshVBO();
@@ -191,7 +189,7 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject door;
-            door.name = "door";
+            door.name = "doorGlory";
             door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
             door.activeObjectMesh.Scale(60);
             // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
@@ -201,7 +199,7 @@ void GameObjectManager::initialize() {
             door.activeObjectMeshMutable.RefreshVBO();
             door.objectPos = Vector3f{ -372, 10, 80 };
             door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             door.activeObjectScreenMeshMutable.AssignFrom(door.activeObjectScreenMesh);
             door.activeObjectScreenMeshMutable.RefreshVBO();
@@ -256,7 +254,7 @@ void GameObjectManager::initialize() {
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
-            room_3.roomLogic = createRoom1Logic();
+            room_3.roomLogic = createRoom3Logic();
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
@@ -292,6 +290,9 @@ void GameObjectManager::initialize() {
             monsterScreenMesh = CreateRect2D({ 0.f, 0.f }, { 300.f, 300.f }, 0.5);
             monsterScreenMeshMutable.AssignFrom(monsterScreenMesh);
             monsterScreenMeshMutable.RefreshVBO();
+
+
+            violaTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./viola.bmp"));
 
 
             //SDL_ShowCursor(SDL_DISABLE);
@@ -377,13 +378,6 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     objects_in_inventory--;
               }
             }
-            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
-              bearName = "";
-              for (const auto& cube : selectedCubes) {
-                gInventoryMap[cube.name] = cube;
-            }
-              selectedCubes.clear();
-            }
         }
         else if (current_room_index==1) {
              if (InventoryItem* item = GetItemSelected(true)){
@@ -424,7 +418,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
         else if (current_room_index==2) {
           if (InventoryItem* item = GetItemSelected(true)){
-
+            if (item->name == "lockFriend"){}
           }
         }
       }
@@ -436,13 +430,27 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            if (ao->name != "lampe") {
+            if (ao->name != "lampe" && ao->name != "doorGlory" && ao->name != "lockFriend" ) {
             AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
 
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
             activeObjects = rooms[current_room_index].objects;
+            }
+            else if (ao->name != "doorGlory"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = false;
+
+//              debug switching
+              switch_room(0);
+            }
+            else if (ao->name != "lockFriend"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = true;
+
+              //              debug switching
+              switch_room(0);
             }
 
 
