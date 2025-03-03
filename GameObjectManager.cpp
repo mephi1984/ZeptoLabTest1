@@ -282,13 +282,13 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             }
         }
         if (isBatteryDialogActive) {
-            BatteryDialogIndex++;
-            if (BatteryDialogIndex < batteryDialogTextures.size()) {
-                batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(batteryDialogTextures[BatteryDialogIndex]));
-            } else {
-                isBatteryDialogActive = false;
-            }
+        BatteryDialogIndex++;
+        if (BatteryDialogIndex <= batteryDialogTextures.size()) {
+            batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(batteryDialogTextures[BatteryDialogIndex]));
+        } else {
+            isBatteryDialogActive = false;
         }
+    }
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);

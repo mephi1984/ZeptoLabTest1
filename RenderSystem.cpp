@@ -221,6 +221,8 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
         renderer.PopMatrix();
     }
+
+    // Отрисовка диалогового окна батарейки
     if (gameObjects.isBatteryDialogActive && gameObjects.batteryDialogTexturePtr) {
         renderer.PushMatrix();
         float xPos = Environment::width / 2.0f - 250;  // Центрируем
@@ -231,6 +233,7 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
         renderer.PopMatrix();
     }
+
 
     //for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
     for (auto& ao : gameObjects.rooms[gameObjects.current_room_index].findByHighlighted(true)) {

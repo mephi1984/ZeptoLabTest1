@@ -88,7 +88,7 @@ public:
     ZL::VertexRenderStruct monsterScreenMeshMutable;
 
     std::vector<std::string> dialogTextures = { // Список диалогов
-        "./start_dialog.bmp",
+        "./photo.bmp",
         "./next_dialog.bmp",
         "./final_dialog.bmp",
     };
