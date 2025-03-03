@@ -252,7 +252,7 @@ void GameObjectManager::initialize() {
 
 
             Room room_3;
-            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./photo_2025-03-03_07-51-53.bmp"));
+            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./DefaultMaterial_Base_color_1001.bmp"));
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
