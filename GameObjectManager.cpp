@@ -180,7 +180,7 @@ void GameObjectManager::initialize() {
             lock.activeObjectMeshMutable.RefreshVBO();
             lock.objectPos = Vector3f{ 101, 100, 255 };
             lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             lock.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             lock.activeObjectScreenMeshMutable.AssignFrom(lock.activeObjectScreenMesh);
             lock.activeObjectScreenMeshMutable.RefreshVBO();
@@ -199,7 +199,7 @@ void GameObjectManager::initialize() {
             door.activeObjectMeshMutable.RefreshVBO();
             door.objectPos = Vector3f{ -372, 10, 80 };
             door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             door.activeObjectScreenMeshMutable.AssignFrom(door.activeObjectScreenMesh);
             door.activeObjectScreenMeshMutable.RefreshVBO();
