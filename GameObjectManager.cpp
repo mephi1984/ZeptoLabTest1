@@ -175,7 +175,7 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject lock;
-            lock.name = "lock";
+            lock.name = "lockFriend";
             lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
             lock.activeObjectMesh.Scale(2);
             lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
@@ -191,7 +191,7 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject door;
-            door.name = "door";
+            door.name = "doorGlory";
             door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
             door.activeObjectMesh.Scale(60);
             // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
@@ -256,7 +256,7 @@ void GameObjectManager::initialize() {
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
-            room_3.roomLogic = null;
+            room_3.roomLogic = createRoom3Logic();
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
