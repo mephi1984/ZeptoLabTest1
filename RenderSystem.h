@@ -19,6 +19,9 @@ public:
         int screenWidth, int screenHeight,
         int& screenX, int& screenY);
 
+    void drawObjects(GameObjectManager& gameObjects);
+    void drawDialog(GameObjectManager& gameObjects);
+
 private:
     void drawWorld(GameObjectManager& gameObjects);
     void drawUI(const GameObjectManager& gameObjects);

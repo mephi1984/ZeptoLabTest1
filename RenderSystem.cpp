@@ -165,13 +165,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
 
     // Draw active objects
-    for (const auto& ao : gameObjects.activeObjects) {
-        renderer.PushMatrix();
-        renderer.TranslateMatrix(ao.objectPos);
-        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
-        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
-        renderer.PopMatrix();
-    }
+    drawObjects(gameObjects);
 
     // Draw room
     glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
@@ -215,6 +209,18 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         static_cast<float>(Environment::height));
     renderer.PushMatrix();
     renderer.LoadIdentity();
+
+    // Отрисовка диалогового окна, если оно активно
+    if (gameObjects.isDialogActive && gameObjects.dialogTexturePtr) {
+        renderer.PushMatrix();
+        float xPos = Environment::width / 2.0f - 250;  // Центрируем
+        float yPos = Environment::height / 2.0f - 125; // Центрируем
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f}); // Увеличиваем размер
+        glBindTexture(GL_TEXTURE_2D, gameObjects.dialogTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
+        renderer.PopMatrix();
+    }
 
     //for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
     for (auto& ao : gameObjects.rooms[gameObjects.current_room_index].findByHighlighted(true)) {
@@ -291,8 +297,6 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         renderer.PopMatrix();
     }
 }
-
-
 
     renderer.PopMatrix();
     renderer.PopProjectionMatrix();
@@ -397,6 +401,16 @@ void RenderSystem::worldToScreenCoordinates(Vector3f objectPos,
 
     screenX = (int)((ndcX + 1.0f) * 0.5f * screenWidth);
     screenY = (int)((1.0f + ndcY) * 0.5f * screenHeight);
+}
+
+void RenderSystem::drawObjects(GameObjectManager& gameObjects){
+  for (const auto& ao : gameObjects.activeObjects) {
+        renderer.PushMatrix();
+        renderer.TranslateMatrix(ao.objectPos);
+        glBindTexture(GL_TEXTURE_2D, ao.activeObjectTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(ao.activeObjectMeshMutable);
+        renderer.PopMatrix();
+    }
 }
 
 } // namespace ZL

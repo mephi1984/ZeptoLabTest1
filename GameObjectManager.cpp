@@ -30,6 +30,11 @@ void GameObjectManager::initialize() {
 
     initializeLoadingScreen();
 
+    if (!dialogTextures.empty()) { // Проверяем, есть ли диалоги
+        dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
+        isDialogActive = true;
+    }
+
     std::function<bool()> loadingFunction1 = [this]()
         {
 
@@ -81,47 +86,97 @@ void GameObjectManager::initialize() {
         {
 
             // Create active object
+            ActiveObject cubeForFirstRoomT;
+            cubeForFirstRoomT.name = "cube_T";
+            cubeForFirstRoomT.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomT.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomT.activeObjectMesh.Scale(10);
+            cubeForFirstRoomT.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectMesh);
+            cubeForFirstRoomT.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomT.objectPos = Vector3f{ -190, 90 , 280 };
+            cubeForFirstRoomT.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
+            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomT.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
+            cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
+            cubeForFirstRoomT.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
 
-            ActiveObject ao1;
-            ao1.name = "book";
-            ao1.activeObjectMesh = ZL::LoadFromTextFile("./book001.txt");  // Add ZL:: namespace
-            ao1.activeObjectMesh.Scale(4);
-            ao1.activeObjectMeshMutable.AssignFrom(ao1.activeObjectMesh);
-            ao1.activeObjectMeshMutable.RefreshVBO();
-            ao1.objectPos = Vector3f{ 50, 0, -300 };
-            ao1.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./book03.bmp"));
-            ao1.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            ao1.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            ao1.activeObjectScreenMeshMutable.AssignFrom(ao1.activeObjectScreenMesh);
-            ao1.activeObjectScreenMeshMutable.RefreshVBO();
 
-            /*
-            ActiveObject ao2;
-            ao2.name = "superchair001";
-            ao2.activeObjectMesh = ZL::LoadFromTextFile("./superchair001.txt");  // Add ZL:: namespace
-            ao2.activeObjectMesh.Scale(400);
-            ao2.activeObjectMesh.SwapZandY();
-            ao2.activeObjectMeshMutable.AssignFrom(ao2.activeObjectMesh);
-            ao2.activeObjectMeshMutable.RefreshVBO();
-            ao2.objectPos = Vector3f{ 0, 0, 0 };
-            ao2.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./chair_01_Base_Color.bmp"));
+            ActiveObject cubeForFirstRoomO;
+            cubeForFirstRoomO.name = "cube_O";
+            cubeForFirstRoomO.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 1.5)));
+            cubeForFirstRoomO.activeObjectMesh.Scale(10);
+            cubeForFirstRoomO.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectMesh);
+            cubeForFirstRoomO.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomO.objectPos = Vector3f{ 185, 90 , -365 };
+            cubeForFirstRoomO.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_3.bmp"));
+            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
+            cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
+            cubeForFirstRoomO.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32"));
+           
 
-            ao2.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
-            ao2.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
-            ao2.activeObjectScreenMeshMutable.AssignFrom(ao2.activeObjectScreenMesh);
-            ao2.activeObjectScreenMeshMutable.RefreshVBO();
-            */
+            ActiveObject cubeForFirstRoomM;
+            cubeForFirstRoomM.name = "cube_M";
+            cubeForFirstRoomM.activeObjectMesh = ZL::LoadFromTextFile("./cube001.txt");
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI)));
 
+            cubeForFirstRoomM.activeObjectMesh.Scale(10);
+            cubeForFirstRoomM.activeObjectMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectMesh);
+            cubeForFirstRoomM.activeObjectMeshMutable.RefreshVBO();
+            cubeForFirstRoomM.objectPos = Vector3f{ 200, 95 , 230 };
+            cubeForFirstRoomM.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001_4.bmp"));
+            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomM.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            cubeForFirstRoomM.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
+            cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
+            cubeForFirstRoomM.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32"));
+
+            ActiveObject lampe;
+            lampe.name = "lampe";
+            lampe.activeObjectMesh = ZL::LoadFromTextFile("./lighter.txt");  // Add ZL:: namespace
+            lampe.activeObjectMesh.Scale(7);
+            lampe.activeObjectMeshMutable.AssignFrom(lampe.activeObjectMesh);
+            lampe.activeObjectMeshMutable.RefreshVBO();
+            lampe.objectPos = Vector3f{ 85, 30, 43 };
+            lampe.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
+            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lampe.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            lampe.activeObjectScreenMeshMutable.AssignFrom(lampe.activeObjectScreenMesh);
+            lampe.activeObjectScreenMeshMutable.RefreshVBO();
+            lampe.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
+            
+
+
+            ActiveObject carToy;
+            carToy.name = "carToy";
+            carToy.activeObjectMesh = ZL::LoadFromTextFile("./car.txt");  // Add ZL:: namespace
+            carToy.activeObjectMesh.Scale(12);
+            carToy.activeObjectMeshMutable.AssignFrom(carToy.activeObjectMesh);
+            carToy.activeObjectMeshMutable.RefreshVBO();
+            carToy.objectPos = Vector3f{ 300, 0, 315 };
+            carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
+            carToy.activeObjectScreenMeshMutable.RefreshVBO();
+            carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
 
 
             Room room_1;
             room_1.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001.bmp"));
-            room_1.objects.push_back(ao1);
-            room_1.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_1.objects.push_back(cubeForFirstRoomT);
+            room_1.objects.push_back(cubeForFirstRoomO);
+            room_1.objects.push_back(cubeForFirstRoomM);
+            room_1.sound_name = "lullaby-music-vol20-186394--online-audio-convert.com.ogg";
             room_1.roomLogic = createRoom1Logic();
             room_1.textMesh = preloadedRoomMeshArr[0];
             room_1.textMeshMutable.AssignFrom(room_1.textMesh);
-            room_1.collisionMgr.setRoomBoundary(800, 800);
+            room_1.collisionMgr.setRoomBoundary(790, 790);
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -220, 0, 165 }, Vector3f{ -143, 0, 230 }));
             room_1.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -400, 0, 125 }, Vector3f{ -121, 0, 400 }));
@@ -135,13 +190,17 @@ void GameObjectManager::initialize() {
 
             Room room_2;
             room_2.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
-            room_2.sound_name = "Symphony No.6 (1st movement).ogg";
+            room_2.objects.push_back(lampe);
+            room_2.objects.push_back(carToy);
+            room_2.sound_name = "unholy-choir-1-279337--online-audio-convert.com.ogg";
             room_2.roomLogic = createRoom2Logic();
             room_2.textMesh = preloadedRoomMeshArr[1];
             room_2.textMeshMutable.AssignFrom(room_2.textMesh);
-            room_2.collisionMgr.setRoomBoundary(800, 800);
-            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 80, 0, 200 }, Vector3f{ 400, 0, 400 }));
-
+            room_2.collisionMgr.setRoomBoundary(790, 790);
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
+            room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
             rooms.push_back(room_2);
 
             activeObjects = rooms[current_room_index].objects;
@@ -165,13 +224,6 @@ void GameObjectManager::initialize() {
             inventoryIconMeshMutable.RefreshVBO();
 
             //roomTexturePtr = rooms[current_room_index].roomTexture;
-
-            AddItemToInventory("cube_T", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
-            AddItemToInventory("cube_O", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_O_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
-            AddItemToInventory("cube_M", std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_M_icon.bmp32")), objects_in_inventory + 1);
-            objects_in_inventory++;
 
 
             monsterTexturePtr1 = std::make_shared<Texture>(CreateTextureDataFromBmp32("./monster001.bmp32"));
@@ -221,7 +273,14 @@ void GameObjectManager::switch_room(int index){
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     // debug room switching
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
-        switch_room(1);
+        if (isDialogActive) {
+            dialogIndex++;
+            if (dialogIndex < dialogTextures.size()) {
+                dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
+            } else {
+                isDialogActive = false;
+            }
+        }
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
@@ -259,6 +318,38 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
               selectedCubes.clear();
             }
         }
+        else if (current_room_index==1) {
+             if (InventoryItem* item = GetItemSelected(true)){
+               std::cout << item->name << std::endl;
+					if (item->name == "carToy") {
+                          std::cout << item->name << std::endl;
+                // Проверить, наведена ли мышь на лампу
+                const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+                std::cout << highlightedObjects.size() << std::endl;
+                for (auto* ao : highlightedObjects) {
+                    if (ao && ao->name == "lampe") {
+                            // Create a new lamp object with updated texture
+                            ActiveObject updatedLamp = *ao;
+                            // Change from dark to lit texture
+                            updatedLamp.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./base_Base_color_1001.bmp"));
+
+                            // Replace the old lamp with updated one
+                            rooms[current_room_index].removeByPtr(ao);
+                            rooms[current_room_index].objects.push_back(updatedLamp);
+                            activeObjects = rooms[current_room_index].objects;
+
+                            // Remove car from inventory
+                            gInventoryMap.erase(item->name);
+                            objects_in_inventory--;
+
+                            // Play sound effect
+                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+                            break;
+                        }
+                }
+                }
+            }
+        }
       }
       else {
           const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
@@ -268,10 +359,14 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            AddItemToInventory(ao->name, ao->activeObjectTexturePtr, objects_in_inventory+1);
+            if (ao->name != "lampe") {
+            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
+            activeObjects = rooms[current_room_index].objects;
+            }
+
 
             //aoMgr.removeByName(ao->name);
         }
@@ -522,7 +617,7 @@ void GameObjectManager::updateScene(size_t ms) {
             pow(Environment::characterPos.v[1] - obj.objectPos.v[1], 2) +
             pow(Environment::characterPos.v[2] - obj.objectPos.v[2], 2)
         );
-        obj.highlighted = (dist < 50.f);
+        obj.highlighted = (dist < 150.f);
     }
 
     /*

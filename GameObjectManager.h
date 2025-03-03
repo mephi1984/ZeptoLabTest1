@@ -6,6 +6,7 @@
 #include <vector>
 #include "ActiveObject.h"
 #include "Room.h"
+#include "RenderSystem.h"
 #include "Inventory.h"
 #ifdef __linux__
 #include <SDL2/SDL.h>
@@ -70,7 +71,6 @@ public:
     //ActiveObjectManager aoMgr;
     int objects_in_inventory;
 
-
     std::shared_ptr<ZL::Texture> loadingScreenTexturePtr;
 
     ZL::VertexDataStruct loadingScreenMesh;
@@ -86,6 +86,14 @@ public:
     std::shared_ptr<ZL::Texture> monsterTexturePtr2;
     ZL::VertexDataStruct monsterScreenMesh;
     ZL::VertexRenderStruct monsterScreenMeshMutable;
+
+    std::vector<std::string> dialogTextures = { // Список диалогов
+        "./start_dialog.bmp",
+        "./next_dialog.bmp",
+    };
+    int dialogIndex = 0; // Текущий индекс диалога
+    std::shared_ptr<Texture> dialogTexturePtr; // Активная текстура диалога
+    bool isDialogActive = false; // Флаг активности диалога
 
 private:
     //int animationCounter = 0;
