@@ -177,7 +177,7 @@ void GameObjectManager::initialize() {
             ActiveObject lock;
             lock.name = "lock";
             lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
-            lock.activeObjectMesh.Scale(5);
+            lock.activeObjectMesh.Scale(2);
             lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
             lock.activeObjectMeshMutable.RefreshVBO();
             lock.objectPos = Vector3f{ 101, 100, 255 };
@@ -193,10 +193,13 @@ void GameObjectManager::initialize() {
             ActiveObject door;
             door.name = "door";
             door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
-            door.activeObjectMesh.Scale(15);
+            door.activeObjectMesh.Scale(60);
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(M_PI * 1.5)));
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
             door.activeObjectMeshMutable.AssignFrom(door.activeObjectMesh);
             door.activeObjectMeshMutable.RefreshVBO();
-            door.objectPos = Vector3f{ -372, 50, 80 };
+            door.objectPos = Vector3f{ -372, 10, 80 };
             door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
             door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
             door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
@@ -253,7 +256,7 @@ void GameObjectManager::initialize() {
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
-            room_3.roomLogic = createRoom2Logic();
+            room_3.roomLogic = null;
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
