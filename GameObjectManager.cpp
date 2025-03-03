@@ -58,7 +58,7 @@ void GameObjectManager::initialize() {
 
     loadingThread = std::thread([this]() {
         
-        preloadedRoomMeshArr.resize(2);
+        preloadedRoomMeshArr.resize(3);
 
         preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
         preloadedRoomMeshArr[0].Scale(10);
@@ -67,6 +67,12 @@ void GameObjectManager::initialize() {
         preloadedRoomMeshArr[1] = ZL::LoadFromTextFile("./secondroom001.txt");
         preloadedRoomMeshArr[1].Scale(10);
         preloadedRoomMeshArr[1].Move(Vector3f{ 0, 93, 0 });
+
+
+        preloadedRoomMeshArr[2] = ZL::LoadFromTextFile("./thirdroom1.txt");
+        preloadedRoomMeshArr[2].Scale(10);
+        preloadedRoomMeshArr[2].Move(Vector3f{ 0, 93, 0 });
+
 
 
 
@@ -93,7 +99,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomT.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomT.objectPos = Vector3f{ -190, 90 , 280 };
             cubeForFirstRoomT.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
-            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomT.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
@@ -110,7 +116,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomO.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomO.objectPos = Vector3f{ 185, 90 , -365 };
             cubeForFirstRoomO.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_3.bmp"));
-            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
@@ -128,7 +134,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomM.objectPos = Vector3f{ 200, 95 , 230 };
             cubeForFirstRoomM.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001_4.bmp"));
-            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomM.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
@@ -142,7 +148,7 @@ void GameObjectManager::initialize() {
             lampe.activeObjectMeshMutable.RefreshVBO();
             lampe.objectPos = Vector3f{ 85, 30, 43 };
             lampe.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
-            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             lampe.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             lampe.activeObjectScreenMeshMutable.AssignFrom(lampe.activeObjectScreenMesh);
             lampe.activeObjectScreenMeshMutable.RefreshVBO();
@@ -158,11 +164,48 @@ void GameObjectManager::initialize() {
             carToy.activeObjectMeshMutable.RefreshVBO();
             carToy.objectPos = Vector3f{ 300, 0, 315 };
             carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
             carToy.activeObjectScreenMeshMutable.RefreshVBO();
             carToy.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
+
+
+
+            ActiveObject lock;
+            lock.name = "lock";
+            lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
+            lock.activeObjectMesh.Scale(2);
+            lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
+            lock.activeObjectMeshMutable.RefreshVBO();
+            lock.objectPos = Vector3f{ 101, 100, 255 };
+            lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lock.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            lock.activeObjectScreenMeshMutable.AssignFrom(lock.activeObjectScreenMesh);
+            lock.activeObjectScreenMeshMutable.RefreshVBO();
+            lock.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
+
+
+
+            ActiveObject door;
+            door.name = "door";
+            door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
+            door.activeObjectMesh.Scale(60);
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
+            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(M_PI * 1.5)));
+            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            door.activeObjectMeshMutable.AssignFrom(door.activeObjectMesh);
+            door.activeObjectMeshMutable.RefreshVBO();
+            door.objectPos = Vector3f{ -372, 10, 80 };
+            door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
+            door.activeObjectScreenMeshMutable.AssignFrom(door.activeObjectScreenMesh);
+            door.activeObjectScreenMeshMutable.RefreshVBO();
+            door.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/battery.bmp32"));
+
+
 
 
             Room room_1;
@@ -200,6 +243,22 @@ void GameObjectManager::initialize() {
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
             rooms.push_back(room_2);
+
+            activeObjects = rooms[current_room_index].objects;
+
+
+
+
+            Room room_3;
+            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./photo_2025-03-03_07-51-53.bmp"));
+            room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
+            room_3.objects.push_back(lock);
+            room_3.objects.push_back(door);
+            room_3.roomLogic = createRoom1Logic();
+            room_3.textMesh = preloadedRoomMeshArr[2];
+            room_3.textMeshMutable.AssignFrom(room_3.textMesh);
+            room_3.collisionMgr.setRoomBoundary(790, 790);
+            rooms.push_back(room_3);
 
             activeObjects = rooms[current_room_index].objects;
 
@@ -282,6 +341,14 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 isDialogActive = false;
             }
         }
+        if (isBatteryDialogActive) {
+        BatteryDialogIndex++;
+        if (BatteryDialogIndex <= batteryDialogTextures.size()) {
+            batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(batteryDialogTextures[BatteryDialogIndex]));
+        } else {
+            isBatteryDialogActive = false;
+        }
+    }
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
@@ -323,12 +390,13 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
              if (InventoryItem* item = GetItemSelected(true)){
                std::cout << item->name << std::endl;
 					if (item->name == "carToy") {
-                          std::cout << item->name << std::endl;
+
                 // Проверить, наведена ли мышь на лампу
                 const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
                 std::cout << highlightedObjects.size() << std::endl;
                 for (auto* ao : highlightedObjects) {
                     if (ao && ao->name == "lampe") {
+                      isBatteryDialogActive = true;
                             // Create a new lamp object with updated texture
                             ActiveObject updatedLamp = *ao;
                             // Change from dark to lit texture
@@ -344,12 +412,21 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                             objects_in_inventory--;
 
                             // Play sound effect
-                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+//                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+
+                            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+                            objects_in_inventory++;
+                            switch_room(2);
                             break;
                         }
                 }
                 }
             }
+        }
+        else if (current_room_index==2) {
+          if (InventoryItem* item = GetItemSelected(true)){
+
+          }
         }
       }
       else {
@@ -362,6 +439,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             if (ao->name != "lampe") {
             AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
@@ -468,7 +546,15 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 }
             }
             break;
-            // ...handle other keys...
+            case SDLK_RSHIFT:
+            case SDLK_LSHIFT: {
+                // Switch to next room
+                int nextRoom = current_room_index + 1;
+                if (nextRoom < rooms.size()) {
+                    switch_room(nextRoom);
+                }
+                break;
+            }
         }
     }
     else if (event.type == SDL_KEYUP) {

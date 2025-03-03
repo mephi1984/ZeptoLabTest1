@@ -222,11 +222,24 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
         float xPos = Environment::width / 2.0f - 250;  // Центрируем
         float yPos = Environment::height / 2.0f - 125; // Центрируем
         renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
-        renderer.ScaleMatrix(Vector3f{1.5f, 1.5f, 1.0f}); // Увеличиваем размер
+        renderer.ScaleMatrix(Vector3f{10.5f, 10.5f, 1.0f}); // Увеличиваем размер
         glBindTexture(GL_TEXTURE_2D, gameObjects.dialogTexturePtr->getTexID());
         renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
         renderer.PopMatrix();
     }
+
+    // Отрисовка диалогового окна батарейки
+    if (gameObjects.isBatteryDialogActive && gameObjects.batteryDialogTexturePtr) {
+        renderer.PushMatrix();
+        float xPos = Environment::width / 2.0f - 250;  // Центрируем
+        float yPos = Environment::height / 2.0f - 125; // Центрируем
+        renderer.TranslateMatrix(Vector3f{xPos, yPos, 0.0f});
+        renderer.ScaleMatrix(Vector3f{10.5f, 10.5f, 1.0f}); // Увеличиваем размер
+        glBindTexture(GL_TEXTURE_2D, gameObjects.batteryDialogTexturePtr->getTexID());
+        renderer.DrawVertexRenderStruct(gameObjects.inventoryIconMeshMutable); // Используем 2D меш инвентаря
+        renderer.PopMatrix();
+    }
+
 
     //for (const auto* ao : gameObjects.aoMgr.findByHighlighted(true)) {
     for (auto& ao : gameObjects.rooms[gameObjects.current_room_index].findByHighlighted(true)) {
