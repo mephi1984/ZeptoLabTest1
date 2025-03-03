@@ -96,6 +96,13 @@ public:
     std::shared_ptr<Texture> dialogTexturePtr; // Активная текстура диалога
     bool isDialogActive = false; // Флаг активности диалога
 
+    std::vector<std::string> batteryDialogTextures = { // Список диалогов
+        "./battery_dialog.bmp",
+    };
+    int BatteryDialogIndex = 0; // Текущий индекс диалога
+    std::shared_ptr<Texture> batteryDialogTexturePtr; // Активная текстура диалога
+    bool isBatteryDialogActive = false; // Флаг активности диалога
+
 private:
     //int animationCounter = 0;
     int lastMouseX = 0;  // Добавляем переменные для хранения позиции мыши

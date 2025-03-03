@@ -281,6 +281,14 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 isDialogActive = false;
             }
         }
+        if (isBatteryDialogActive) {
+            BatteryDialogIndex++;
+            if (BatteryDialogIndex < batteryDialogTextures.size()) {
+                batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(batteryDialogTextures[BatteryDialogIndex]));
+            } else {
+                isBatteryDialogActive = false;
+            }
+        }
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
         const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
@@ -322,12 +330,13 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
              if (InventoryItem* item = GetItemSelected(true)){
                std::cout << item->name << std::endl;
 					if (item->name == "carToy") {
-                          std::cout << item->name << std::endl;
+
                 // Проверить, наведена ли мышь на лампу
                 const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
                 std::cout << highlightedObjects.size() << std::endl;
                 for (auto* ao : highlightedObjects) {
                     if (ao && ao->name == "lampe") {
+                      isBatteryDialogActive = true;
                             // Create a new lamp object with updated texture
                             ActiveObject updatedLamp = *ao;
                             // Change from dark to lit texture
