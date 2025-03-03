@@ -101,7 +101,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomT.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomT.objectPos = Vector3f{ -190, 90 , 280 };
             cubeForFirstRoomT.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_2_.bmp"));
-            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomT.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomT.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
@@ -118,7 +118,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomO.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomO.objectPos = Vector3f{ 185, 90 , -365 };
             cubeForFirstRoomO.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001-_3.bmp"));
-            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomO.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomO.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomO.activeObjectScreenMeshMutable.RefreshVBO();
@@ -136,7 +136,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomM.activeObjectMeshMutable.RefreshVBO();
             cubeForFirstRoomM.objectPos = Vector3f{ 200, 95 , 230 };
             cubeForFirstRoomM.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material_Base_color_1001_4.bmp"));
-            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            cubeForFirstRoomM.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             cubeForFirstRoomM.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomO.activeObjectScreenMesh);
             cubeForFirstRoomM.activeObjectScreenMeshMutable.RefreshVBO();
@@ -150,7 +150,7 @@ void GameObjectManager::initialize() {
             lampe.activeObjectMeshMutable.RefreshVBO();
             lampe.objectPos = Vector3f{ 85, 30, 43 };
             lampe.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
-            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            lampe.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             lampe.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             lampe.activeObjectScreenMeshMutable.AssignFrom(lampe.activeObjectScreenMesh);
             lampe.activeObjectScreenMeshMutable.RefreshVBO();
@@ -166,7 +166,7 @@ void GameObjectManager::initialize() {
             carToy.activeObjectMeshMutable.RefreshVBO();
             carToy.objectPos = Vector3f{ 300, 0, 315 };
             carToy.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
-            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./aoscreen01.bmp"));
+            carToy.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             carToy.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             carToy.activeObjectScreenMeshMutable.AssignFrom(carToy.activeObjectScreenMesh);
             carToy.activeObjectScreenMeshMutable.RefreshVBO();
@@ -408,12 +408,21 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                             objects_in_inventory--;
 
                             // Play sound effect
-                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+//                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+
+                            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+                            objects_in_inventory++;
+                            switch_room(2);
                             break;
                         }
                 }
                 }
             }
+        }
+        else if (current_room_index==2) {
+          if (InventoryItem* item = GetItemSelected(true)){
+
+          }
         }
       }
       else {
@@ -426,6 +435,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 
             if (ao->name != "lampe") {
             AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
