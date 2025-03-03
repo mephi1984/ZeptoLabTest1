@@ -73,6 +73,15 @@ void Game::drawScene() {
 
 void Game::processTickCount() {
 
+    if (Environment::finalIsGood)
+    {
+        return;
+    }
+    if (Environment::finalIsBad)
+    {
+        return;
+    }
+
     if (Environment::gameIsLoading)
     {
         if (gameObjects.loadingFunctions.size() != 0)

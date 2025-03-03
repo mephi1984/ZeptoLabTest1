@@ -29,6 +29,7 @@ private:
     void drawViola(GameObjectManager& gameObjects);
 
     void drawLoadingScreen(const GameObjectManager& gameObjects);
+    void drawFinalScreen(const GameObjectManager& gameObjects);
     void drawMonster(const GameObjectManager& gameObjects);
 
     ShaderManager shaderManager;

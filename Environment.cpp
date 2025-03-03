@@ -31,11 +31,12 @@ int Environment::violaLastWalkFrame = 0;
 int Environment::violaCurrentAnimation = 0;
 float Environment::violaAngleAroundY = 0.f;
 
-bool Environment::settings_inverseVertical = true;
+bool Environment::settings_inverseVertical = false;
 
 SDL_Window* Environment::window = nullptr;
 
 float Environment::cameraDefaultVerticalShift = -150.f;
+float Environment::itemDefaultVerticalShift = -80.f;
 bool Environment::showMouse = false;
 
 bool Environment::exitGameLoop = false;
@@ -44,5 +45,12 @@ bool Environment::gameIsLoading = true;
 
 float Environment::monsterTimer = 0.0;
 int Environment::monsterState = 1;
+
+bool Environment::finalIsGood = false;
+bool Environment::finalIsBad = false;
+
+bool Environment::goToLevel3 = false;
+float Environment::goTolevel3Timer = 0;
+
 
 } // namespace ZL

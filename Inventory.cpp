@@ -4,6 +4,11 @@ namespace ZL
 {
     std::unordered_map<std::string, InventoryItem> gInventoryMap;
 
+    void clear()
+    {
+        gInventoryMap.clear();
+    }
+
     void AddItemToInventory(const std::string& name, std::shared_ptr<Texture> tex, int slot_index)
     {
         if (slot_index > MAX_INVENTORY_SLOTS || slot_index < 1) {

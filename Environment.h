@@ -40,6 +40,7 @@ public:
     static SDL_Window* window;
 
     static float cameraDefaultVerticalShift;
+    static float itemDefaultVerticalShift;
 
     static bool showMouse;
     static bool exitGameLoop;
@@ -48,6 +49,12 @@ public:
 
     static float monsterTimer;
     static int monsterState;
+
+    static bool finalIsGood;
+    static bool finalIsBad;
+
+    static bool goToLevel3;
+    static float goTolevel3Timer;
 
 
 };

@@ -32,8 +32,14 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
         drawLoadingScreen(gameObjects);
     }
     else
+    if (Environment::finalIsBad || Environment::finalIsGood)
+    {
+        drawFinalScreen(gameObjects);
+    }
+    else
     {
         drawWorld(gameObjects);
+        glClear(GL_DEPTH_BUFFER_BIT);
         drawUI(gameObjects);
     }
     CheckGlError();
@@ -177,7 +183,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
     renderer.DrawVertexRenderStruct(gameObjects.rooms[gameObjects.current_room_index].textMeshMutable);
 
-    if (gameObjects.current_room_index == 1)
+    if (gameObjects.current_room_index == 1 && Environment::goToLevel3 == false)
     {
         drawMonster(gameObjects);
     }
@@ -249,7 +255,7 @@ void RenderSystem::drawUI(const GameObjectManager& gameObjects) {
           std::cout << "Found activeObjectScreenTexturePtr" << std::endl;
           int screenX, screenY;
 
-          Vector3f objectPosPlusShift = ao->objectPos + Vector3f{ 0, -Environment::cameraDefaultVerticalShift, 0 };
+          Vector3f objectPosPlusShift = ao->objectPos + Vector3f{ 0, -Environment::itemDefaultVerticalShift, 0 };
 
           worldToScreenCoordinates(objectPosPlusShift, currentProjectionModelView,
                                    Environment::width, Environment::height, screenX, screenY);
@@ -358,6 +364,43 @@ void RenderSystem::drawLoadingScreen(const GameObjectManager& gameObjects)
 
 }
 
+void RenderSystem::drawFinalScreen(const GameObjectManager& gameObjects)
+{
+    renderer.shaderManager.PushShader("default");
+
+    // Если шейдер ожидает атрибуты вершин, их нужно включить
+    static const std::string vPositionName = "vPosition";
+    static const std::string vTexCoordName = "vTexCoord";
+    renderer.EnableVertexAttribArray(vPositionName);
+    renderer.EnableVertexAttribArray(vTexCoordName);
+
+    renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
+        static_cast<float>(Environment::height));
+    renderer.PushMatrix();
+    renderer.LoadIdentity();
+
+    if (Environment::finalIsBad)
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.finalBadTexturePtr->getTexID());
+    }
+    else 
+    {
+        glBindTexture(GL_TEXTURE_2D, gameObjects.finalGoodTexturePtr->getTexID());
+    }
+    renderer.DrawVertexRenderStruct(gameObjects.loadingScreenMeshMutable);
+
+    renderer.PopMatrix();
+    renderer.PopProjectionMatrix();
+
+    // Выключаем атрибуты, чтобы сохранить баланс
+    renderer.DisableVertexAttribArray(vPositionName);
+    renderer.DisableVertexAttribArray(vTexCoordName);
+
+    // Снимаем шейдер, тем самым балансируя стек
+    renderer.shaderManager.PopShader();
+
+}
+
 void RenderSystem::drawMonster(const GameObjectManager& gameObjects)
 {
     renderer.shaderManager.PushShader("default");
@@ -368,7 +411,7 @@ void RenderSystem::drawMonster(const GameObjectManager& gameObjects)
     renderer.EnableVertexAttribArray(vTexCoordName);
 
     renderer.PushProjectionMatrix(static_cast<float>(Environment::width),
-        static_cast<float>(Environment::height), -10, 10);
+        static_cast<float>(Environment::height));
     renderer.PushMatrix();
     renderer.LoadIdentity();
 

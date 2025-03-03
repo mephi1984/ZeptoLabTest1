@@ -98,15 +98,16 @@ public:
     std::shared_ptr<Texture> dialogTexturePtr; // Активная текстура диалога
     bool isDialogActive = false; // Флаг активности диалога
 
-    std::vector<std::string> batteryDialogTextures = { // Список диалогов
-        "./battery_dialog.bmp",
-    };
-    int BatteryDialogIndex = 0; // Текущий индекс диалога
+
     std::shared_ptr<Texture> batteryDialogTexturePtr; // Активная текстура диалога
     bool isBatteryDialogActive = false; // Флаг активности диалога
 
     bool hasChoisedFriendship = false;
     bool hasMadeChoise = false;
+
+    std::shared_ptr<Texture> finalGoodTexturePtr;
+    std::shared_ptr<Texture> finalBadTexturePtr; 
+
 
 private:
     //int animationCounter = 0;

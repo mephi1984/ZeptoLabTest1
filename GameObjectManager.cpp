@@ -30,11 +30,6 @@ void GameObjectManager::initialize() {
 
     initializeLoadingScreen();
 
-    if (!dialogTextures.empty()) { // Проверяем, есть ли диалоги
-        dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
-        isDialogActive = true;
-    }
-
     std::function<bool()> loadingFunction1 = [this]()
         {
 
@@ -76,8 +71,8 @@ void GameObjectManager::initialize() {
 
 
 
-        violaIdleModel.LoadFromFile("./idleviola_uv009.txt");
-        violaWalkModel.LoadFromFile("./walkviola_uv009.txt");
+        violaIdleModel.LoadFromFile("./idleviola_uv010.txt");
+        violaWalkModel.LoadFromFile("./walkviola_uv010.txt");
         sideThreadLoadingCompleted = true;
     });
 
@@ -179,7 +174,7 @@ void GameObjectManager::initialize() {
             lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
             lock.activeObjectMeshMutable.RefreshVBO();
             lock.objectPos = Vector3f{ 101, 100, 255 };
-            lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            lock.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./temno.bmp"));
             lock.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             lock.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             lock.activeObjectScreenMeshMutable.AssignFrom(lock.activeObjectScreenMesh);
@@ -190,15 +185,13 @@ void GameObjectManager::initialize() {
 
             ActiveObject door;
             door.name = "doorGlory";
-            door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
+            door.activeObjectMesh = ZL::LoadFromTextFile("./door001.txt");  // Add ZL:: namespace
             door.activeObjectMesh.Scale(60);
-            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
-            cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(M_PI * 1.5)));
-            // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundX(M_PI * 0.5)));
+            door.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(-M_PI * 0.5)));
             door.activeObjectMeshMutable.AssignFrom(door.activeObjectMesh);
             door.activeObjectMeshMutable.RefreshVBO();
-            door.objectPos = Vector3f{ -372, 10, 80 };
-            door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./Material.001_Base_color_1001_5.bmp"));
+            door.objectPos = Vector3f{ -350, -40, -60 };
+            door.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./door.bmp"));
             door.activeObjectScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./hand.bmp32"));
             door.activeObjectScreenMesh = CreateRect2D({ 0.f, 0.f }, { 64.f, 64.f }, 0.5);
             door.activeObjectScreenMeshMutable.AssignFrom(door.activeObjectScreenMesh);
@@ -295,6 +288,18 @@ void GameObjectManager::initialize() {
             violaTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./viola.bmp"));
 
 
+            if (!dialogTextures.empty()) { // Проверяем, есть ли диалоги
+                dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
+                isDialogActive = true;
+            }
+
+            batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./battery_dialog.bmp"));
+
+
+            finalGoodTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./final_good.bmp"));
+            finalBadTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./final_bad.bmp"));
+
+
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
 
@@ -328,139 +333,157 @@ void GameObjectManager::switch_room(int index){
     activeObjects = rooms[current_room_index].objects;
 
     std::cout << "Current music" << rooms[current_room_index].sound_name << std::endl;
+
+    Environment::cameraShift = Vector3f{};
+    Environment::characterPos = Vector3f{};
 }
 
 void GameObjectManager::handleEvent(const SDL_Event& event) {
     // debug room switching
-    if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
+    /*if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT) {
+        
+    }
+    else */if (event.type == SDL_MOUSEBUTTONDOWN) {
+
+        if (Environment::finalIsBad || Environment::finalIsGood)
+        {
+            return;
+        }
+
         if (isDialogActive) {
             dialogIndex++;
             if (dialogIndex < dialogTextures.size()) {
                 dialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(dialogTextures[dialogIndex]));
-            } else {
+            }
+            else {
                 isDialogActive = false;
             }
         }
-        if (isBatteryDialogActive) {
-        BatteryDialogIndex++;
-        if (BatteryDialogIndex <= batteryDialogTextures.size()) {
-            batteryDialogTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24(batteryDialogTextures[BatteryDialogIndex]));
-        } else {
+        else if (isBatteryDialogActive) {
             isBatteryDialogActive = false;
+
         }
-    }
-    }
-    else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+        else
+        {
+            const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
 
-      if (InventoryItem* item = GetItemSelected(true)) {
-        std::cout << item->name << std::endl;
+            if (InventoryItem* item = GetItemSelected(true)) {
+                std::cout << item->name << std::endl;
 
-        if (current_room_index==0) {
+                if (current_room_index == 0) {
 
-            if (bearName.length() <= 3) {
-              if (item->name == "cube_T"){
-                    bearName += "T";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-                }
-              else if (item->name == "cube_O"){
-                    bearName += "O";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-                }
-              else if (item->name == "cube_M"){
-                    bearName += "M";
-                    selectedCubes.push_back(*item);
-                    gInventoryMap.erase(item->name);
-                    objects_in_inventory--;
-              }
-            }
-        }
-        else if (current_room_index==1) {
-             if (InventoryItem* item = GetItemSelected(true)){
-               std::cout << item->name << std::endl;
-					if (item->name == "carToy") {
-
-                // Проверить, наведена ли мышь на лампу
-                const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
-                std::cout << highlightedObjects.size() << std::endl;
-                for (auto* ao : highlightedObjects) {
-                    if (ao && ao->name == "lampe") {
-                      isBatteryDialogActive = true;
-                            // Create a new lamp object with updated texture
-                            ActiveObject updatedLamp = *ao;
-                            // Change from dark to lit texture
-                            updatedLamp.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./base_Base_color_1001.bmp"));
-
-                            // Replace the old lamp with updated one
-                            rooms[current_room_index].removeByPtr(ao);
-                            rooms[current_room_index].objects.push_back(updatedLamp);
-                            activeObjects = rooms[current_room_index].objects;
-
-                            // Remove car from inventory
+                    if (bearName.length() <= 3) {
+                        if (item->name == "cube_T") {
+                            bearName += "T";
+                            selectedCubes.push_back(*item);
                             gInventoryMap.erase(item->name);
                             objects_in_inventory--;
-
-                            // Play sound effect
-//                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
-
-                            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
-                            objects_in_inventory++;
-                            switch_room(2);
-                            break;
                         }
+                        else if (item->name == "cube_O") {
+                            bearName += "O";
+                            selectedCubes.push_back(*item);
+                            gInventoryMap.erase(item->name);
+                            objects_in_inventory--;
+                        }
+                        else if (item->name == "cube_M") {
+                            bearName += "M";
+                            selectedCubes.push_back(*item);
+                            gInventoryMap.erase(item->name);
+                            objects_in_inventory--;
+                        }
+                    }
                 }
+                else if (current_room_index == 1) {
+                    if (InventoryItem* item = GetItemSelected(true)) {
+                        std::cout << item->name << std::endl;
+                        if (item->name == "carToy") {
+
+                            // Проверить, наведена ли мышь на лампу
+                            const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+                            std::cout << highlightedObjects.size() << std::endl;
+                            for (auto* ao : highlightedObjects) {
+                                if (ao && ao->name == "lampe") {
+
+                                    // Create a new lamp object with updated texture
+                                    ActiveObject updatedLamp = *ao;
+                                    // Change from dark to lit texture
+                                    updatedLamp.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./base_Base_color_1001.bmp"));
+
+                                    // Replace the old lamp with updated one
+                                    rooms[current_room_index].removeByPtr(ao);
+                                    rooms[current_room_index].objects.push_back(updatedLamp);
+                                    activeObjects = rooms[current_room_index].objects;
+
+                                    // Remove car from inventory
+                                    gInventoryMap.erase(item->name);
+                                    objects_in_inventory--;
+
+                                    // Play sound effect
+        //                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+
+                                    //AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
+                                    //objects_in_inventory++;
+                                    //switch_room(2);
+
+                                    Environment::goToLevel3 = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (current_room_index == 2) {
+                    if (InventoryItem* item = GetItemSelected(true)) {
+                        if (item->name == "lockFriend") {}
+                    }
                 }
             }
+            else {
+                const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
+
+                for (auto* ao : highlightedObjects) {
+                    if (!ao) {
+                        continue;
+                    }
+
+                    if (ao->name != "lampe" && ao->name != "doorGlory" && ao->name != "lockFriend") {
+                        AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory + 1);
+
+                        objects_in_inventory++;
+
+                        rooms[current_room_index].removeByPtr(ao);
+                        activeObjects = rooms[current_room_index].objects;
+                    }
+                    else if (current_room_index == 1 && ao->name == "lampe")
+                    {
+                        if (isBatteryDialogActive == false)
+                        {
+                            isBatteryDialogActive = true;
+                        }
+                    }
+                    else if (current_room_index == 2 && ao->name == "doorGlory") {
+                        hasMadeChoise = true;
+                        hasChoisedFriendship = false;
+
+                        //              debug switching
+                        Environment::finalIsBad = true;
+                    }
+                    else if (current_room_index == 2 && ao->name == "lockFriend") {
+                        hasMadeChoise = true;
+                        hasChoisedFriendship = true;
+
+                        //              debug switching
+                        Environment::finalIsGood = true;
+                    }
+
+
+                    //aoMgr.removeByName(ao->name);
+                }
+                // bx.Interpolate(animationCounter);
+                // animationCounter += 2;
+            }
         }
-        else if (current_room_index==2) {
-          if (InventoryItem* item = GetItemSelected(true)){
-            if (item->name == "lockFriend"){}
-          }
-        }
-      }
-      else {
-          const auto highlightedObjects = rooms[current_room_index].findByHighlighted(true);
-
-        for (auto* ao : highlightedObjects) {
-            if (!ao) {
-                continue;
-            }
-
-            if (ao->name != "lampe" && ao->name != "doorGlory" && ao->name != "lockFriend" ) {
-            AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
-
-            objects_in_inventory++;
-
-            rooms[current_room_index].removeByPtr(ao);
-            activeObjects = rooms[current_room_index].objects;
-            }
-            else if (ao->name != "doorGlory"){
-              hasMadeChoise = true;
-              hasChoisedFriendship = false;
-
-//              debug switching
-              switch_room(0);
-            }
-            else if (ao->name != "lockFriend"){
-              hasMadeChoise = true;
-              hasChoisedFriendship = true;
-
-              //              debug switching
-              switch_room(0);
-            }
-
-
-            //aoMgr.removeByName(ao->name);
-        }
-        // bx.Interpolate(animationCounter);
-        // animationCounter += 2;
-       }
     }
-
     else if (event.type == SDL_MOUSEWHEEL) {
         static const float zoomstep = 1.0f;
         if (event.wheel.y > 0) {
@@ -478,6 +501,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
     }
     else if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
+            case SDLK_i:
+                Environment::settings_inverseVertical = !Environment::settings_inverseVertical;
+                break;
             case SDLK_SPACE:
                 Environment::showMouse = !Environment::showMouse;
 
@@ -502,6 +528,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_LEFT:
             case SDLK_a:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::leftPressed = true;
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
@@ -511,6 +541,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::rightPressed = true;
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
@@ -520,6 +554,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_UP:
             case SDLK_w:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::upPressed = true;
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
@@ -529,6 +567,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_DOWN:
             case SDLK_s:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::downPressed = true;
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
                 if (Environment::violaCurrentAnimation == 0) {
@@ -546,7 +588,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_8:
             case SDLK_9:
                 {
-
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 UnselectAllItems();
                 if (InventoryItem* item = GetItemByHotkey(event.key.keysym.sym - SDLK_1 + 1)) {
                     item->isSelected = true;
@@ -556,10 +601,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
             case SDLK_RSHIFT:
             case SDLK_LSHIFT: {
                 // Switch to next room
-                int nextRoom = current_room_index + 1;
+                /*int nextRoom = current_room_index + 1;
                 if (nextRoom < rooms.size()) {
                     switch_room(nextRoom);
-                }
+                }*/
                 break;
             }
         }
@@ -568,6 +613,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         switch (event.key.keysym.sym) {
             case SDLK_LEFT:
             case SDLK_a:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::leftPressed = false;
                 if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
                     if (Environment::violaCurrentAnimation == 1) {
@@ -578,6 +627,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_RIGHT:
             case SDLK_d:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::rightPressed = false;
                 if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
                     if (Environment::violaCurrentAnimation == 1) {
@@ -588,6 +641,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_UP:
             case SDLK_w:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::upPressed = false;
                 if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
                     if (Environment::violaCurrentAnimation == 1) {
@@ -598,6 +655,10 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 break;
             case SDLK_DOWN:
             case SDLK_s:
+                if (Environment::finalIsBad || Environment::finalIsGood)
+                {
+                    return;
+                }
                 Environment::downPressed = false;
                 if (!Environment::leftPressed && !Environment::rightPressed && !Environment::upPressed && !Environment::downPressed) {
                     if (Environment::violaCurrentAnimation == 1) {
@@ -774,6 +835,18 @@ void GameObjectManager::updateScene(size_t ms) {
             Environment::monsterState = 0;
         }
     }
+
+    if (Environment::goToLevel3)
+    {
+        Environment::goTolevel3Timer += ms;
+
+        if (Environment::goTolevel3Timer > 1500)
+        {
+            Environment::goToLevel3 = false;
+            switch_room(2);
+        }
+    }
+
 
     //float Environment::monsterTimer = 0.0;
     //int Environment::monsterState = 1;
