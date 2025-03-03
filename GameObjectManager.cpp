@@ -58,7 +58,7 @@ void GameObjectManager::initialize() {
 
     loadingThread = std::thread([this]() {
         
-        preloadedRoomMeshArr.resize(2);
+        preloadedRoomMeshArr.resize(3);
 
         preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
         preloadedRoomMeshArr[0].Scale(10);
@@ -67,6 +67,12 @@ void GameObjectManager::initialize() {
         preloadedRoomMeshArr[1] = ZL::LoadFromTextFile("./secondroom001.txt");
         preloadedRoomMeshArr[1].Scale(10);
         preloadedRoomMeshArr[1].Move(Vector3f{ 0, 93, 0 });
+
+
+        preloadedRoomMeshArr[2] = ZL::LoadFromTextFile("./thirdroom.txt");
+        preloadedRoomMeshArr[2].Scale(10);
+        preloadedRoomMeshArr[2].Move(Vector3f{ 0, 93, 0 });
+
 
 
 
@@ -202,6 +208,24 @@ void GameObjectManager::initialize() {
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
             room_2.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
             rooms.push_back(room_2);
+
+            activeObjects = rooms[current_room_index].objects;
+
+
+
+
+            Room room_3;
+            room_3.roomTexture = std::make_shared<Texture>(CreateTextureDataFromBmp24("./seconroom.bmp"));
+            room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
+            room_3.roomLogic = createRoom2Logic();
+            room_3.textMesh = preloadedRoomMeshArr[2];
+            room_3.textMeshMutable.AssignFrom(room_3.textMesh);
+            room_3.collisionMgr.setRoomBoundary(790, 790);
+            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -166 }, Vector3f{ 398, 0, -154 }));
+            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -328, 0, 182 }, Vector3f{ -216, 0, 332 }));
+            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ -227, 0, -400 }, Vector3f{ -208, 0, -165}));
+            room_3.collisionMgr.addCollider(std::make_shared<RectangleCollider>(Vector3f{ 263, 0, 295 }, Vector3f{ 303, 0, 335 }));
+            rooms.push_back(room_3);
 
             activeObjects = rooms[current_room_index].objects;
 
@@ -467,7 +491,15 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 }
             }
             break;
-            // ...handle other keys...
+            case SDLK_RSHIFT:
+            case SDLK_LSHIFT: {
+                // Switch to next room
+                int nextRoom = current_room_index + 1;
+                if (nextRoom < rooms.size()) {
+                    switch_room(nextRoom);
+                }
+                break;
+            }
         }
     }
     else if (event.type == SDL_KEYUP) {
