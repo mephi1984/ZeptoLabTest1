@@ -90,6 +90,7 @@ public:
     std::vector<std::string> dialogTextures = { // Список диалогов
         "./start_dialog.bmp",
         "./next_dialog.bmp",
+        "./final_dialog.bmp",
     };
     int dialogIndex = 0; // Текущий индекс диалога
     std::shared_ptr<Texture> dialogTexturePtr; // Активная текстура диалога
