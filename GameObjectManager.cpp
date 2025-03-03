@@ -316,11 +316,24 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 std::cout << highlightedObjects.size() << std::endl;
                 for (auto* ao : highlightedObjects) {
                     if (ao && ao->name == "lampe") {
-//                        ao->activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("base_Base_color_1001.bmp"));
-                        gInventoryMap.erase(item->name);
-                        objects_in_inventory--;
-                        break;
-                    }
+                            // Create a new lamp object with updated texture
+                            ActiveObject updatedLamp = *ao;
+                            // Change from dark to lit texture
+                            updatedLamp.activeObjectTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./base_Base_color_1001.bmp"));
+
+                            // Replace the old lamp with updated one
+                            rooms[current_room_index].removeByPtr(ao);
+                            rooms[current_room_index].objects.push_back(updatedLamp);
+                            activeObjects = rooms[current_room_index].objects;
+
+                            // Remove car from inventory
+                            gInventoryMap.erase(item->name);
+                            objects_in_inventory--;
+
+                            // Play sound effect
+                            audioPlayerAsync.playSoundAsync("lamp_on.ogg");
+                            break;
+                        }
                 }
                 }
             }
