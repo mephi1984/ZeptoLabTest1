@@ -44,4 +44,14 @@ namespace ZL
         };
     }
 
+
+    std::function<void(GameObjectManager&, size_t)> createRoom3Logic()
+    {
+        return [](GameObjectManager& gom, size_t ms)
+//      Simple test logic
+        {
+
+        };
+    }
+
 }

@@ -173,7 +173,7 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject lock;
-            lock.name = "lock";
+            lock.name = "lockFriend";
             lock.activeObjectMesh = ZL::LoadFromTextFile("./lock.txt");  // Add ZL:: namespace
             lock.activeObjectMesh.Scale(2);
             lock.activeObjectMeshMutable.AssignFrom(lock.activeObjectMesh);
@@ -189,7 +189,7 @@ void GameObjectManager::initialize() {
 
 
             ActiveObject door;
-            door.name = "door";
+            door.name = "doorGlory";
             door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
             door.activeObjectMesh.Scale(60);
             // cubeForFirstRoomO.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundZ(M_PI * 0.5)));
@@ -254,7 +254,7 @@ void GameObjectManager::initialize() {
             room_3.sound_name = "unseen-danger-fss-no-copyright-music-252588--online-audio-convert.com.ogg";
             room_3.objects.push_back(lock);
             room_3.objects.push_back(door);
-            room_3.roomLogic = createRoom1Logic();
+            room_3.roomLogic = createRoom3Logic();
             room_3.textMesh = preloadedRoomMeshArr[2];
             room_3.textMeshMutable.AssignFrom(room_3.textMesh);
             room_3.collisionMgr.setRoomBoundary(790, 790);
@@ -378,13 +378,6 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     objects_in_inventory--;
               }
             }
-            else if (bearName.length() >= 3 && !(bearName.compare("TOM") == 0)) {
-              bearName = "";
-              for (const auto& cube : selectedCubes) {
-                gInventoryMap[cube.name] = cube;
-            }
-              selectedCubes.clear();
-            }
         }
         else if (current_room_index==1) {
              if (InventoryItem* item = GetItemSelected(true)){
@@ -425,7 +418,7 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
         }
         else if (current_room_index==2) {
           if (InventoryItem* item = GetItemSelected(true)){
-
+            if (item->name == "lockFriend"){}
           }
         }
       }
@@ -437,13 +430,27 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 continue;
             }
 
-            if (ao->name != "lampe") {
+            if (ao->name != "lampe" && ao->name != "doorGlory" && ao->name != "lockFriend" ) {
             AddItemToInventory(ao->name, ao->inventoryIconTexturePtr, objects_in_inventory+1);
 
             objects_in_inventory++;
 
             rooms[current_room_index].removeByPtr(ao);
             activeObjects = rooms[current_room_index].objects;
+            }
+            else if (ao->name != "doorGlory"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = false;
+
+//              debug switching
+              switch_room(0);
+            }
+            else if (ao->name != "lockFriend"){
+              hasMadeChoise = true;
+              hasChoisedFriendship = true;
+
+              //              debug switching
+              switch_room(0);
             }
 
 
