@@ -45,3 +45,8 @@ $(pkg-config --cflags --libs vorbis vorbisfile ogg) \
 -lopenal
 
 ```
+
+# License
+Code: MIT
+
+Art: CC-BY
