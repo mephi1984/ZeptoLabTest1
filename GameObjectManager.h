@@ -61,7 +61,9 @@ public:
 
     std::string bearName;
 
+    #ifdef AUDIO
     AudioPlayerAsync audioPlayerAsync;
+    #endif
 
     ZL::VertexDataStruct inventoryIconMesh;
     ZL::VertexRenderStruct inventoryIconMeshMutable;

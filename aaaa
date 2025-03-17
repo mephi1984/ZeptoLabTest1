@@ -17,3 +17,13 @@ void main()
 
 
 In windows it is ok. In linux, error: Failed to compile fragment shader code!
+
+Run using cmakelist
+make -j$(nproc) -C build
+./build/sdl_app
+
+Для постройки без звука
+1. Очищаем build папку
+rm -rf build
+2. Пересоздаём конфигурацию CMake
+cmake -B build -DAUDIO=OFF

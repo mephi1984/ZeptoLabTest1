@@ -1,4 +1,7 @@
 #pragma once
+
+#ifdef AUDIO
+
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -6,6 +9,7 @@
 #include <queue>
 #include <functional>
 #include "cmakeaudioplayer/include/AudioPlayer.hpp"
+
 
 class AudioPlayerAsync {
 public:
@@ -45,3 +49,5 @@ private:
     void workerThread();
 
 };
+
+#endif 

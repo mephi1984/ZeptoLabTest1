@@ -1,0 +1,3 @@
+/home/romazan/Рабочий стол/cproject/build/CMakeFiles/sdl_app.dir
+/home/romazan/Рабочий стол/cproject/build/CMakeFiles/edit_cache.dir
+/home/romazan/Рабочий стол/cproject/build/CMakeFiles/rebuild_cache.dir

@@ -43,7 +43,6 @@ g++ Game.cpp main.cpp Math.cpp OpenGlExtensions.cpp Physics.cpp Renderer.cpp Sha
 $(pkg-config --cflags --libs sdl2 gl) \
 $(pkg-config --cflags --libs vorbis vorbisfile ogg) \
 -lopenal
-
 ```
 
 # License

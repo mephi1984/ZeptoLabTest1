@@ -19,7 +19,7 @@ public:
     
     bool shouldExit() const { return Environment::exitGameLoop; }
 
-private:
+private:    
     void processTickCount();
     void drawScene();
 

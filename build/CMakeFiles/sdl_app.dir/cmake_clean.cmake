@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/sdl_app.dir/BoneAnimatedModel.cpp.o"
+  "CMakeFiles/sdl_app.dir/BoneAnimatedModel.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Environment.cpp.o"
+  "CMakeFiles/sdl_app.dir/Environment.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Game.cpp.o"
+  "CMakeFiles/sdl_app.dir/Game.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/GameObjectManager.cpp.o"
+  "CMakeFiles/sdl_app.dir/GameObjectManager.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Inventory.cpp.o"
+  "CMakeFiles/sdl_app.dir/Inventory.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Math.cpp.o"
+  "CMakeFiles/sdl_app.dir/Math.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/ObjLoader.cpp.o"
+  "CMakeFiles/sdl_app.dir/ObjLoader.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/OpenGlExtensions.cpp.o"
+  "CMakeFiles/sdl_app.dir/OpenGlExtensions.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Physics.cpp.o"
+  "CMakeFiles/sdl_app.dir/Physics.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/QuestScripts.cpp.o"
+  "CMakeFiles/sdl_app.dir/QuestScripts.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/RenderSystem.cpp.o"
+  "CMakeFiles/sdl_app.dir/RenderSystem.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Renderer.cpp.o"
+  "CMakeFiles/sdl_app.dir/Renderer.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/ShaderManager.cpp.o"
+  "CMakeFiles/sdl_app.dir/ShaderManager.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/TextModel.cpp.o"
+  "CMakeFiles/sdl_app.dir/TextModel.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/TextureManager.cpp.o"
+  "CMakeFiles/sdl_app.dir/TextureManager.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/Utils.cpp.o"
+  "CMakeFiles/sdl_app.dir/Utils.cpp.o.d"
+  "CMakeFiles/sdl_app.dir/main.cpp.o"
+  "CMakeFiles/sdl_app.dir/main.cpp.o.d"
+  "sdl_app"
+  "sdl_app.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/sdl_app.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

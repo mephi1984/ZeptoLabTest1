@@ -136,7 +136,9 @@ void Game::update() {
             {
                 gameObjects.loadingThread.join();
             }
+            #ifdef AUDIO
             gameObjects.audioPlayerAsync.exit();
+            #endif
             Environment::exitGameLoop = true;
             
         }

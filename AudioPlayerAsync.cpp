@@ -1,3 +1,5 @@
+#ifdef AUDIO
+
 #include "AudioPlayerAsync.h"
 
 
@@ -88,3 +90,4 @@ void AudioPlayerAsync::workerThread() {
     }
 }
 
+#endif

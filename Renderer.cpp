@@ -352,7 +352,6 @@ namespace ZL {
 		glDepthFunc(GL_LEQUAL);
 
 		CheckGlError();
-
 	}
 
 	void Renderer::PushProjectionMatrix(float width, float height, float zNear, float zFar)

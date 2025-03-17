@@ -5,6 +5,8 @@
 #include "QuestScripts.h"
 #include "TextModel.h"  // Add this include for LoadFromTextFile
 
+#include <iostream>
+
 namespace ZL {
 
 const float GameObjectManager::INVENTORY_ICON_SIZE = 44.0f;
@@ -54,7 +56,6 @@ void GameObjectManager::initialize() {
     loadingThread = std::thread([this]() {
         
         preloadedRoomMeshArr.resize(3);
-
         preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
         preloadedRoomMeshArr[0].Scale(10);
         preloadedRoomMeshArr[0].Move(Vector3f{ 0, 93, 0 });
@@ -99,7 +100,7 @@ void GameObjectManager::initialize() {
             cubeForFirstRoomT.activeObjectScreenMeshMutable.AssignFrom(cubeForFirstRoomT.activeObjectScreenMesh);
             cubeForFirstRoomT.activeObjectScreenMeshMutable.RefreshVBO();
             cubeForFirstRoomT.inventoryIconTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp32("./textures/inventory_objects/cubic_T_icon.bmp32"));
-
+            
 
             ActiveObject cubeForFirstRoomO;
             cubeForFirstRoomO.name = "cube_O";
@@ -185,7 +186,7 @@ void GameObjectManager::initialize() {
 
             ActiveObject door;
             door.name = "doorGlory";
-            door.activeObjectMesh = ZL::LoadFromTextFile("./door001.txt");  // Add ZL:: namespace
+            door.activeObjectMesh = ZL::LoadFromTextFile("./door.txt");  // Add ZL:: namespace
             door.activeObjectMesh.Scale(60);
             door.activeObjectMesh.RotateByMatrix(QuatToMatrix(QuatFromRotateAroundY(-M_PI * 0.5)));
             door.activeObjectMeshMutable.AssignFrom(door.activeObjectMesh);
@@ -261,9 +262,10 @@ void GameObjectManager::initialize() {
             if (audioPlayer) {
                 audioPlayer->playMusic(rooms[current_room_index].sound_name);
             }*/
+            #ifdef AUDIO
             audioPlayerAsync.resetAsync();
             audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
-
+            #endif
             // Initialize inventory
             inventoryIconMesh = CreateRect2D(
                 { 0.0f, 40.0f },
@@ -326,10 +328,11 @@ void GameObjectManager::switch_room(int index){
     if (audioPlayer) {
         audioPlayer->playMusic(rooms[current_room_index].sound_name);
     }*/
+    #ifdef AUDIO
     audioPlayerAsync.stopAsync();
     audioPlayerAsync.resetAsync();
     audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
-
+    #endif
     activeObjects = rooms[current_room_index].objects;
 
     std::cout << "Current music" << rooms[current_room_index].sound_name << std::endl;
@@ -523,7 +526,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                 {
                     loadingThread.join();
                 }
+                #ifdef AUDIO
                 audioPlayerAsync.exit();
+                #endif
                 Environment::exitGameLoop = true;
                 break;
             case SDLK_LEFT:
@@ -533,7 +538,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     return;
                 }
                 Environment::leftPressed = true;
+                #ifdef AUDIO
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
+                #endif
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -546,7 +553,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     return;
                 }
                 Environment::rightPressed = true;
+                #ifdef AUDIO
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
+                #endif
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -559,7 +568,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     return;
                 }
                 Environment::upPressed = true;
+                #ifdef AUDIO
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
+                #endif
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
@@ -572,7 +583,9 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
                     return;
                 }
                 Environment::downPressed = true;
+                #ifdef AUDIO
                 audioPlayerAsync.playSoundAsync("walk.ogg"); // Заменено
+                #endif
                 if (Environment::violaCurrentAnimation == 0) {
                     Environment::violaCurrentAnimation = 1;
                     Environment::violaLastWalkFrame = -1;
