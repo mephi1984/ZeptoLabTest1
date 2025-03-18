@@ -8,14 +8,29 @@ namespace ZL
 {
 
 
-	VertexDataStruct LoadFromTextFile(const std::string& fileName)
+	VertexDataStruct LoadFromTextFile(const std::string& fileName,  const std::string& ZIPFileName)
 	{
 		VertexDataStruct result;
-
-		std::ifstream f(fileName);
+		std::ifstream filestream;
+		std::istringstream zipStream;
+	
+		if (!ZIPFileName.empty())
+		{
+			std::vector<char> fileData = readFileFromZIP(fileName, ZIPFileName);
+			std::string fileContents(fileData.begin(), fileData.end());
+			zipStream.str(fileContents);
+		}
+		else
+		{
+			filestream.open(fileName);
+		}
+	
+		// Создаем ссылку f на нужный поток – после этого код ниже остается без изменений
+		std::istream& f = (!ZIPFileName.empty()) ? static_cast<std::istream&>(zipStream) : static_cast<std::istream&>(filestream);
+	
 
 		//Skip first 5 lines
-		std::string tempLine;
+		std::string tempLine;	
 
 		std::getline(f, tempLine);
 

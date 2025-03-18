@@ -75,12 +75,7 @@ namespace ZL
 		TextureDataStruct texData;
 		std::vector<char> fileArr;
 
-		if (!ZIPFileName.empty()) {
-			fileArr = readFileFromZIP(fullFileName, ZIPFileName);
-		}
-		else {
-			fileArr = readFile(fullFileName);
-		}
+		fileArr = !ZIPFileName.empty() ? readFileFromZIP(fullFileName, ZIPFileName) : readFile(fullFileName);
 
 		size_t fileSize = fileArr.size();
 
@@ -129,12 +124,7 @@ namespace ZL
 		TextureDataStruct texData;
 		std::vector<char> fileArr;
 		
-		if (!ZIPFileName.empty()) {
-			fileArr = readFileFromZIP(fullFileName, ZIPFileName);
-		}
-		else {
-			fileArr = readFile(fullFileName);
-		}
+		fileArr = !ZIPFileName.empty() ? readFileFromZIP(fullFileName, ZIPFileName) : readFile(fullFileName);
 
 		size_t fileSize = fileArr.size();
 

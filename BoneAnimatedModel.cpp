@@ -21,11 +21,23 @@ namespace ZL
 	}
 
 
-	void BoneSystem::LoadFromFile(const std::string& fileName)
+	void BoneSystem::LoadFromFile(const std::string& fileName, const std::string& ZIPFileName)
 	{
-		
-
-		std::ifstream f(fileName);
+		std::ifstream filestream;
+		std::istringstream zipStream;
+	
+		if (!ZIPFileName.empty())
+		{
+			std::vector<char> fileData = readFileFromZIP(fileName, ZIPFileName);
+			std::string fileContents(fileData.begin(), fileData.end());
+			zipStream.str(fileContents);
+		}
+		else
+		{
+			filestream.open(fileName);
+		}
+	
+		std::istream& f = (!ZIPFileName.empty()) ? static_cast<std::istream&>(zipStream) : static_cast<std::istream&>(filestream);
 
 		//Skip first 5 lines
 		std::string tempLine;

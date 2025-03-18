@@ -12,8 +12,8 @@ namespace ZL
 		Vector3f boneStartWorld;
 		float boneLength;
 		Matrix4f boneMatrixWorld;
-		// boneVector = boneLength * (0, 1, 0) в осях блендера
-		// Then multiply by boneMatrixWorld и вы получите конечную точку
+		// boneVector = boneLength * (0, 1, 0) пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// Then multiply by boneMatrixWorld пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 		int parent;
 		std::vector<int> children;
@@ -49,7 +49,7 @@ namespace ZL
 
 		std::vector<Animation> animations;
 
-		void LoadFromFile(const std::string& fileName);
+		void LoadFromFile(const std::string& fileName, const std::string& ZIPFileName = "");
 
 		void Interpolate(int frame);
 	};

@@ -7,7 +7,7 @@
 
 namespace ZL
 {
-	VertexDataStruct LoadFromTextFile(const std::string& fileName);
+	VertexDataStruct LoadFromTextFile(const std::string& fileName, const std::string& ZIPFileName = "");
 
 
 
