@@ -1,22 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Название проекта
 project(SDLApp VERSION 1.0 LANGUAGES CXX)
 
-# Устанавливаем стандарт C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Активируем многопоточность
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-# Находим библиотеки с помощью pkg-config
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(GL REQUIRED gl)
 
-option(AUDIO "Enable audio support" ON)
+option(AUDIO "Audio support" OFF)
+
+if(AUDIO)
+    set(AUDIO ON)
+else()
+    set(AUDIO OFF)
+endif()
 
 if(AUDIO)
     pkg_check_modules(VORBIS REQUIRED vorbis vorbisfile ogg)
@@ -24,7 +26,6 @@ if(AUDIO)
     add_definitions(-DAUDIO)  
 endif()
 
-# Определяем исполняемый файл и исходники
 add_executable(sdl_app 
     Game.cpp
     main.cpp
