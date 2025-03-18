@@ -121,11 +121,27 @@ namespace ZL {
 	}
 
 
-	void ShaderManager::AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName)
+	void ShaderManager::AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName, const std::string& ZIPFileName)
 	{
-		std::string vertexShader = readTextFile(vertexShaderFileName);
 
-		std::string fragmentShader = readTextFile(fragmentShaderFileName);
+		std::string vertexShader;
+		std::string fragmentShader;
+
+		if (!ZIPFileName.empty()){
+
+			std::vector<char> vertexShaderData;
+			std::vector<char> fragmentShaderData;
+		
+			vertexShaderData = readFileFromZIP(vertexShaderFileName, ZIPFileName);
+			fragmentShaderData = readFileFromZIP(fragmentShaderFileName, ZIPFileName);
+
+			vertexShader = std::string(vertexShaderData.begin(), vertexShaderData.end());
+			fragmentShader = std::string(fragmentShaderData.begin(), fragmentShaderData.end());
+
+		}else{
+			vertexShader = readTextFile(vertexShaderFileName);
+			fragmentShader = readTextFile(fragmentShaderFileName);
+		}
 
                 ///std::cout << "Shader: "<< vertexShader << std::endl;
 		shaderResourceMap[shaderName] = std::make_shared<ShaderResource>(vertexShader, fragmentShader);

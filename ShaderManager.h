@@ -37,7 +37,7 @@ namespace ZL {
 		std::stack<std::string> shaderStack;
 
 	public:
-		void AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName);
+		void AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName, const std::string& ZIPFileName = "");
 
 		void PushShader(const std::string& shaderName);
 		void PopShader();
