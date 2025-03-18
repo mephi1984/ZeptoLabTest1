@@ -13,6 +13,8 @@ namespace ZL
 
 	std::vector<char> readFile(const std::string& filename);
 
+	std::vector<char> readFileFromZIP(const std::string& filename, const std::string& zipfilename);
+
 	bool findString(const char* in, char* list);
 
 }

@@ -69,12 +69,13 @@ namespace ZL
 
 
 
-	TextureDataStruct CreateTextureDataFromBmp24(const std::string& fullFileName)
+	TextureDataStruct CreateTextureDataFromBmp24(const std::string& fullFileName, const std::string& ZIPFileName)
 	{
 
 		TextureDataStruct texData;
-		
-		std::vector<char> fileArr = readFile(fullFileName);
+		std::vector<char> fileArr;
+		if (!ZIPFileName.empty()) fileArr = readFileFromZIP(fullFileName, ZIPFileName);
+		else fileArr = readFile(fullFileName);
 
 		size_t fileSize = fileArr.size();
 
@@ -117,12 +118,13 @@ namespace ZL
 		return texData;
 	}
 
-	TextureDataStruct CreateTextureDataFromBmp32(const std::string& fullFileName)
+	TextureDataStruct CreateTextureDataFromBmp32(const std::string& fullFileName, const std::string& ZIPFileName)
 	{
 
 		TextureDataStruct texData;
-
-		std::vector<char> fileArr = readFile(fullFileName);
+		std::vector<char> fileArr;
+		if (!ZIPFileName.empty()) fileArr = readFileFromZIP(fullFileName, ZIPFileName);
+		else fileArr = readFile(fullFileName);
 
 		size_t fileSize = fileArr.size();
 

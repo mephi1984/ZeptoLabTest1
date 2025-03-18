@@ -69,6 +69,15 @@
         "ios": "cpp",
         "locale": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "codecvt": "cpp",
+        "map": "cpp",
+        "numeric": "cpp",
+        "regex": "cpp",
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     }
 }

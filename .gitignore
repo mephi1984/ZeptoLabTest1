@@ -392,3 +392,6 @@ FodyWeavers.xsd
 sdl_app
 
 *.sln.iml
+
+images.zip
+script.py

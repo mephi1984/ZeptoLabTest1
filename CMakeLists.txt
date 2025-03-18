@@ -11,6 +11,7 @@ find_package(Threads REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(GL REQUIRED gl)
+pkg_check_modules(LIBZIP REQUIRED libzip)
 
 option(AUDIO "Audio support" OFF)
 
@@ -56,6 +57,7 @@ endif()
 target_include_directories(sdl_app PRIVATE
     ${SDL2_INCLUDE_DIRS}
     ${GL_INCLUDE_DIRS}
+    ${LIBZIP_INCLUDE_DIRS}
 )
 
 if(AUDIO)
@@ -70,6 +72,7 @@ target_link_libraries(sdl_app
     ${SDL2_LIBRARIES}
     ${GL_LIBRARIES}
     Threads::Threads
+    ${LIBZIP_LIBRARIES}
 )
 
 if(AUDIO)
