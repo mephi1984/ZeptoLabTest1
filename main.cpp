@@ -1,6 +1,9 @@
 #include "Game.h"
 #include "Environment.h"
-
+ZL::Game game;
+void MainLoop() {
+    game.update();
+}
 int main(int argc, char* argv[]) {
     constexpr int CONST_WIDTH = 1280;
     constexpr int CONST_HEIGHT = 720;
@@ -8,11 +11,10 @@ int main(int argc, char* argv[]) {
     ZL::Environment::width = CONST_WIDTH;
     ZL::Environment::height = CONST_HEIGHT;
 
-    ZL::Game game;
     game.setup();
 
 #ifdef EMSCRIPTEN
-    emscripten_set_main_loop([](){ game.update(); }, 0, 1);
+    emscripten_set_main_loop(MainLoop, 0, 1);
 #else
     while (!game.shouldExit()) {
         game.update();

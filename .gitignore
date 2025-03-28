@@ -17,7 +17,7 @@
 
 # Mono auto generated files
 mono_crash.*
-
+.........................................................................
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -395,3 +395,6 @@ sdl_app
 
 images.zip
 script.py
+
+jumpingbird.*
+build
