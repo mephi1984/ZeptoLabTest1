@@ -1,0 +1,1 @@
+"/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/autoclose-archive.dir/objects1.rsp -o autoclose-archive.js @CMakeFiles/autoclose-archive.dir/linkLibs.rsp

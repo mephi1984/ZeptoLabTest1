@@ -1,0 +1,1 @@
+"/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/example64.dir/objects1.rsp -o example64.js @CMakeFiles/example64.dir/linkLibs.rsp

@@ -1,6 +1,7 @@
 #include "OpenGlExtensions.h"
 
 #include "Utils.h"
+#include <iostream>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 
@@ -326,7 +327,6 @@ namespace ZL {
 	void CheckGlError()
 	{
 		size_t error = glGetError();
-
 		if (error != GL_NO_ERROR)
 		{
 			throw std::runtime_error("Gl error");

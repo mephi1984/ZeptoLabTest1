@@ -1,0 +1,1 @@
+"/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/ziptool.dir/objects1.rsp -o ziptool.js @CMakeFiles/ziptool.dir/linkLibs.rsp

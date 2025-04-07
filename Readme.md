@@ -61,6 +61,10 @@ emcmake cmake ..
 
 emcc main.cpp Game.cpp Environment.cpp GameObjectManager.cpp BoneAnimatedModel.cpp GameWorld.cpp InputManager.cpp Inventory.cpp ObjLoader.cpp QuestScripts.cpp RenderSystem.cpp  Math.cpp Physics.cpp Renderer.cpp TextModel.cpp  ShaderManager.cpp TextureManager.cpp Utils.cpp OpenGlExtensions.cpp -O2 -std=c++14 -IC:\Users\ASUS\Desktop\fishrungame2\ZeptoLabTest1\thirdparty\libzip-1.11.3\build-emcmake\install\include -LC:\Users\ASUS\Desktop\fishrungame2\ZeptoLabTest1\thirdparty\libzip-1.11.3\build-emcmake\install\lib -lzip -sTOTAL_MEMORY=33554432 -sUSE_SDL_IMAGE=2 -sSDL2_IMAGE_FORMATS="[""png""]" -sUSE_SDL=2 --preload-file background.bmp --preload-file bird.bmp32 --preload-file default.fragment --preload-file default.vertex --preload-file game_over.bmp32 --preload-file pipe.bmp32 -o jumpingbird.html
 
+
+emcc main.cpp Game.cpp Environment.cpp GameObjectManager.cpp BoneAnimatedModel.cpp GameWorld.cpp InputManager.cpp Inventory.cpp ObjLoader.cpp QuestScripts.cpp RenderSystem.cpp Math.cpp Physics.cpp Renderer.cpp TextModel.cpp ShaderManager.cpp TextureManager.cpp Utils.cpp OpenGlExtensions.cpp -O2 -std=c++14 -pthread -sUSE_PTHREADS=1 -sPTHREAD_POOL_SIZE=4 -I./thirdparty/libzip-1.11.3/build-emcmake/install/include -I./thirdparty/zlib-1.3.1/install/include -L./thirdparty/libzip-1.11.3/build-emcmake/install/lib -L./thirdparty/zlib-1.3.1/install/lib -lzip -lz -sTOTAL_MEMORY=33554432 -sUSE_SDL_IMAGE=2 -sSDL2_IMAGE_FORMATS='["png"]' -sUSE_SDL=2 --preload-file background.bmp --preload-file bird.bmp32 --preload-file default.fragment --preload-file default.vertex --preload-file game_over.bmp32 --preload-file pipe.bmp32 --preload-file loading.bmp -o jumpingbird.html
+
+emrun --no_browser --port 8080 .
 ```
 
 # License
@@ -68,4 +72,11 @@ Code: MIT
 
 Art: CC-BY
 
+# Cmake Run
+Run using cmakelist
+make -j$(nproc) -C build #Компилируем
+./build/sdl_app #Запускаем
 
+Для постройки без звука
+rm -rf build  #Очищаем build папку
+cmake -B build -DAUDIO=1 #Пересоздаём конфигурацию CMake

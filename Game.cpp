@@ -28,22 +28,8 @@ Game::~Game() {
     SDL_Quit();
 }
 
-void Game::setup() {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
-        return;
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-    window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-        Environment::width, Environment::height, SDL_WINDOW_OPENGL);
-
-    Environment::window = window;
-    
-    glContext = SDL_GL_CreateContext(window);
+void Game::setup() {   
+    glContext = SDL_GL_CreateContext(ZL::Environment::window);
 
     ZL::BindOpenGlFunctions();
     ZL::CheckGlError();
@@ -51,14 +37,15 @@ void Game::setup() {
     std::cout << "Hello 1" << std::endl;
 
     // Initialize renderer
+    /*
     renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
     renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
     renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
-
+*/
     // Initialize game objects
     std::cout << "Hello 2" << std::endl;
 
-    gameObjects.initialize();
+    // gameObjects.initialize();
 
     std::cout << "Hello 3" << std::endl;
 
@@ -73,6 +60,7 @@ void Game::drawScene() {
 
 void Game::processTickCount() {
 
+    #if 0
     if (Environment::finalIsGood)
     {
         return;
@@ -113,23 +101,25 @@ void Game::processTickCount() {
         
         lastTickCount = newTickCount;
     }
+    #endif
 }
 
 void Game::render() {
-    SDL_GL_MakeCurrent(window, glContext);
+    SDL_GL_MakeCurrent(ZL::Environment::window, glContext);
     ZL::CheckGlError();
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    drawScene();
+    // drawScene();
     processTickCount();
 
-    SDL_GL_SwapWindow(window);
+    SDL_GL_SwapWindow(ZL::Environment::window);
 }
 
 void Game::update() {
     SDL_Event event;
+    std::cout << "HEE" << std::endl;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             if (gameObjects.loadingThread.joinable())
