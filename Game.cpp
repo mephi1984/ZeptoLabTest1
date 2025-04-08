@@ -38,10 +38,16 @@ void Game::setup() {
 
     // Initialize renderer
 
-    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
-    std::cout << "Hello 1.5" << std::endl;
-    // renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-    // renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
+#ifdef EMSCRIPTEN
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_web.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_web.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_web.fragment");
+#else
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_desktop.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_desktop.fragment");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_desktop.fragment");
+#endif
+
 
     // Initialize game objects
     std::cout << "Hello 2" << std::endl;
@@ -51,7 +57,7 @@ void Game::setup() {
     std::cout << "Hello 3" << std::endl;
 
     renderer.InitOpenGL();
-
+    
 }
 
 void Game::drawScene() {
@@ -91,7 +97,7 @@ void Game::processTickCount() {
         lastTickCount = SDL_GetTicks64();
         return;
     }
-
+    
     newTickCount = SDL_GetTicks64();
     if (newTickCount - lastTickCount > CONST_TIMER_INTERVAL) {
         size_t delta = (newTickCount - lastTickCount > CONST_MAX_TIME_INTERVAL) ? 
@@ -109,7 +115,7 @@ void Game::render() {
 
     glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     drawScene();
     processTickCount();
 

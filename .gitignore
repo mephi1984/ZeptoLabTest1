@@ -397,4 +397,6 @@ images.zip
 script.py
 
 jumpingbird.*
+jumpingbird.data
 build
+build-emcmake

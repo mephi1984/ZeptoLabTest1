@@ -43,7 +43,7 @@ namespace ZL {
 		{
 			throw std::runtime_error("Failed to compile vertex shader code!");
 		}
-		std::cout << "IM here" << std::endl;
+		
 		if (!fragmentShaderCompiled)
 		{	
 			throw std::runtime_error("Failed to compile fragment shader code!");

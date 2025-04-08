@@ -37,9 +37,9 @@ void GameObjectManager::initialize() {
 
             current_room_index = 0;
             objects_in_inventory = 0;
-	bearName = "";
-  current_room_index = 0;
-  objects_in_inventory = 0;
+	        bearName = "";
+            current_room_index = 0;
+            objects_in_inventory = 0;
 
             //coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
@@ -84,7 +84,7 @@ void GameObjectManager::initialize() {
 
     std::function<bool()> loadingFunction3 = [this]()
         {
-
+            
             // Create active object
             ActiveObject cubeForFirstRoomT;
             cubeForFirstRoomT.name = "cube_T";
