@@ -5,7 +5,8 @@
 namespace ZL {
 
 	ShaderResource::ShaderResource(const std::string& vertexCode, const std::string& fragmentCode)
-	{
+	{	
+
 		const int CONST_INFOLOG_LENGTH = 256;
 
 		char infoLog[CONST_INFOLOG_LENGTH];
@@ -38,14 +39,13 @@ namespace ZL {
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragmentShaderCompiled);
 		glGetShaderInfoLog(fragmentShader, CONST_INFOLOG_LENGTH, &infoLogLength, infoLog);
 
-		
 		if (!vertexShaderCompiled)
 		{
 			throw std::runtime_error("Failed to compile vertex shader code!");
 		}
-		
+		std::cout << "IM here" << std::endl;
 		if (!fragmentShaderCompiled)
-		{
+		{	
 			throw std::runtime_error("Failed to compile fragment shader code!");
 		}
 
@@ -142,7 +142,6 @@ namespace ZL {
 			vertexShader = readTextFile(vertexShaderFileName);
 			fragmentShader = readTextFile(fragmentShaderFileName);
 		}
-
                 ///std::cout << "Shader: "<< vertexShader << std::endl;
 		shaderResourceMap[shaderName] = std::make_shared<ShaderResource>(vertexShader, fragmentShader);
 	}

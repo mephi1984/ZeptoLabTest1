@@ -16,8 +16,9 @@ const float GameObjectManager::SELECTED_CUBE_ICON_SIZE = 244.0f;
 const float GameObjectManager::SELECTED_CUBE_MARGIN = 50.0f;
 
 void GameObjectManager::initializeLoadingScreen()
-{   
+{
     loadingScreenTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./loading.bmp"));
+
     loadingScreenMesh = CreateRect2D(
         { Environment::width / 2.f, Environment::height / 2.f },
         { Environment::width / 2.f, Environment::height / 2.f },
@@ -28,15 +29,17 @@ void GameObjectManager::initializeLoadingScreen()
 }
 
 void GameObjectManager::initialize() {
+
     initializeLoadingScreen();
+
     std::function<bool()> loadingFunction1 = [this]()
         {
 
             current_room_index = 0;
             objects_in_inventory = 0;
-            bearName = "";
-            current_room_index = 0;
-            objects_in_inventory = 0;
+	bearName = "";
+  current_room_index = 0;
+  objects_in_inventory = 0;
 
             //coneTexturePtr = std::make_shared<Texture>(CreateTextureDataFromBmp24("./conus.bmp"));
 
@@ -51,7 +54,7 @@ void GameObjectManager::initialize() {
 
 
     loadingThread = std::thread([this]() {
-        /*
+        
         preloadedRoomMeshArr.resize(3);
         preloadedRoomMeshArr[0] = ZL::LoadFromTextFile("./oneroom001.txt");
         preloadedRoomMeshArr[0].Scale(10);
@@ -71,17 +74,17 @@ void GameObjectManager::initialize() {
 
         violaIdleModel.LoadFromFile("./idleviola_uv010.txt");
         violaWalkModel.LoadFromFile("./walkviola_uv010.txt");
-        sideThreadLoadingCompleted = true;*/
+        sideThreadLoadingCompleted = true;
     });
-
 
     std::function<bool()> loadingFunction2 = [this]()
         {
             return sideThreadLoadingCompleted;
         };
+
     std::function<bool()> loadingFunction3 = [this]()
         {
-/*
+
             // Create active object
             ActiveObject cubeForFirstRoomT;
             cubeForFirstRoomT.name = "cube_T";
@@ -252,14 +255,13 @@ void GameObjectManager::initialize() {
             rooms.push_back(room_3);
 
             activeObjects = rooms[current_room_index].objects;
-*/
+
             // Initialize audio
             /*
             audioPlayer = std::make_unique<AudioPlayer>();
             if (audioPlayer) {
                 audioPlayer->playMusic(rooms[current_room_index].sound_name);
             }*/
-           /*
             #ifdef AUDIO
             audioPlayerAsync.resetAsync();
             audioPlayerAsync.playMusicAsync(rooms[current_room_index].sound_name);
@@ -303,15 +305,14 @@ void GameObjectManager::initialize() {
             //SDL_ShowCursor(SDL_DISABLE);
             SDL_SetRelativeMouseMode(SDL_TRUE);
 
-*/              
-std::cout << "Hi2" << std::endl;
+
             return true;
 
         };
 
-        //loadingFunctions.push_back(loadingFunction1);
-        //loadingFunctions.push_back(loadingFunction2);
-        //loadingFunctions.push_back(loadingFunction3);
+        loadingFunctions.push_back(loadingFunction1);
+        loadingFunctions.push_back(loadingFunction2);
+        loadingFunctions.push_back(loadingFunction3);
 }
 
 void GameObjectManager::switch_room(int index){
@@ -712,9 +713,6 @@ void GameObjectManager::handleEvent(const SDL_Event& event) {
 }
 
 void GameObjectManager::updateScene(size_t ms) {
-    
-    #if 0
-    
     const float SPEED = 0.1f;
 
     Vector2f directionVector = { 0.f, SPEED }; // x and z
@@ -865,8 +863,6 @@ void GameObjectManager::updateScene(size_t ms) {
 
     //float Environment::monsterTimer = 0.0;
     //int Environment::monsterState = 1;
-
-    #endif
 }
 
 bool GameObjectManager::isPointInObject(int screenX, int screenY, int objectScreenX, int objectScreenY) const {

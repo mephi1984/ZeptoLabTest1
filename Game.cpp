@@ -37,15 +37,16 @@ void Game::setup() {
     std::cout << "Hello 1" << std::endl;
 
     // Initialize renderer
-    /*
+
     renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
-*/
+    std::cout << "Hello 1.5" << std::endl;
+    // renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor.fragment");
+    // renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam.fragment");
+
     // Initialize game objects
     std::cout << "Hello 2" << std::endl;
 
-    // gameObjects.initialize();
+    gameObjects.initialize();
 
     std::cout << "Hello 3" << std::endl;
 
@@ -60,7 +61,6 @@ void Game::drawScene() {
 
 void Game::processTickCount() {
 
-    #if 0
     if (Environment::finalIsGood)
     {
         return;
@@ -101,7 +101,6 @@ void Game::processTickCount() {
         
         lastTickCount = newTickCount;
     }
-    #endif
 }
 
 void Game::render() {
@@ -111,7 +110,7 @@ void Game::render() {
     glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // drawScene();
+    drawScene();
     processTickCount();
 
     SDL_GL_SwapWindow(ZL::Environment::window);
@@ -119,7 +118,6 @@ void Game::render() {
 
 void Game::update() {
     SDL_Event event;
-    std::cout << "HEE" << std::endl;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             if (gameObjects.loadingThread.joinable())

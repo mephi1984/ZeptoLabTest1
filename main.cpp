@@ -13,10 +13,34 @@ int main(int argc, char* argv[]) {
 
 
 #ifdef EMSCRIPTEN
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* win = nullptr;
-    SDL_Renderer* ren = nullptr;
-    SDL_CreateWindowAndRenderer(CONST_WIDTH, CONST_HEIGHT, SDL_WINDOW_OPENGL, &win, &ren);
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+
+    SDL_Window* win = SDL_CreateWindow("Jumping Bird",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        CONST_WIDTH, CONST_HEIGHT,
+        SDL_WINDOW_OPENGL);
+
+    if (!win) {
+        std::cerr << "SDL_CreateWindow failed: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    SDL_GLContext glContext = SDL_GL_CreateContext(win);
+    if (!glContext) {
+        std::cerr << "SDL_GL_CreateContext failed: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    // Привязка контекста к окну — важно!
+    SDL_GL_MakeCurrent(win, glContext);
+
     ZL::Environment::window = win;
 #else
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {

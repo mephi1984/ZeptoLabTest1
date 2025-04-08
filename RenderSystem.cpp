@@ -4,7 +4,7 @@
 #include "Inventory.h"
 #include <GL/gl.h>
 
-
+#include <iostream>
 
 namespace ZL {
 
@@ -26,7 +26,6 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glViewport(0, 0, Environment::width, Environment::height);
-
     if (Environment::gameIsLoading)
     {
         drawLoadingScreen(gameObjects);
@@ -42,6 +41,7 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
         glClear(GL_DEPTH_BUFFER_BIT);
         drawUI(gameObjects);
     }
+
     CheckGlError();
 }
 
