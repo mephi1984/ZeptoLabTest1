@@ -39,13 +39,13 @@ void Game::setup() {
     // Initialize renderer
 
 #ifdef EMSCRIPTEN
-    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_web.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_web.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_web.fragment");
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_web.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_web.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_web.fragment", "data.zip");
 #else
-    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_desktop.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_desktop.fragment");
-    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_desktop.fragment");
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_desktop.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_desktop.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_desktop.fragment", "data.zip");
 #endif
 
 

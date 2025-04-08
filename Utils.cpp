@@ -32,9 +32,8 @@ namespace ZL
 		file.seekg(0, std::ios::beg);
 
 		std::vector<char> vec;
-		std::cout << "started reserving" + filename << std::endl; 
 		vec.reserve(fileSize);
-		std::cout << "ended reserving" << std::endl; 
+
 		vec.insert(vec.begin(),
 			std::istream_iterator<char>(file),
 			std::istream_iterator<char>());
