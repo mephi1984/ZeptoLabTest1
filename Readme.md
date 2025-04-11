@@ -51,8 +51,6 @@ $(pkg-config --cflags --libs vorbis vorbisfile ogg) \
 
 cd build-emcmake/
 
-emcmake cmake ..
-
  emcmake cmake -DCMAKE_INSTALL_PREFIX=install ..
  cmake --build .
 
@@ -65,7 +63,7 @@ emcc main.cpp Game.cpp Environment.cpp GameObjectManager.cpp BoneAnimatedModel.c
 
 
 # Windows:
-emcc main.cpp Game.cpp Environment.cpp GameObjectManager.cpp BoneAnimatedModel.cpp GameWorld.cpp InputManager.cpp Inventory.cpp ObjLoader.cpp QuestScripts.cpp RenderSystem.cpp Math.cpp Physics.cpp Renderer.cpp TextModel.cpp ShaderManager.cpp TextureManager.cpp Utils.cpp OpenGlExtensions.cpp -O2 -std=c++14 -pthread -sUSE_PTHREADS=1 -sPTHREAD_POOL_SIZE=4 -sTOTAL_MEMORY=4294967296 -sINITIAL_MEMORY=3221225472 -sMAXIMUM_MEMORY=4294967296 -sALLOW_MEMORY_GROWTH=1 -I./thirdparty/libzip-1.11.3/build-emcmake/install/include -L./thirdparty/libzip-1.11.3/build-emcmake/install/lib -lzip -lz -sUSE_SDL_IMAGE=2 -sUSE_SDL=2 --preload-file data.zip -o viola.html
+emcc main.cpp Game.cpp Environment.cpp GameObjectManager.cpp BoneAnimatedModel.cpp GameWorld.cpp InputManager.cpp Inventory.cpp ObjLoader.cpp QuestScripts.cpp RenderSystem.cpp Math.cpp Physics.cpp Renderer.cpp TextModel.cpp ShaderManager.cpp TextureManager.cpp Utils.cpp OpenGlExtensions.cpp -O2 -std=c++14 -pthread -sUSE_PTHREADS=1 -sPTHREAD_POOL_SIZE=4 -sTOTAL_MEMORY=4294967296 -sINITIAL_MEMORY=3221225472 -sMAXIMUM_MEMORY=4294967296 -sALLOW_MEMORY_GROWTH=1 -I./thirdparty/libzip-1.11.3/build-emcmake/install/include -L./thirdparty/libzip-1.11.3/build-emcmake/install/lib -lzip -lz -sUSE_SDL_IMAGE=2 -sUSE_SDL=2 -sUSE_LIBPNG=1 --preload-file data.zip -o viola.html
 
 emrun --no_browser --port 8080 .
 ```
