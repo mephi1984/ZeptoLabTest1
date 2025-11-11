@@ -1,6 +1,5 @@
 #include "Renderer.h"
-
-
+#include <cmath>
 
 namespace ZL {
 
@@ -17,6 +16,31 @@ namespace ZL {
 	GLuint VBOHolder::getBuffer()
 	{
 		return Buffer;
+	}
+
+	VAOHolder::VAOHolder()
+	{
+#ifndef EMSCRIPTEN
+		glGenVertexArrays(1, &vao);
+#endif
+	}
+
+	VAOHolder::~VAOHolder()
+	{
+#ifndef EMSCRIPTEN
+
+#ifdef __linux__
+		glDeleteVertexArrays(1, &vao);
+#else
+		//Windows
+		glDeleteVertexArray(1, &vao);
+#endif
+#endif
+	}
+
+	GLuint VAOHolder::getBuffer()
+	{
+		return vao;
 	}
 
 
@@ -52,8 +76,6 @@ namespace ZL {
 		result.TexCoordData.push_back(texCoordPos3);
 		result.TexCoordData.push_back(texCoordPos4);
 		result.TexCoordData.push_back(texCoordPos1);
-
-		result.RefreshVBO();
 
 		return result;
 	}
@@ -96,16 +118,96 @@ namespace ZL {
 		}
 
 
-		result.RefreshVBO();
-
 		return result;
 
 	}
 
-	void VertexDataStruct::RefreshVBO()
+	VertexDataStruct CreateCube3D(float scale)
+	{
+
+		std::array<std::array<Vector3f, 4>, 6> cubeSides;
+
+		std::array<Vector3f, 6> cubeColors;
+
+
+		cubeSides[0][0] = { -1, -1, -1 };
+		cubeSides[0][1] = { -1,  1, -1 };
+		cubeSides[0][2] = {  1,  1, -1 };
+		cubeSides[0][3] = {  1, -1, -1 };
+
+		cubeSides[1][0] = { -1, -1, 1 };
+		cubeSides[1][1] = { -1,  1, 1 };
+		cubeSides[1][2] = { 1,  1,  1 };
+		cubeSides[1][3] = { 1, -1,  1 };
+
+		//------------
+
+		cubeSides[2][0] = { -1, -1, -1 };
+		cubeSides[2][1] = { -1, -1,  1 };
+		cubeSides[2][2] = {  1, -1,  1 };
+		cubeSides[2][3] = {  1, -1, -1 };
+
+		cubeSides[3][0] = { -1,  1, -1 };
+		cubeSides[3][1] = { -1,  1,  1 };
+		cubeSides[3][2] = {  1,  1,  1 };
+		cubeSides[3][3] = {  1,  1, -1 };
+
+		//------------
+		cubeSides[4][0] = { -1, -1, -1 };
+		cubeSides[4][1] = { -1, -1,  1 };
+		cubeSides[4][2] = { -1,  1,  1 };
+		cubeSides[4][3] = { -1,  1, -1 };
+
+		cubeSides[5][0] = {  1, -1, -1 };
+		cubeSides[5][1] = {  1, -1,  1 };
+		cubeSides[5][2] = {  1,  1,  1 };
+		cubeSides[5][3] = {  1,  1, -1 };
+
+		//-----------
+
+		cubeColors[0] = Vector3f{ 1, 0, 0 };
+		cubeColors[1] = Vector3f{ 0, 1, 0 };
+		cubeColors[2] = Vector3f{ 0, 0, 1 };
+		cubeColors[3] = Vector3f{ 1, 1, 0 };
+		cubeColors[4] = Vector3f{ 0, 1, 1 };
+		cubeColors[5] = Vector3f{ 1, 0, 1 };
+
+		//-----------
+
+		VertexDataStruct result;
+
+		for (int i = 0; i < 6; i++)
+		{
+			result.PositionData.push_back(cubeSides[i][0] * scale);
+			result.PositionData.push_back(cubeSides[i][1] * scale);
+			result.PositionData.push_back(cubeSides[i][2] * scale);
+			result.PositionData.push_back(cubeSides[i][2] * scale);
+			result.PositionData.push_back(cubeSides[i][3] * scale);
+			result.PositionData.push_back(cubeSides[i][0] * scale);
+
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+			result.ColorData.push_back(cubeColors[i]);
+		}
+
+		return result;
+	}
+
+	void VertexRenderStruct::RefreshVBO()
 	{
 		//Check if main thread, check if data is not empty...
 
+#ifndef EMSCRIPTEN
+		if (!vao)
+		{
+			vao = std::make_shared<VAOHolder>();
+		}
+
+		glBindVertexArray(vao->getBuffer());
+#endif
 		if (!positionVBO)
 		{
 			positionVBO = std::make_shared<VBOHolder>();
@@ -113,17 +215,124 @@ namespace ZL {
 
 		glBindBuffer(GL_ARRAY_BUFFER, positionVBO->getBuffer());
 
-		glBufferData(GL_ARRAY_BUFFER, PositionData.size() * 12, &PositionData[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, data.PositionData.size() * 12, &data.PositionData[0], GL_STATIC_DRAW);
 
-		if (!texCoordVBO)
+		if (data.TexCoordData.size() > 0)
 		{
-			texCoordVBO = std::make_shared<VBOHolder>();
+			if (!texCoordVBO)
+			{
+				texCoordVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, texCoordVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, data.TexCoordData.size() * 8, &data.TexCoordData[0], GL_STATIC_DRAW);
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, texCoordVBO->getBuffer());
 
-		glBufferData(GL_ARRAY_BUFFER, TexCoordData.size() * 8, &TexCoordData[0], GL_STATIC_DRAW);
+		if (data.NormalData.size() > 0)
+		{
+			if (!normalVBO)
+			{
+				normalVBO = std::make_shared<VBOHolder>();
+			}
 
+			glBindBuffer(GL_ARRAY_BUFFER, normalVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, data.NormalData.size() * 12, &data.NormalData[0], GL_STATIC_DRAW);
+		}
+
+		if (data.TangentData.size() > 0)
+		{
+			if (!tangentVBO)
+			{
+				tangentVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, tangentVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, data.TangentData.size() * 12, &data.TangentData[0], GL_STATIC_DRAW);
+		}
+
+		if (data.BinormalData.size() > 0)
+		{
+			if (!binormalVBO)
+			{
+				binormalVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, binormalVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, data.BinormalData.size() * 12, &data.BinormalData[0], GL_STATIC_DRAW);
+		}
+
+		if (data.ColorData.size() > 0)
+		{
+			if (!colorVBO)
+			{
+				colorVBO = std::make_shared<VBOHolder>();
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, colorVBO->getBuffer());
+
+			glBufferData(GL_ARRAY_BUFFER, data.ColorData.size() * 12, &data.ColorData[0], GL_STATIC_DRAW);
+		}
+	}
+
+	void VertexDataStruct::Scale(float scale)
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = PositionData[i] * scale;
+		}
+	}
+	void VertexDataStruct::Move(Vector3f diff)
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = PositionData[i] + diff;
+		}
+	}
+
+	void VertexDataStruct::SwapZandY()
+	{
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			auto value = PositionData[i].v[1];
+			PositionData[i].v[1] = PositionData[i].v[2];
+			PositionData[i].v[2] = value;
+		}
+	}
+	
+
+	void VertexDataStruct::RotateByMatrix(Matrix3f m)
+	{
+
+		for (int i = 0; i < PositionData.size(); i++)
+		{
+			PositionData[i] = MultVectorMatrix(PositionData[i], m);
+		}
+
+		for (int i = 0; i < NormalData.size(); i++)
+		{
+			NormalData[i] = MultVectorMatrix(NormalData[i], m);
+		}
+
+		for (int i = 0; i < TangentData.size(); i++)
+		{
+			TangentData[i] = MultVectorMatrix(TangentData[i], m);
+		}
+
+		for (int i = 0; i < BinormalData.size(); i++)
+		{
+			BinormalData[i] = MultVectorMatrix(BinormalData[i], m);
+		}
+	}
+
+	void VertexRenderStruct::AssignFrom(const VertexDataStruct& v)
+	{
+		data = v;
+		RefreshVBO();
 	}
 
 	void Renderer::InitOpenGL()
@@ -135,14 +344,14 @@ namespace ZL {
 	    glEnable(GL_BLEND);
 
 		glActiveTexture(GL_TEXTURE0);
-		glEnable(GL_TEXTURE_2D);
 
+#ifndef EMSCRIPTEN
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-
+#endif
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDepthFunc(GL_LEQUAL);
 
+		CheckGlError();
 	}
 
 	void Renderer::PushProjectionMatrix(float width, float height, float zNear, float zFar)
@@ -153,7 +362,19 @@ namespace ZL {
 
 		if (ProjectionMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
 		{
-			throw std::exception("Projection matrix stack overflow!!!!");
+			throw std::runtime_error("Projection matrix stack overflow!!!!");
+		}
+	}
+	
+	void Renderer::PushPerspectiveProjectionMatrix(float fovY, float aspectRatio, float zNear, float zFar)
+	{
+		Matrix4f m = MakePerspectiveMatrix(fovY, aspectRatio, zNear, zFar);
+		ProjectionMatrixStack.push(m);
+		SetMatrix();
+
+		if (ProjectionMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
+		{
+			throw std::runtime_error("Projection matrix stack overflow!!!!");
 		}
 	}
 
@@ -162,23 +383,27 @@ namespace ZL {
 	{
 		if (ProjectionMatrixStack.size() == 0)
 		{
-			throw std::exception("Projection matrix stack underflow!!!!");
+			throw std::runtime_error("Projection matrix stack underflow!!!!");
 		}
 		ProjectionMatrixStack.pop();
 		SetMatrix();
 	}
 
+	Matrix4f Renderer::GetProjectionModelViewMatrix()
+	{
+		return ProjectionModelViewMatrix;
+	}
 
 	void Renderer::SetMatrix()
 	{
 		if (ProjectionMatrixStack.size() <= 0)
 		{
-			throw std::exception("Projection matrix stack out!");
+			throw std::runtime_error("Projection matrix stack out!");
 		}
 
 		if (ModelviewMatrixStack.size() <= 0)
 		{
-			throw std::exception("Modelview matrix stack out!");
+			throw std::runtime_error("Modelview matrix stack out!");
 		}
 
 		ProjectionModelViewMatrix = ProjectionMatrixStack.top() * ModelviewMatrixStack.top();
@@ -197,14 +422,14 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.push(ModelviewMatrixStack.top());
 
 		if (ModelviewMatrixStack.size() > CONST_MATRIX_STACK_SIZE)
 		{
-			throw std::exception("Modelview matrix stack overflow!!!!");
+			throw std::runtime_error("Modelview matrix stack overflow!!!!");
 		}
 	}
 
@@ -212,7 +437,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -233,7 +458,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -253,7 +478,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -273,7 +498,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -303,7 +528,7 @@ namespace ZL {
 
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 
 		ModelviewMatrixStack.pop();
@@ -317,7 +542,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() > 64)
 		{
-			throw std::exception("Modelview matrix stack overflow!!!!");
+			throw std::runtime_error("Modelview matrix stack overflow!!!!");
 		}
 		ModelviewMatrixStack.push(m);
 		SetMatrix();
@@ -328,7 +553,7 @@ namespace ZL {
 	{
 		if (ModelviewMatrixStack.size() == 0)
 		{
-			throw std::exception("Modelview matrix stack underflow!!!!");
+			throw std::runtime_error("Modelview matrix stack underflow!!!!");
 		}
 		ModelviewMatrixStack.pop();
 
@@ -364,6 +589,18 @@ namespace ZL {
 		}
 	}
 
+	void Renderer::RenderUniform3fv(const std::string& uniformName, const float* value)
+	{
+		auto shader = shaderManager.GetCurrentShader();
+
+		auto uniform = shader->uniformList.find(uniformName);
+
+		if (uniform != shader->uniformList.end())
+		{
+			glUniform3fv(uniform->second, 1, value);
+		}
+	}
+
 	void Renderer::RenderUniform1i(const std::string& uniformName, const int value)
 	{
 		auto shader = shaderManager.GetCurrentShader();
@@ -395,19 +632,48 @@ namespace ZL {
 			glVertexAttribPointer(shader->attribList[attribName], 3, GL_FLOAT, GL_FALSE, stride, pointer);
 	}
 
-	void Renderer::DrawVertexDataStruct(const VertexDataStruct& vertexDataStruct)
+	void Renderer::DrawVertexRenderStruct(const VertexRenderStruct& VertexRenderStruct)
 	{
+		static const std::string vNormal("vNormal");
+		static const std::string vTangent("vTangent");
+		static const std::string vBinormal("vBinormal");
+		static const std::string vColor("vColor");
 		static const std::string vTexCoord("vTexCoord");
 		static const std::string vPosition("vPosition");
+		
+		//glBindVertexArray(VertexRenderStruct.vao->getBuffer());
 
 		//Check if main thread, check if data is not empty...
-		glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.texCoordVBO->getBuffer());
-		VertexAttribPointer2fv(vTexCoord, 0, NULL);
+		if (VertexRenderStruct.data.NormalData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.normalVBO->getBuffer());
+			VertexAttribPointer3fv(vNormal, 0, NULL);
+		}
+		if (VertexRenderStruct.data.TangentData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.tangentVBO->getBuffer());
+			VertexAttribPointer3fv(vTangent, 0, NULL);
+		}
+		if (VertexRenderStruct.data.BinormalData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.binormalVBO->getBuffer());
+			VertexAttribPointer3fv(vBinormal, 0, NULL);
+		}
+		if (VertexRenderStruct.data.ColorData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.colorVBO->getBuffer());
+			VertexAttribPointer3fv(vColor, 0, NULL);
+		}
+		if (VertexRenderStruct.data.TexCoordData.size() > 0)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.texCoordVBO->getBuffer());
+			VertexAttribPointer2fv(vTexCoord, 0, NULL);
+		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, vertexDataStruct.positionVBO->getBuffer());
+		glBindBuffer(GL_ARRAY_BUFFER, VertexRenderStruct.positionVBO->getBuffer());
 		VertexAttribPointer3fv(vPosition, 0, NULL);
 
-		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertexDataStruct.PositionData.size()));
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VertexRenderStruct.data.PositionData.size()));
 
 	}
 

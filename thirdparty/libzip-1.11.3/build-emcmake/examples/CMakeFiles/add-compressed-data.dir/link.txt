@@ -1,0 +1,1 @@
+"/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/add-compressed-data.dir/objects1.rsp -o add-compressed-data.js @CMakeFiles/add-compressed-data.dir/linkLibs.rsp

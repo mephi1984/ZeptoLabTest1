@@ -1,0 +1,7 @@
+Run using cmakelist
+make -j$(nproc) -C build #Компилируем
+./build/sdl_app #Запускаем
+
+Для постройки без звука
+rm -rf build  #Очищаем build папку
+cmake -B build -DAUDIO=1 #Пересоздаём конфигурацию CMake

@@ -1,0 +1,21 @@
+ossfuzz/CMakeFiles/zip_read_file_fuzzer.dir/fuzz_main.c.o: \
+  /home/romazan/Рабочий\ стол/cproject/thirdparty/libzip-1.11.3/ossfuzz/fuzz_main.c \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/stdio.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/wasi/api.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/stddef.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/stddef.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_header_macro.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_ptrdiff_t.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_size_t.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_wchar_t.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_null.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_max_align_t.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/__stddef_offsetof.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/lib/clang/21/include/stdint.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/stdint.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/bits/alltypes.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/bits/stdint.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/features.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/compat/stdlib.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/stdlib.h \
+  /home/romazan/Рабочий\ стол/emsdk/upstream/emscripten/cache/sysroot/include/alloca.h

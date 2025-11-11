@@ -1,5 +1,26 @@
 #pragma once
 
+
+#include "SDL.h"
+#ifdef EMSCRIPTEN
+//#define GL_GLEXT_PROTOTYPES 1
+//#define EGL_EGLEXT_PROTOTYPES 1
+//#include <SDL2/SDL_opengl.h>
+#include <GLES3/gl3.h>
+#include "emscripten.h"
+#endif
+
+#ifdef __linux__
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GLES3/gl3.h>
+
+#endif
+
+#include <exception>
+#include <stdexcept>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
+
 #include "windows.h"
 
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
@@ -122,7 +143,16 @@ extern PFNGLGETACTIVEUNIFORMBLOCKNAMEPROC glGetActiveUniformBlockName;
 extern PFNGLUNIFORMBLOCKBINDINGPROC glUniformBlockBinding;
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
+
+extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
+extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArray;
+#else
+
+#endif
 namespace ZL {
+
+
 
 	bool BindOpenGlFunctions();
 

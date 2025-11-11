@@ -1,0 +1,34 @@
+uniform sampler2D Texture;
+varying vec2 texCoord;
+varying vec3 vWorldPos;
+
+uniform vec3 eyePos;    // Позиция камеры
+uniform vec3 targetPos; // Цель камеры
+
+void main() 
+{
+
+	vec4 color;
+	
+	vec3 dirToCamera = normalize(eyePos - targetPos);
+    vec3 dirToVertex = normalize(vWorldPos - targetPos);
+	
+	float dotProduct = dot(dirToCamera, dirToVertex);
+	
+	float distanceX = abs(vWorldPos.x);
+	float distanceZ = abs(vWorldPos.z);
+	
+	//float distanceToCamera = length(vWorldPos - targetPos);
+	
+	if ((distanceX > 380.0 || distanceZ > 380.0) && (dotProduct > 0.0) && vWorldPos.y > 10.0)
+	{
+		//color.rgba = vec4(1,0,0,1);
+		discard;
+    }
+	else
+	{
+		color.rgb = texture2D(Texture, texCoord).rgb;
+		color.a = 1.0;
+	}
+	gl_FragColor = color;
+}

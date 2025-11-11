@@ -1,0 +1,13 @@
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/zlib.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/zlibstatic.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/example.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/minigzip.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/example64.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/minigzip64.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/test.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/edit_cache.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/rebuild_cache.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/list_install_components.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/install.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/install/local.dir
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/install/strip.dir

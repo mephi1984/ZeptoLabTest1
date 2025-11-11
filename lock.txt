@@ -1,0 +1,559 @@
+===Vertices: 43
+Vertex 0: <Vector (-0.0002, 4.1693, -1.1602)>
+Vertex 1: <Vector (-0.0002, 4.1693, 0.8398)>
+Vertex 2: <Vector (0.9508, 3.4783, -1.1602)>
+Vertex 3: <Vector (0.9508, 3.4783, 0.8398)>
+Vertex 4: <Vector (0.5875, 2.3603, -1.1602)>
+Vertex 5: <Vector (0.5875, 2.3603, 0.8398)>
+Vertex 6: <Vector (-0.5880, 2.3603, -1.1602)>
+Vertex 7: <Vector (-0.5880, 2.3603, 0.8398)>
+Vertex 8: <Vector (-0.9513, 3.4783, -1.1602)>
+Vertex 9: <Vector (-0.9513, 3.4783, 0.8398)>
+Vertex 10: <Vector (0.5871, -2.3745, -1.1602)>
+Vertex 11: <Vector (0.5871, -2.3745, 0.8398)>
+Vertex 12: <Vector (0.9510, -3.4923, -1.1602)>
+Vertex 13: <Vector (0.9510, -3.4923, 0.8398)>
+Vertex 14: <Vector (0.0003, -4.1838, -1.1602)>
+Vertex 15: <Vector (0.0003, -4.1838, 0.8398)>
+Vertex 16: <Vector (-0.9511, -3.4933, -1.1602)>
+Vertex 17: <Vector (-0.9511, -3.4933, 0.8398)>
+Vertex 18: <Vector (-0.5884, -2.3751, -1.1602)>
+Vertex 19: <Vector (-0.5884, -2.3751, 0.8398)>
+Vertex 20: <Vector (-0.5881, 1.3244, 2.2781)>
+Vertex 21: <Vector (-0.5882, -0.0074, 2.7576)>
+Vertex 22: <Vector (-0.5884, -1.3392, 2.2781)>
+Vertex 23: <Vector (0.5875, 1.3246, 2.2779)>
+Vertex 24: <Vector (0.5873, -0.0071, 2.7573)>
+Vertex 25: <Vector (0.5872, -1.3387, 2.2779)>
+Vertex 26: <Vector (-0.9513, 1.9533, 2.9574)>
+Vertex 27: <Vector (-0.9512, -0.0075, 3.6633)>
+Vertex 28: <Vector (-0.9512, -1.9682, 2.9574)>
+Vertex 29: <Vector (-0.0001, 2.3421, 3.3770)>
+Vertex 30: <Vector (0.0000, -0.0072, 4.2228)>
+Vertex 31: <Vector (0.0002, -2.3565, 3.3770)>
+Vertex 32: <Vector (0.9509, 1.9535, 2.9571)>
+Vertex 33: <Vector (0.9509, -0.0070, 3.6629)>
+Vertex 34: <Vector (0.9509, -1.9675, 2.9571)>
+Vertex 35: <Vector (-1.4333, -3.8304, -9.3966)>
+Vertex 36: <Vector (-1.4333, -4.5015, -0.9919)>
+Vertex 37: <Vector (-1.4333, 3.8841, -9.3966)>
+Vertex 38: <Vector (-1.4333, 4.5742, -0.9919)>
+Vertex 39: <Vector (1.4353, -3.8304, -9.3966)>
+Vertex 40: <Vector (1.4353, -4.5015, -0.9919)>
+Vertex 41: <Vector (1.4353, 3.8841, -9.3966)>
+Vertex 42: <Vector (1.4353, 4.5742, -0.9919)>
+===UV Coordinates:
+Face count: 78
+Face 0
+UV Count: 3
+  UV <Vector (0.8193, 0.8359)>
+  UV <Vector (0.8638, 0.9308)>
+  UV <Vector (0.8193, 0.9294)>
+Face 1
+UV Count: 3
+  UV <Vector (0.8699, 0.0000)>
+  UV <Vector (0.7747, 0.0523)>
+  UV <Vector (0.7777, 0.0000)>
+Face 2
+UV Count: 3
+  UV <Vector (0.3621, 0.6569)>
+  UV <Vector (0.4171, 0.7504)>
+  UV <Vector (0.3621, 0.7504)>
+Face 3
+UV Count: 3
+  UV <Vector (0.0922, 0.6989)>
+  UV <Vector (0.0030, 0.7512)>
+  UV <Vector (0.0000, 0.6989)>
+Face 4
+UV Count: 3
+  UV <Vector (0.7747, 0.8372)>
+  UV <Vector (0.8193, 0.9294)>
+  UV <Vector (0.7747, 0.9308)>
+Face 5
+UV Count: 3
+  UV <Vector (0.0847, 0.7682)>
+  UV <Vector (0.1370, 0.7512)>
+  UV <Vector (0.1694, 0.7957)>
+Face 6
+UV Count: 3
+  UV <Vector (0.8669, 0.2740)>
+  UV <Vector (0.7777, 0.3263)>
+  UV <Vector (0.7747, 0.2740)>
+Face 7
+UV Count: 3
+  UV <Vector (0.4171, 0.7614)>
+  UV <Vector (0.4616, 0.8536)>
+  UV <Vector (0.4171, 0.8549)>
+Face 8
+UV Count: 3
+  UV <Vector (0.4616, 0.7601)>
+  UV <Vector (0.5062, 0.8549)>
+  UV <Vector (0.4616, 0.8536)>
+Face 9
+UV Count: 3
+  UV <Vector (0.0951, 0.4248)>
+  UV <Vector (0.0000, 0.4772)>
+  UV <Vector (0.0030, 0.4248)>
+Face 10
+UV Count: 3
+  UV <Vector (0.3621, 0.4941)>
+  UV <Vector (0.4171, 0.5876)>
+  UV <Vector (0.3621, 0.5877)>
+Face 11
+UV Count: 3
+  UV <Vector (0.0323, 0.7512)>
+  UV <Vector (0.0847, 0.8232)>
+  UV <Vector (0.0323, 0.8402)>
+Face 12
+UV Count: 3
+  UV <Vector (0.4171, 0.6569)>
+  UV <Vector (0.3621, 0.5877)>
+  UV <Vector (0.4171, 0.5877)>
+Face 13
+UV Count: 3
+  UV <Vector (0.4171, 0.8751)>
+  UV <Vector (0.3621, 0.8128)>
+  UV <Vector (0.4171, 0.8128)>
+Face 14
+UV Count: 3
+  UV <Vector (0.4171, 0.8128)>
+  UV <Vector (0.3621, 0.7504)>
+  UV <Vector (0.4171, 0.7504)>
+Face 15
+UV Count: 3
+  UV <Vector (0.3621, 0.4248)>
+  UV <Vector (0.4171, 0.4941)>
+  UV <Vector (0.3621, 0.4941)>
+Face 16
+UV Count: 3
+  UV <Vector (0.7747, 0.8372)>
+  UV <Vector (0.8193, 0.7207)>
+  UV <Vector (0.8193, 0.8359)>
+Face 17
+UV Count: 3
+  UV <Vector (0.4171, 0.6266)>
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.4617, 0.6448)>
+Face 18
+UV Count: 3
+  UV <Vector (0.4171, 0.4430)>
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.4171, 0.5348)>
+Face 19
+UV Count: 3
+  UV <Vector (0.5062, 0.7614)>
+  UV <Vector (0.4616, 0.6448)>
+  UV <Vector (0.5062, 0.6651)>
+Face 20
+UV Count: 3
+  UV <Vector (0.8193, 0.7207)>
+  UV <Vector (0.8638, 0.8372)>
+  UV <Vector (0.8193, 0.8359)>
+Face 21
+UV Count: 3
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.5062, 0.6266)>
+  UV <Vector (0.4617, 0.6448)>
+Face 22
+UV Count: 3
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.5062, 0.4431)>
+  UV <Vector (0.5062, 0.5348)>
+Face 23
+UV Count: 3
+  UV <Vector (0.4616, 0.6448)>
+  UV <Vector (0.4171, 0.7614)>
+  UV <Vector (0.4171, 0.6652)>
+Face 24
+UV Count: 3
+  UV <Vector (0.1928, 0.6798)>
+  UV <Vector (0.0922, 0.6989)>
+  UV <Vector (0.1585, 0.6504)>
+Face 25
+UV Count: 3
+  UV <Vector (0.2253, 0.5880)>
+  UV <Vector (0.1585, 0.6504)>
+  UV <Vector (0.1806, 0.5880)>
+Face 26
+UV Count: 3
+  UV <Vector (0.2253, 0.5880)>
+  UV <Vector (0.1585, 0.5257)>
+  UV <Vector (0.1928, 0.4962)>
+Face 27
+UV Count: 3
+  UV <Vector (0.1928, 0.4962)>
+  UV <Vector (0.0922, 0.4772)>
+  UV <Vector (0.0951, 0.4248)>
+Face 28
+UV Count: 3
+  UV <Vector (0.8669, 0.0523)>
+  UV <Vector (0.9675, 0.0714)>
+  UV <Vector (0.9332, 0.1008)>
+Face 29
+UV Count: 3
+  UV <Vector (0.9332, 0.1008)>
+  UV <Vector (1.0000, 0.1631)>
+  UV <Vector (0.9553, 0.1632)>
+Face 30
+UV Count: 3
+  UV <Vector (0.9332, 0.2255)>
+  UV <Vector (1.0000, 0.1631)>
+  UV <Vector (0.9675, 0.2549)>
+Face 31
+UV Count: 3
+  UV <Vector (0.8669, 0.2740)>
+  UV <Vector (0.9675, 0.2549)>
+  UV <Vector (0.8699, 0.3263)>
+Face 32
+UV Count: 3
+  UV <Vector (0.3874, -0.0000)>
+  UV <Vector (0.0000, 0.3925)>
+  UV <Vector (0.0000, 0.0314)>
+Face 33
+UV Count: 3
+  UV <Vector (0.7747, 0.3263)>
+  UV <Vector (0.9090, 0.7207)>
+  UV <Vector (0.7747, 0.7207)>
+Face 34
+UV Count: 3
+  UV <Vector (0.3874, 0.0323)>
+  UV <Vector (0.7747, 0.4248)>
+  UV <Vector (0.3874, 0.3934)>
+Face 35
+UV Count: 3
+  UV <Vector (0.6404, 0.4248)>
+  UV <Vector (0.7747, 0.8192)>
+  UV <Vector (0.6404, 0.8192)>
+Face 36
+UV Count: 3
+  UV <Vector (0.5062, 0.7860)>
+  UV <Vector (0.6404, 0.4248)>
+  UV <Vector (0.6404, 0.7860)>
+Face 37
+UV Count: 3
+  UV <Vector (0.2253, 0.8497)>
+  UV <Vector (0.3596, 0.4248)>
+  UV <Vector (0.3596, 0.8497)>
+Face 38
+UV Count: 3
+  UV <Vector (0.8193, 0.8359)>
+  UV <Vector (0.8638, 0.8372)>
+  UV <Vector (0.8638, 0.9308)>
+Face 39
+UV Count: 3
+  UV <Vector (0.8699, 0.0000)>
+  UV <Vector (0.8669, 0.0523)>
+  UV <Vector (0.7747, 0.0523)>
+Face 40
+UV Count: 3
+  UV <Vector (0.3621, 0.6569)>
+  UV <Vector (0.4171, 0.6569)>
+  UV <Vector (0.4171, 0.7504)>
+Face 41
+UV Count: 3
+  UV <Vector (0.0922, 0.6989)>
+  UV <Vector (0.0952, 0.7512)>
+  UV <Vector (0.0030, 0.7512)>
+Face 42
+UV Count: 3
+  UV <Vector (0.7747, 0.8372)>
+  UV <Vector (0.8193, 0.8359)>
+  UV <Vector (0.8193, 0.9294)>
+Face 43
+UV Count: 3
+  UV <Vector (0.1370, 0.8402)>
+  UV <Vector (0.0847, 0.8232)>
+  UV <Vector (0.1694, 0.7957)>
+Face 44
+UV Count: 3
+  UV <Vector (0.0847, 0.8232)>
+  UV <Vector (0.0847, 0.7682)>
+  UV <Vector (0.1694, 0.7957)>
+Face 45
+UV Count: 3
+  UV <Vector (0.8669, 0.2740)>
+  UV <Vector (0.8699, 0.3263)>
+  UV <Vector (0.7777, 0.3263)>
+Face 46
+UV Count: 3
+  UV <Vector (0.4171, 0.7614)>
+  UV <Vector (0.4616, 0.7601)>
+  UV <Vector (0.4616, 0.8536)>
+Face 47
+UV Count: 3
+  UV <Vector (0.4616, 0.7601)>
+  UV <Vector (0.5062, 0.7614)>
+  UV <Vector (0.5062, 0.8549)>
+Face 48
+UV Count: 3
+  UV <Vector (0.0951, 0.4248)>
+  UV <Vector (0.0922, 0.4772)>
+  UV <Vector (0.0000, 0.4772)>
+Face 49
+UV Count: 3
+  UV <Vector (0.3621, 0.4941)>
+  UV <Vector (0.4171, 0.4941)>
+  UV <Vector (0.4171, 0.5876)>
+Face 50
+UV Count: 3
+  UV <Vector (0.0323, 0.8402)>
+  UV <Vector (-0.0000, 0.7957)>
+  UV <Vector (0.0323, 0.7512)>
+Face 51
+UV Count: 3
+  UV <Vector (0.0323, 0.7512)>
+  UV <Vector (0.0847, 0.7682)>
+  UV <Vector (0.0847, 0.8232)>
+Face 52
+UV Count: 3
+  UV <Vector (0.4171, 0.6569)>
+  UV <Vector (0.3621, 0.6569)>
+  UV <Vector (0.3621, 0.5877)>
+Face 53
+UV Count: 3
+  UV <Vector (0.4171, 0.8751)>
+  UV <Vector (0.3621, 0.8751)>
+  UV <Vector (0.3621, 0.8128)>
+Face 54
+UV Count: 3
+  UV <Vector (0.4171, 0.8128)>
+  UV <Vector (0.3621, 0.8128)>
+  UV <Vector (0.3621, 0.7504)>
+Face 55
+UV Count: 3
+  UV <Vector (0.3621, 0.4248)>
+  UV <Vector (0.4171, 0.4248)>
+  UV <Vector (0.4171, 0.4941)>
+Face 56
+UV Count: 3
+  UV <Vector (0.7747, 0.8372)>
+  UV <Vector (0.7747, 0.7411)>
+  UV <Vector (0.8193, 0.7207)>
+Face 57
+UV Count: 3
+  UV <Vector (0.4171, 0.6266)>
+  UV <Vector (0.4171, 0.5348)>
+  UV <Vector (0.4617, 0.5348)>
+Face 58
+UV Count: 3
+  UV <Vector (0.4171, 0.4430)>
+  UV <Vector (0.4617, 0.4248)>
+  UV <Vector (0.4617, 0.5348)>
+Face 59
+UV Count: 3
+  UV <Vector (0.5062, 0.7614)>
+  UV <Vector (0.4616, 0.7601)>
+  UV <Vector (0.4616, 0.6448)>
+Face 60
+UV Count: 3
+  UV <Vector (0.8193, 0.7207)>
+  UV <Vector (0.8638, 0.7411)>
+  UV <Vector (0.8638, 0.8372)>
+Face 61
+UV Count: 3
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.5062, 0.5348)>
+  UV <Vector (0.5062, 0.6266)>
+Face 62
+UV Count: 3
+  UV <Vector (0.4617, 0.5348)>
+  UV <Vector (0.4617, 0.4248)>
+  UV <Vector (0.5062, 0.4431)>
+Face 63
+UV Count: 3
+  UV <Vector (0.4616, 0.6448)>
+  UV <Vector (0.4616, 0.7601)>
+  UV <Vector (0.4171, 0.7614)>
+Face 64
+UV Count: 3
+  UV <Vector (0.1928, 0.6798)>
+  UV <Vector (0.0952, 0.7512)>
+  UV <Vector (0.0922, 0.6989)>
+Face 65
+UV Count: 3
+  UV <Vector (0.2253, 0.5880)>
+  UV <Vector (0.1928, 0.6798)>
+  UV <Vector (0.1585, 0.6504)>
+Face 66
+UV Count: 3
+  UV <Vector (0.2253, 0.5880)>
+  UV <Vector (0.1806, 0.5880)>
+  UV <Vector (0.1585, 0.5257)>
+Face 67
+UV Count: 3
+  UV <Vector (0.1928, 0.4962)>
+  UV <Vector (0.1585, 0.5257)>
+  UV <Vector (0.0922, 0.4772)>
+Face 68
+UV Count: 3
+  UV <Vector (0.8669, 0.0523)>
+  UV <Vector (0.8699, 0.0000)>
+  UV <Vector (0.9675, 0.0714)>
+Face 69
+UV Count: 3
+  UV <Vector (0.9332, 0.1008)>
+  UV <Vector (0.9675, 0.0714)>
+  UV <Vector (1.0000, 0.1631)>
+Face 70
+UV Count: 3
+  UV <Vector (0.9332, 0.2255)>
+  UV <Vector (0.9553, 0.1632)>
+  UV <Vector (1.0000, 0.1631)>
+Face 71
+UV Count: 3
+  UV <Vector (0.8669, 0.2740)>
+  UV <Vector (0.9332, 0.2255)>
+  UV <Vector (0.9675, 0.2549)>
+Face 72
+UV Count: 3
+  UV <Vector (0.3874, -0.0000)>
+  UV <Vector (0.3874, 0.4248)>
+  UV <Vector (0.0000, 0.3925)>
+Face 73
+UV Count: 3
+  UV <Vector (0.7747, 0.3263)>
+  UV <Vector (0.9090, 0.3263)>
+  UV <Vector (0.9090, 0.7207)>
+Face 74
+UV Count: 3
+  UV <Vector (0.3874, 0.0323)>
+  UV <Vector (0.7747, 0.0000)>
+  UV <Vector (0.7747, 0.4248)>
+Face 75
+UV Count: 3
+  UV <Vector (0.6404, 0.4248)>
+  UV <Vector (0.7747, 0.4248)>
+  UV <Vector (0.7747, 0.8192)>
+Face 76
+UV Count: 3
+  UV <Vector (0.5062, 0.7860)>
+  UV <Vector (0.5062, 0.4248)>
+  UV <Vector (0.6404, 0.4248)>
+Face 77
+UV Count: 3
+  UV <Vector (0.2253, 0.8497)>
+  UV <Vector (0.2253, 0.4248)>
+  UV <Vector (0.3596, 0.4248)>
+===Normals:
+Vertex 0: Normal <Vector (0.0000, 0.8032, -0.5957)>
+Vertex 1: Normal <Vector (-0.0000, 0.9606, 0.2778)>
+Vertex 2: Normal <Vector (0.7639, 0.2482, -0.5957)>
+Vertex 3: Normal <Vector (0.9084, 0.3867, 0.1591)>
+Vertex 4: Normal <Vector (0.4721, -0.6498, -0.5957)>
+Vertex 5: Normal <Vector (0.6386, -0.7267, -0.2531)>
+Vertex 6: Normal <Vector (-0.4721, -0.6498, -0.5957)>
+Vertex 7: Normal <Vector (-0.6386, -0.7267, -0.2531)>
+Vertex 8: Normal <Vector (-0.7639, 0.2482, -0.5957)>
+Vertex 9: Normal <Vector (-0.9084, 0.3867, 0.1591)>
+Vertex 10: Normal <Vector (0.4718, 0.6501, -0.5957)>
+Vertex 11: Normal <Vector (0.6381, 0.7271, -0.2533)>
+Vertex 12: Normal <Vector (0.7640, -0.2478, -0.5957)>
+Vertex 13: Normal <Vector (0.9086, -0.3863, 0.1590)>
+Vertex 14: Normal <Vector (0.0004, -0.8032, -0.5957)>
+Vertex 15: Normal <Vector (0.0005, -0.9606, 0.2778)>
+Vertex 16: Normal <Vector (-0.7638, -0.2486, -0.5957)>
+Vertex 17: Normal <Vector (-0.9082, -0.3872, 0.1592)>
+Vertex 18: Normal <Vector (-0.4725, 0.6496, -0.5957)>
+Vertex 19: Normal <Vector (-0.6390, 0.7264, -0.2530)>
+Vertex 20: Normal <Vector (-0.6177, -0.4688, -0.6314)>
+Vertex 21: Normal <Vector (-0.6246, 0.0001, -0.7809)>
+Vertex 22: Normal <Vector (-0.6180, 0.4687, -0.6312)>
+Vertex 23: Normal <Vector (0.6175, -0.4689, -0.6315)>
+Vertex 24: Normal <Vector (0.6242, -0.0001, -0.7813)>
+Vertex 25: Normal <Vector (0.6173, 0.4690, -0.6317)>
+Vertex 26: Normal <Vector (-0.9056, 0.2472, 0.3447)>
+Vertex 27: Normal <Vector (-0.8986, -0.0000, 0.4387)>
+Vertex 28: Normal <Vector (-0.9055, -0.2474, 0.3449)>
+Vertex 29: Normal <Vector (0.0001, 0.6089, 0.7932)>
+Vertex 30: Normal <Vector (0.0002, -0.0000, 1.0000)>
+Vertex 31: Normal <Vector (0.0004, -0.6089, 0.7932)>
+Vertex 32: Normal <Vector (0.9057, 0.2471, 0.3445)>
+Vertex 33: Normal <Vector (0.8989, 0.0000, 0.4382)>
+Vertex 34: Normal <Vector (0.9058, -0.2469, 0.3443)>
+Vertex 35: Normal <Vector (-0.5817, -0.5518, -0.5976)>
+Vertex 36: Normal <Vector (-0.5733, -0.6020, 0.5558)>
+Vertex 37: Normal <Vector (-0.5818, 0.5511, -0.5982)>
+Vertex 38: Normal <Vector (-0.5732, 0.6027, 0.5552)>
+Vertex 39: Normal <Vector (0.5816, -0.5518, -0.5976)>
+Vertex 40: Normal <Vector (0.5733, -0.6020, 0.5558)>
+Vertex 41: Normal <Vector (0.5818, 0.5511, -0.5982)>
+Vertex 42: Normal <Vector (0.5732, 0.6027, 0.5552)>
+===Triangles: 78
+Triangle: [1, 2, 0]
+Triangle: [3, 4, 2]
+Triangle: [5, 6, 4]
+Triangle: [7, 8, 6]
+Triangle: [9, 0, 8]
+Triangle: [2, 4, 6]
+Triangle: [11, 12, 10]
+Triangle: [13, 14, 12]
+Triangle: [15, 16, 14]
+Triangle: [17, 18, 16]
+Triangle: [19, 10, 18]
+Triangle: [12, 16, 18]
+Triangle: [7, 23, 20]
+Triangle: [20, 24, 21]
+Triangle: [21, 25, 22]
+Triangle: [22, 11, 19]
+Triangle: [9, 29, 1]
+Triangle: [26, 30, 29]
+Triangle: [28, 30, 27]
+Triangle: [17, 31, 28]
+Triangle: [29, 3, 1]
+Triangle: [30, 32, 29]
+Triangle: [30, 34, 33]
+Triangle: [31, 13, 34]
+Triangle: [26, 7, 20]
+Triangle: [27, 20, 21]
+Triangle: [27, 22, 28]
+Triangle: [28, 19, 17]
+Triangle: [5, 32, 23]
+Triangle: [23, 33, 24]
+Triangle: [25, 33, 34]
+Triangle: [11, 34, 13]
+Triangle: [36, 37, 35]
+Triangle: [38, 41, 37]
+Triangle: [41, 40, 39]
+Triangle: [40, 35, 39]
+Triangle: [41, 35, 37]
+Triangle: [38, 40, 42]
+Triangle: [1, 3, 2]
+Triangle: [3, 5, 4]
+Triangle: [5, 7, 6]
+Triangle: [7, 9, 8]
+Triangle: [9, 1, 0]
+Triangle: [8, 0, 6]
+Triangle: [0, 2, 6]
+Triangle: [11, 13, 12]
+Triangle: [13, 15, 14]
+Triangle: [15, 17, 16]
+Triangle: [17, 19, 18]
+Triangle: [19, 11, 10]
+Triangle: [18, 10, 12]
+Triangle: [12, 14, 16]
+Triangle: [7, 5, 23]
+Triangle: [20, 23, 24]
+Triangle: [21, 24, 25]
+Triangle: [22, 25, 11]
+Triangle: [9, 26, 29]
+Triangle: [26, 27, 30]
+Triangle: [28, 31, 30]
+Triangle: [17, 15, 31]
+Triangle: [29, 32, 3]
+Triangle: [30, 33, 32]
+Triangle: [30, 31, 34]
+Triangle: [31, 15, 13]
+Triangle: [26, 9, 7]
+Triangle: [27, 26, 20]
+Triangle: [27, 21, 22]
+Triangle: [28, 22, 19]
+Triangle: [5, 3, 32]
+Triangle: [23, 32, 33]
+Triangle: [25, 24, 33]
+Triangle: [11, 25, 34]
+Triangle: [36, 38, 37]
+Triangle: [38, 42, 41]
+Triangle: [41, 42, 40]
+Triangle: [40, 36, 35]
+Triangle: [41, 39, 35]
+Triangle: [38, 36, 40]

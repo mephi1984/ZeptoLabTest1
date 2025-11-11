@@ -1,0 +1,15 @@
+attribute vec3 vPosition;
+attribute vec2 vTexCoord;
+varying vec2 texCoord;
+varying vec3 vWorldPos; // Мировая позиция вершины
+
+uniform mat4 ProjectionModelViewMatrix;
+//uniform mat4 ModelMatrix; // Матрица модели объекта
+
+void main() 
+{
+    vec4 worldPos = vec4(vPosition, 1.0);
+    vWorldPos = worldPos.xyz;
+    gl_Position = ProjectionModelViewMatrix * vec4(vPosition, 1.0);
+    texCoord = vTexCoord;
+}

@@ -1,0 +1,409 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake:228 (message)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      The target system is: Emscripten - 1 - x86
+      The host system is: Linux - 6.8.0-53-generic - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out.js"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out.wasm"
+      
+      The C compiler identification could not be found in:
+        /home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/3.28.3/CompilerIdC/a.out.js
+      
+      The C compiler identification is Clang, found in:
+        /home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/3.28.3/CompilerIdC/a.out.wasm
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_712e3/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_712e3.dir/build.make CMakeFiles/cmTC_712e3.dir/build
+        gmake[1]: Entering directory '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ'
+        Building C object CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"   -v -MD -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c
+         "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang" -target wasm32-unknown-emscripten -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr "--sysroot=/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot" -DEMSCRIPTEN -Xclang -iwithsysroot/include/fakesdl -Xclang -iwithsysroot/include/compat -v -MD -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -oCMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c
+        clang version 21.0.0git (https:/github.com/llvm/llvm-project 4775e6d9099467df9363e1a3cd5950cc3d2fde05)
+        Target: wasm32-unknown-emscripten
+        Thread model: posix
+        InstalledDir: /home/romazan/Рабочий стол/emsdk/upstream/bin
+         (in-process)
+         "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang-21" -cc1 -triple wasm32-unknown-emscripten -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=none -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu generic -fvisibility=hidden -debugger-tuning=gdb "-fdebug-compilation-dir=/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ" -v "-fcoverage-compilation-dir=/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ" -resource-dir "/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21" -dependency-file CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -sys-header-deps -D EMSCRIPTEN -isysroot "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/wasm32-emscripten" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include" -ferror-limit 19 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fignore-exceptions -iwithsysroot/include/fakesdl -iwithsysroot/include/compat -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -o CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 21.0.0git based upon LLVM 21.0.0git default target x86_64-unknown-linux-gnu
+        ignoring nonexistent directory "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/wasm32-emscripten"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl
+         /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat
+         /home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include
+         /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include
+        End of search list.
+        Linking C executable cmTC_712e3.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_712e3.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"  -v @CMakeFiles/cmTC_712e3.dir/objects1.rsp -o cmTC_712e3.js 
+         "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang" --version
+         "/home/romazan/Рабочий стол/emsdk/upstream/bin/wasm-ld" -o cmTC_712e3.wasm CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o "-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten" "-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib" -lGL-getprocaddr -lal -lhtml5 -lstubs-debug -lnoexit -lc-debug -ldlmalloc-debug -lcompiler_rt -lc++-noexcept -lc++abi-debug-noexcept -lsockets -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr /tmp/tmp2ec8r0jdlibemscripten_js_symbols.so --strip-debug --export=emscripten_stack_get_end --export=emscripten_stack_get_free --export=emscripten_stack_get_base --export=emscripten_stack_get_current --export=emscripten_stack_init --export=_emscripten_stack_alloc --export=__wasm_call_ctors --export=_emscripten_stack_restore --export-if-defined=__start_em_asm --export-if-defined=__stop_em_asm --export-if-defined=__start_em_lib_deps --export-if-defined=__stop_em_lib_deps --export-if-defined=__start_em_js --export-if-defined=__stop_em_js --export-if-defined=main --export-if-defined=__main_argc_argv --export-if-defined=fflush --export-table -z stack-size=65536 --no-growable-memory --initial-heap=16777216 --no-entry --stack-first --table-base=1
+         "/home/romazan/Рабочий стол/emsdk/upstream/bin/llvm-objcopy" cmTC_712e3.wasm cmTC_712e3.wasm --remove-section=.debug* --remove-section=producers --remove-section=name
+         "/home/romazan/Рабочий стол/emsdk/node/20.18.0_64bit/bin/node" "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/tools/compiler.mjs" -
+        gmake[1]: Leaving directory '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl]
+          add: [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat]
+          add: [/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include]
+          add: [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include]
+        end of search list found
+        collapse include dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl] ==> [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl]
+        collapse include dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat] ==> [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat]
+        collapse include dir [/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include] ==> [/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include]
+        collapse include dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include] ==> [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include]
+        implicit include dirs: [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl;/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat;/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include;/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_712e3/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_712e3.dir/build.make CMakeFiles/cmTC_712e3.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ']
+        ignore line: [Building C object CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o]
+        ignore line: ["/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"   -v -MD -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c]
+        ignore line: [ "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang" -target wasm32-unknown-emscripten -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr "--sysroot=/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot" -DEMSCRIPTEN -Xclang -iwithsysroot/include/fakesdl -Xclang -iwithsysroot/include/compat -v -MD -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -oCMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang version 21.0.0git (https:/github.com/llvm/llvm-project 4775e6d9099467df9363e1a3cd5950cc3d2fde05)]
+        ignore line: [Target: wasm32-unknown-emscripten]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /home/romazan/Рабочий стол/emsdk/upstream/bin]
+        ignore line: [ (in-process)]
+        ignore line: [ "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang-21" -cc1 -triple wasm32-unknown-emscripten -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model static -mframe-pointer=none -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu generic -fvisibility=hidden -debugger-tuning=gdb "-fdebug-compilation-dir=/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ" -v "-fcoverage-compilation-dir=/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-LHTwpQ" -resource-dir "/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21" -dependency-file CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -sys-header-deps -D EMSCRIPTEN -isysroot "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/wasm32-emscripten" -internal-isystem "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include" -ferror-limit 19 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fignore-exceptions -iwithsysroot/include/fakesdl -iwithsysroot/include/compat -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -o CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 21.0.0git based upon LLVM 21.0.0git default target x86_64-unknown-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/wasm32-emscripten"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/fakesdl]
+        ignore line: [ /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include/compat]
+        ignore line: [ /home/romazan/Рабочий стол/emsdk/upstream/lib/clang/21/include]
+        ignore line: [ /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/include]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_712e3.js]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_712e3.dir/link.txt --verbose=1]
+        ignore line: ["/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"  -v @CMakeFiles/cmTC_712e3.dir/objects1.rsp -o cmTC_712e3.js ]
+        ignore line: [ "/home/romazan/Рабочий стол/emsdk/upstream/bin/clang" --version]
+        link line: [ "/home/romazan/Рабочий стол/emsdk/upstream/bin/wasm-ld" -o cmTC_712e3.wasm CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o "-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten" "-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib" -lGL-getprocaddr -lal -lhtml5 -lstubs-debug -lnoexit -lc-debug -ldlmalloc-debug -lcompiler_rt -lc++-noexcept -lc++abi-debug-noexcept -lsockets -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr /tmp/tmp2ec8r0jdlibemscripten_js_symbols.so --strip-debug --export=emscripten_stack_get_end --export=emscripten_stack_get_free --export=emscripten_stack_get_base --export=emscripten_stack_get_current --export=emscripten_stack_init --export=_emscripten_stack_alloc --export=__wasm_call_ctors --export=_emscripten_stack_restore --export-if-defined=__start_em_asm --export-if-defined=__stop_em_asm --export-if-defined=__start_em_lib_deps --export-if-defined=__stop_em_lib_deps --export-if-defined=__start_em_js --export-if-defined=__stop_em_js --export-if-defined=main --export-if-defined=__main_argc_argv --export-if-defined=fflush --export-table -z stack-size=65536 --no-growable-memory --initial-heap=16777216 --no-entry --stack-first --table-base=1]
+          arg [/home/romazan/Рабочий стол/emsdk/upstream/bin/wasm-ld] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_712e3.wasm] ==> ignore
+          arg [CMakeFiles/cmTC_712e3.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten] ==> dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten]
+          arg [-L/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib] ==> dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib]
+          arg [-lGL-getprocaddr] ==> lib [GL-getprocaddr]
+          arg [-lal] ==> lib [al]
+          arg [-lhtml5] ==> lib [html5]
+          arg [-lstubs-debug] ==> lib [stubs-debug]
+          arg [-lnoexit] ==> lib [noexit]
+          arg [-lc-debug] ==> lib [c-debug]
+          arg [-ldlmalloc-debug] ==> lib [dlmalloc-debug]
+          arg [-lcompiler_rt] ==> lib [compiler_rt]
+          arg [-lc++-noexcept] ==> lib [c++-noexcept]
+          arg [-lc++abi-debug-noexcept] ==> lib [c++abi-debug-noexcept]
+          arg [-lsockets] ==> lib [sockets]
+          arg [-mllvm] ==> ignore
+          arg [-combiner-global-alias-analysis=false] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-enable-emscripten-sjlj] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-disable-lsr] ==> ignore
+          arg [/tmp/tmp2ec8r0jdlibemscripten_js_symbols.so] ==> ignore
+          arg [--strip-debug] ==> ignore
+          arg [--export=emscripten_stack_get_end] ==> ignore
+          arg [--export=emscripten_stack_get_free] ==> ignore
+          arg [--export=emscripten_stack_get_base] ==> ignore
+          arg [--export=emscripten_stack_get_current] ==> ignore
+          arg [--export=emscripten_stack_init] ==> ignore
+          arg [--export=_emscripten_stack_alloc] ==> ignore
+          arg [--export=__wasm_call_ctors] ==> ignore
+          arg [--export=_emscripten_stack_restore] ==> ignore
+          arg [--export-if-defined=__start_em_asm] ==> ignore
+          arg [--export-if-defined=__stop_em_asm] ==> ignore
+          arg [--export-if-defined=__start_em_lib_deps] ==> ignore
+          arg [--export-if-defined=__stop_em_lib_deps] ==> ignore
+          arg [--export-if-defined=__start_em_js] ==> ignore
+          arg [--export-if-defined=__stop_em_js] ==> ignore
+          arg [--export-if-defined=main] ==> ignore
+          arg [--export-if-defined=__main_argc_argv] ==> ignore
+          arg [--export-if-defined=fflush] ==> ignore
+          arg [--export-table] ==> ignore
+          arg [-zstack-size=65536] ==> ignore
+          arg [--no-growable-memory] ==> ignore
+          arg [--initial-heap=16777216] ==> ignore
+          arg [--no-entry] ==> ignore
+          arg [--stack-first] ==> ignore
+          arg [--table-base=1] ==> ignore
+        collapse library dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten] ==> [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten]
+        collapse library dir [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib] ==> [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib]
+        implicit libs: [GL-getprocaddr;al;html5;stubs-debug;noexit;c-debug;dlmalloc-debug;compiler_rt;c++-noexcept;c++abi-debug-noexcept;sockets]
+        implicit objs: []
+        implicit dirs: [/home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten;/home/romazan/Рабочий стол/emsdk/upstream/emscripten/src/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:22 (check_include_file)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_d8424/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_d8424.dir/build.make CMakeFiles/cmTC_d8424.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp»
+        Building C object CMakeFiles/cmTC_d8424.dir/CheckIncludeFile.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"    -MD -MT CMakeFiles/cmTC_d8424.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_d8424.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_d8424.dir/CheckIncludeFile.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp/CheckIncludeFile.c"
+        Linking C executable cmTC_d8424.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d8424.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/cmTC_d8424.dir/objects1.rsp -o cmTC_d8424.js 
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-U8Y6Fp»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:23 (check_include_file)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_f3775/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_f3775.dir/build.make CMakeFiles/cmTC_f3775.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0»
+        Building C object CMakeFiles/cmTC_f3775.dir/CheckIncludeFile.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"    -MD -MT CMakeFiles/cmTC_f3775.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_f3775.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_f3775.dir/CheckIncludeFile.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0/CheckIncludeFile.c"
+        Linking C executable cmTC_f3775.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f3775.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/cmTC_f3775.dir/objects1.rsp -o cmTC_f3775.js 
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-r21ap0»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:24 (check_include_file)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5e09c/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_5e09c.dir/build.make CMakeFiles/cmTC_5e09c.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw»
+        Building C object CMakeFiles/cmTC_5e09c.dir/CheckIncludeFile.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"    -MD -MT CMakeFiles/cmTC_5e09c.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_5e09c.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_5e09c.dir/CheckIncludeFile.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw/CheckIncludeFile.c"
+        Linking C executable cmTC_5e09c.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5e09c.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/cmTC_5e09c.dir/objects1.rsp -o cmTC_5e09c.js 
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-389nTw»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules/CheckTypeSize.cmake:114 (try_compile)"
+      - "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules/CheckTypeSize.cmake:239 (__check_type_size_impl)"
+      - "CMakeLists.txt:42 (check_type_size)"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeTmp"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "HAVE_OFF64_T"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeTmp'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_dfde6/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_dfde6.dir/build.make CMakeFiles/cmTC_dfde6.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeTmp»
+        Building C object CMakeFiles/cmTC_dfde6.dir/OFF64_T.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" -DHAVE_STDDEF_H -DHAVE_STDINT_H -DHAVE_SYS_TYPES_H -D_LARGEFILE64_SOURCE=1   -MD -MT CMakeFiles/cmTC_dfde6.dir/OFF64_T.c.o -MF CMakeFiles/cmTC_dfde6.dir/OFF64_T.c.o.d -o CMakeFiles/cmTC_dfde6.dir/OFF64_T.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CheckTypeSize/OFF64_T.c"
+        Linking C executable cmTC_dfde6.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dfde6.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/cmTC_dfde6.dir/objects1.rsp -o cmTC_dfde6.js @CMakeFiles/cmTC_dfde6.dir/linkLibs.rsp
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeTmp»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "CMakeLists.txt:51 (check_function_exists)"
+    checks:
+      - "Looking for fseeko"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FSEEKO"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_7cbdf/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_7cbdf.dir/build.make CMakeFiles/cmTC_7cbdf.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn»
+        Building C object CMakeFiles/cmTC_7cbdf.dir/CheckFunctionExists.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"   -DCHECK_FUNCTION_EXISTS=fseeko -MD -MT CMakeFiles/cmTC_7cbdf.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_7cbdf.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_7cbdf.dir/CheckFunctionExists.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn/CheckFunctionExists.c"
+        Linking C executable cmTC_7cbdf.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cbdf.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"  -DCHECK_FUNCTION_EXISTS=fseeko @CMakeFiles/cmTC_7cbdf.dir/objects1.rsp -o cmTC_7cbdf.js 
+        wasm-ld: warning: function signature mismatch: fseeko
+        >>> defined as () -> i32 in CMakeFiles/cmTC_7cbdf.dir/CheckFunctionExists.c.o
+        >>> defined as (i32, i64, i32) -> i32 in /home/romazan/Рабочий стол/emsdk/upstream/emscripten/cache/sysroot/lib/wasm32-emscripten/libc-debug.a(fseek.o)
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-hiBmjn»
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFile.cmake:90 (try_compile)"
+      - "CMakeLists.txt:59 (check_include_file)"
+    checks:
+      - "Looking for unistd.h"
+    directories:
+      source: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB"
+      binary: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/emscan-deps"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules;/home/romazan/\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b/emsdk/upstream/emscripten/cmake/Modules"
+    buildResult:
+      variable: "Z_HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_d969e/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_d969e.dir/build.make CMakeFiles/cmTC_d969e.dir/build
+        gmake[1]: вход в каталог «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB»
+        Building C object CMakeFiles/cmTC_d969e.dir/CheckIncludeFile.c.o
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc"    -MD -MT CMakeFiles/cmTC_d969e.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_d969e.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_d969e.dir/CheckIncludeFile.c.o -c "/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB/CheckIncludeFile.c"
+        Linking C executable cmTC_d969e.js
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d969e.dir/link.txt --verbose=1
+        "/home/romazan/Рабочий стол/emsdk/upstream/emscripten/emcc" @CMakeFiles/cmTC_d969e.dir/objects1.rsp -o cmTC_d969e.js 
+        gmake[1]: выход из каталога «/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/build-emcmake/CMakeFiles/CMakeScratch/TryCompile-33QcxB»
+        
+      exitCode: 0
+...

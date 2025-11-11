@@ -1,0 +1,6 @@
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/lib/libz.a
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/lib/libz.a
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/include/zconf.h
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/include/zlib.h
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/share/man/man3/zlib.3
+/home/romazan/Рабочий стол/cproject/thirdparty/zlib-1.3.1/install/share/pkgconfig/zlib.pc

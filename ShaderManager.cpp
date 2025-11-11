@@ -1,11 +1,12 @@
 #include "ShaderManager.h"
-
+#include <iostream>
 
 
 namespace ZL {
 
 	ShaderResource::ShaderResource(const std::string& vertexCode, const std::string& fragmentCode)
-	{
+	{	
+
 		const int CONST_INFOLOG_LENGTH = 256;
 
 		char infoLog[CONST_INFOLOG_LENGTH];
@@ -40,12 +41,12 @@ namespace ZL {
 
 		if (!vertexShaderCompiled)
 		{
-			throw std::exception("Failed to compile vertex shader code!");
+			throw std::runtime_error("Failed to compile vertex shader code!");
 		}
-
+		
 		if (!fragmentShaderCompiled)
-		{
-			throw std::exception("Failed to compile fragment shader code!");
+		{	
+			throw std::runtime_error("Failed to compile fragment shader code!");
 		}
 
 		shaderProgram = glCreateProgram();
@@ -60,11 +61,11 @@ namespace ZL {
 
 		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &programLinked);
 		glGetProgramInfoLog(shaderProgram, CONST_INFOLOG_LENGTH, &infoLogLength, infoLog);
-
+		
 		if (!programLinked)
 		{
 			shaderProgram = 0;
-			throw std::exception("Failed to link shader program!");
+			throw std::runtime_error("Failed to link shader program!");
 		}
 
 
@@ -120,12 +121,28 @@ namespace ZL {
 	}
 
 
-	void ShaderManager::AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName)
+	void ShaderManager::AddShaderFromFiles(const std::string& shaderName, const std::string& vertexShaderFileName, const std::string& fragmentShaderFileName, const std::string& ZIPFileName)
 	{
-		std::string vertexShader = readTextFile(vertexShaderFileName);
 
-		std::string fragmentShader = readTextFile(fragmentShaderFileName);
+		std::string vertexShader;
+		std::string fragmentShader;
 
+		if (!ZIPFileName.empty()){
+
+			std::vector<char> vertexShaderData;
+			std::vector<char> fragmentShaderData;
+		
+			vertexShaderData = readFileFromZIP(vertexShaderFileName, ZIPFileName);
+			fragmentShaderData = readFileFromZIP(fragmentShaderFileName, ZIPFileName);
+
+			vertexShader = std::string(vertexShaderData.begin(), vertexShaderData.end());
+			fragmentShader = std::string(fragmentShaderData.begin(), fragmentShaderData.end());
+
+		}else{
+			vertexShader = readTextFile(vertexShaderFileName);
+			fragmentShader = readTextFile(fragmentShaderFileName);
+		}
+                ///std::cout << "Shader: "<< vertexShader << std::endl;
 		shaderResourceMap[shaderName] = std::make_shared<ShaderResource>(vertexShader, fragmentShader);
 	}
 
@@ -133,12 +150,12 @@ namespace ZL {
 	{
 		if (shaderStack.size() >= CONST_MAX_SHADER_STACK_SIZE)
 		{
-			throw std::exception("Shader stack overflow!");
+			throw std::runtime_error("Shader stack overflow!");
 		}
 
 		if (shaderResourceMap.find(shaderName) == shaderResourceMap.end())
 		{
-			throw std::exception("Shader does not exist!");
+			throw std::runtime_error("Shader does not exist!");
 		}
 
 		shaderStack.push(shaderName);
@@ -151,7 +168,7 @@ namespace ZL {
 	{
 		if (shaderStack.size() == 0)
 		{
-			throw std::exception("Shader stack underflow!");
+			throw std::runtime_error("Shader stack underflow!");
 		}
 
 		shaderStack.pop();
@@ -170,7 +187,7 @@ namespace ZL {
 	{
 		if (shaderStack.size() == 0)
 		{
-			throw std::exception("Shader stack underflow!");
+			throw std::runtime_error("Shader stack underflow!");
 		}
 
 

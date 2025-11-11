@@ -1,0 +1,93 @@
+===Vertices: 8
+Vertex 0: <Vector (10.0851, 30.8909, 9.4815)>
+Vertex 1: <Vector (10.0851, 30.8909, -9.4815)>
+Vertex 2: <Vector (10.0851, -30.8909, 9.4815)>
+Vertex 3: <Vector (10.0851, -30.8909, -9.4815)>
+Vertex 4: <Vector (-10.0851, 30.8909, 9.4815)>
+Vertex 5: <Vector (-10.0851, 30.8909, -9.4815)>
+Vertex 6: <Vector (-10.0851, -30.8909, 9.4815)>
+Vertex 7: <Vector (-10.0851, -30.8909, -9.4815)>
+===UV Coordinates:
+Face count: 12
+Face 0
+UV Count: 3
+  UV <Vector (0.0000, 0.7539)>
+  UV <Vector (0.2577, 0.0000)>
+  UV <Vector (0.2577, 0.7539)>
+Face 1
+UV Count: 3
+  UV <Vector (0.0000, 1.0000)>
+  UV <Vector (0.2423, 0.7539)>
+  UV <Vector (0.2423, 1.0000)>
+Face 2
+UV Count: 3
+  UV <Vector (0.5154, 0.7539)>
+  UV <Vector (0.7577, 0.0000)>
+  UV <Vector (0.7577, 0.7539)>
+Face 3
+UV Count: 3
+  UV <Vector (0.2577, 0.7539)>
+  UV <Vector (0.5154, 0.0000)>
+  UV <Vector (0.5154, 0.7539)>
+Face 4
+UV Count: 3
+  UV <Vector (0.7577, 0.7539)>
+  UV <Vector (1.0000, 0.0000)>
+  UV <Vector (1.0000, 0.7539)>
+Face 5
+UV Count: 3
+  UV <Vector (0.2423, 1.0000)>
+  UV <Vector (0.4846, 0.7539)>
+  UV <Vector (0.4846, 1.0000)>
+Face 6
+UV Count: 3
+  UV <Vector (0.0000, 0.7539)>
+  UV <Vector (0.0000, 0.0000)>
+  UV <Vector (0.2577, 0.0000)>
+Face 7
+UV Count: 3
+  UV <Vector (0.0000, 1.0000)>
+  UV <Vector (0.0000, 0.7539)>
+  UV <Vector (0.2423, 0.7539)>
+Face 8
+UV Count: 3
+  UV <Vector (0.5154, 0.7539)>
+  UV <Vector (0.5154, 0.0000)>
+  UV <Vector (0.7577, 0.0000)>
+Face 9
+UV Count: 3
+  UV <Vector (0.2577, 0.7539)>
+  UV <Vector (0.2577, 0.0000)>
+  UV <Vector (0.5154, 0.0000)>
+Face 10
+UV Count: 3
+  UV <Vector (0.7577, 0.7539)>
+  UV <Vector (0.7577, 0.0000)>
+  UV <Vector (1.0000, 0.0000)>
+Face 11
+UV Count: 3
+  UV <Vector (0.2423, 1.0000)>
+  UV <Vector (0.2423, 0.7539)>
+  UV <Vector (0.4846, 0.7539)>
+===Normals:
+Vertex 0: Normal <Vector (0.5774, 0.5774, 0.5774)>
+Vertex 1: Normal <Vector (0.5774, 0.5774, -0.5774)>
+Vertex 2: Normal <Vector (0.5774, -0.5774, 0.5774)>
+Vertex 3: Normal <Vector (0.5774, -0.5774, -0.5774)>
+Vertex 4: Normal <Vector (-0.5774, 0.5774, 0.5774)>
+Vertex 5: Normal <Vector (-0.5774, 0.5774, -0.5774)>
+Vertex 6: Normal <Vector (-0.5774, -0.5774, 0.5774)>
+Vertex 7: Normal <Vector (-0.5774, -0.5774, -0.5774)>
+===Triangles: 12
+Triangle: [4, 2, 0]
+Triangle: [2, 7, 3]
+Triangle: [6, 5, 7]
+Triangle: [1, 7, 5]
+Triangle: [0, 3, 1]
+Triangle: [4, 1, 5]
+Triangle: [4, 6, 2]
+Triangle: [2, 6, 7]
+Triangle: [6, 4, 5]
+Triangle: [1, 3, 7]
+Triangle: [0, 2, 3]
+Triangle: [4, 0, 1]

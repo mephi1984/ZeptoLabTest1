@@ -1,106 +1,39 @@
 #pragma once
 
-#include "Math.h"
-#include "Physics.h" 
-#include "TextureManager.h"
-#include "Renderer.h"
-#include <memory>
+#include "OpenGlExtensions.h"
+#include "GameObjectManager.h"
+#include "RenderSystem.h"
+#include "Environment.h"
 
-namespace ZL
-{
-	namespace GameConsts
-	{
-		constexpr float yAcceleration = -0.0003f;
+namespace ZL {
 
-		constexpr float backgroundXVelocity = 0.15f;
+class Game {
+public:
+    Game();
+    ~Game();
+    
+    void setup();
+    void run();
+    void update();
+    void render();
+    
+    bool shouldExit() const { return Environment::exitGameLoop; }
 
-		constexpr float jumpVelocity = 0.2f;
+private:    
+    void processTickCount();
+    void drawScene();
 
-		constexpr float pipeScale = 0.5f;
+    SDL_Window* window;
+    SDL_GLContext glContext;
+    RenderSystem renderSystem;
+    GameObjectManager gameObjects;
+    Renderer& renderer;  // Ссылка на renderer из RenderSystem
+    
+    size_t newTickCount;
+    size_t lastTickCount;
+    
+    static const size_t CONST_TIMER_INTERVAL = 10;
+    static const size_t CONST_MAX_TIME_INTERVAL = 1000;
+};
 
-		constexpr float birdScale = 0.1f;
-	}
-
-	namespace Env
-	{
-		extern int windowHeaderHeight;
-
-		extern int width;
-		extern int height;
-
-		extern Vector2f birdStartPos;
-
-		//Calculated depending on the background texture and screen size
-		extern float backgroundSectionWidth;
-
-		int getActualClientHeight();
-	}
-
-
-	struct PipePairConfig
-	{
-		float topPipeVShift;
-		float bottomPipeVShift;
-
-		float xPos;
-
-		std::array<LinePhysicsObject, 6> tubePhysicsLines;
-
-		static PipePairConfig CreateTube(float xPos);
-
-		static PipePairConfig CreateLastTube();
-	};
-
-	struct GameState
-	{
-	protected:
-		void UpdateBirdPos(size_t tickCountDiff);
-
-		void UpdateBackgroundPos(size_t tickCountDiff);
-
-		void UpdatePipePos(size_t tickCountDiff);
-
-		void UpdatePhysics(size_t tickCountDiff);
-
-	public:
-		
-		Vector2f birdCurrentPos = {0.f, 0.f};
-
-		float xVelocity = -0.3f;
-		float yVelocity = 0.f;
-
-		float birdAngle = 0.f;
-
-		float backgroundShift = 0.f;
-
-		bool isGameOver = false;
-
-		std::vector<PipePairConfig> pipePairArr;
-
-		EllipsePhysicsObject birdEllipse;
-
-		void RestartGame();
-
-		void UpdateScene(size_t tickCountDiff);
-
-		void BirdJump();
-	};
-
-	
-
-	namespace GameObjects
-	{
-		extern std::shared_ptr<Texture> birdTexturePtr;
-		extern std::shared_ptr<Texture> backgroundTexturePtr;
-		extern std::shared_ptr<Texture> pipeTexturePtr;
-		extern std::shared_ptr<Texture> gameOverTexturePtr;
-
-		extern VertexDataStruct birdMesh;
-
-		extern VertexDataStruct backgroundMesh;
-
-		extern VertexDataStruct pipeMesh;
-
-		extern VertexDataStruct gameOverMesh;
-	}
-}
+} // namespace ZL
