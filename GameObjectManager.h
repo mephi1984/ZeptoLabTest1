@@ -110,6 +110,14 @@ public:
     std::shared_ptr<Texture> finalGoodTexturePtr;
     std::shared_ptr<Texture> finalBadTexturePtr; 
 
+    ZL::VertexDataStruct modelMesh;
+    ZL::VertexRenderStruct modelMeshRender;
+    std::shared_ptr<Texture> modelTexturePtr;
+
+    ZL::VertexDataStruct landMesh;
+    ZL::VertexRenderStruct landMeshRender;
+    std::shared_ptr<Texture> landTexturePtr;
+
 
 private:
     //int animationCounter = 0;

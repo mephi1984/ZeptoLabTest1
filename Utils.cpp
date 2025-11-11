@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
-#include <zip.h>
+//#include <zip.h>
 
 namespace ZL
 {
@@ -40,9 +40,9 @@ namespace ZL
 
 		return vec;
 	}
-
+	
 	std::vector<char> readFileFromZIP(const std::string& filename, const std::string& zipfilename) {
-		const std::string zipPath = zipfilename;
+		/*const std::string zipPath = zipfilename;
 		int zipErr;
 		zip_t* archive = zip_open(zipPath.c_str(), ZIP_RDONLY, &zipErr);
 		if (!archive) {
@@ -77,7 +77,8 @@ namespace ZL
 		zip_fclose(zipFile);
 		zip_close(archive);
 	
-		return fileData;
+		return fileData;*/
+		return {};
 	}
 
 	bool findString(const char* in, char* list)

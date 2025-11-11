@@ -39,7 +39,7 @@ void RenderSystem::drawScene(GameObjectManager& gameObjects) {
     {
         drawWorld(gameObjects);
         glClear(GL_DEPTH_BUFFER_BIT);
-        drawUI(gameObjects);
+        //drawUI(gameObjects);
     }
 
     CheckGlError();
@@ -138,7 +138,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     drawViola(gameObjects);
 
     
-    renderer.shaderManager.PushShader(hideCamShaderName);
+    renderer.shaderManager.PushShader(defaultShaderName);
     renderer.RenderUniform1i(textureUniformName, 0);
 
     Vector3f totalCameraTargetPos = Environment::characterPos - Vector3f{ 0, Environment::cameraDefaultVerticalShift, 0 };
@@ -177,7 +177,7 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     renderer.TranslateMatrix({ 0, Environment::cameraDefaultVerticalShift, 0 });
 
     // Draw active objects
-    drawObjects(gameObjects);
+    /*drawObjects(gameObjects);
 
     // Draw room
     glBindTexture(GL_TEXTURE_2D, gameObjects.rooms[gameObjects.current_room_index].roomTexture->getTexID());
@@ -186,8 +186,14 @@ void RenderSystem::drawWorld(GameObjectManager& gameObjects) {
     if (gameObjects.current_room_index == 1 && Environment::goToLevel3 == false)
     {
         drawMonster(gameObjects);
-    }
-    drawViola(gameObjects);
+    }*/
+
+    //drawViola(gameObjects);
+    glBindTexture(GL_TEXTURE_2D, gameObjects.landTexturePtr->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.landMeshRender);
+
+    glBindTexture(GL_TEXTURE_2D, gameObjects.modelTexturePtr->getTexID());
+    renderer.DrawVertexRenderStruct(gameObjects.modelMeshRender);
 
 
     Matrix4f latestProjectionModelView = renderer.GetProjectionModelViewMatrix();

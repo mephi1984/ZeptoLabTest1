@@ -1,4 +1,0 @@
-/home/albert/gay-jam/ZeptoLabTest1/cmakeaudioplayer/build/CMakeFiles/audioplayer.dir
-/home/albert/gay-jam/ZeptoLabTest1/cmakeaudioplayer/build/CMakeFiles/test_audio.dir
-/home/albert/gay-jam/ZeptoLabTest1/cmakeaudioplayer/build/CMakeFiles/edit_cache.dir
-/home/albert/gay-jam/ZeptoLabTest1/cmakeaudioplayer/build/CMakeFiles/rebuild_cache.dir

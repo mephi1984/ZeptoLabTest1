@@ -8,6 +8,7 @@
 
 namespace ZL
 {
+    extern const char* CONST_ZIP_FILE;
 
 Game::Game() 
     : window(nullptr)
@@ -39,13 +40,13 @@ void Game::setup() {
     // Initialize renderer
 
 #ifdef EMSCRIPTEN
-    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_web.fragment", "data.zip");
-    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_web.fragment", "data.zip");
-    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_web.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_web.fragment", CONST_ZIP_FILE);
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_web.fragment", CONST_ZIP_FILE);
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_web.fragment", CONST_ZIP_FILE);
 #else
-    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_desktop.fragment", "data.zip");
-    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_desktop.fragment", "data.zip");
-    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_desktop.fragment", "data.zip");
+    renderer.shaderManager.AddShaderFromFiles("default", "./default.vertex", "./default_desktop.fragment", CONST_ZIP_FILE);
+    renderer.shaderManager.AddShaderFromFiles("defaultColor", "./defaultColor.vertex", "./defaultColor_desktop.fragment", CONST_ZIP_FILE);
+    renderer.shaderManager.AddShaderFromFiles("defaultHideCam", "./defaultHideCam.vertex", "./defaultHideCam_desktop.fragment", CONST_ZIP_FILE);
 #endif
 
 

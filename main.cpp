@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     ZL::Environment::window = SDL_CreateWindow(
-        "Jumping Bird",
+        "INAI game",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         CONST_WIDTH, CONST_HEIGHT,
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN

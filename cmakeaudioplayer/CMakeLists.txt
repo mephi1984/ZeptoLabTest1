@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Use pkg-config to find Vorbis
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(VORBIS REQUIRED vorbis vorbisfile)
-pkg_check_modules(OGG REQUIRED ogg)
+#find_package(PkgConfig REQUIRED)
+#pkg_check_modules(VORBIS REQUIRED vorbis vorbisfile)
+#pkg_check_modules(OGG REQUIRED ogg)
 find_package(OpenAL REQUIRED)
 
 add_library(audioplayer
@@ -33,4 +33,4 @@ target_link_libraries(audioplayer
 # Test executable
 add_executable(test_audio examples/test_audio.cpp)
 target_link_libraries(test_audio PRIVATE audioplayer stdc++fs)
-git add ../../sounds
+#git add ../../sounds

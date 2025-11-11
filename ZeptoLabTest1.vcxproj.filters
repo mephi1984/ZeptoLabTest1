@@ -45,9 +45,6 @@
     <ClCompile Include="ObjLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="md3test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoneAnimatedModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

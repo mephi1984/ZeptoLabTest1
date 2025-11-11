@@ -1,2 +1,0 @@
-/usr/bin/ar qc libaudioplayer.a CMakeFiles/audioplayer.dir/src/AudioPlayer.cpp.o
-/usr/bin/ranlib libaudioplayer.a
